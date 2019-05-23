@@ -5,14 +5,13 @@ date: 2015-01-23T18:50:28-04:00
 author: brad
 layout: page
 guid: http://br4d.net/?page_id=317
-ipt_kb_like_article:
-  - "0"
 ---
+
 <img class="img-thumbnail alignleft" title="" src="/images/2015/01/recent-pete-150x150.jpg" alt="Brad and Pete" />
 
 My name is Brad and I love learning new things.
 
-I am an engineer, hacker, and traveler currently working out of the <a href="https://en.wikipedia.org/wiki/Huntington%E2%80%93Ashland_metropolitan_area" target="_blank" rel="noopener">OH-WV-KY metro area</a>.
+I am an engineer, hacker, and traveler currently working out of the <a href="https://en.wikipedia.org/wiki/Huntington%E2%80%93Ashland_metropolitan_area">OH-WV-KY metro area</a>.
 
 ## What I Do
 
@@ -28,7 +27,7 @@ I am a **Full Stack Developer** who has both contributed to and led development 
 
 ## Favorite Technologies
 
-<img class="alignleft" title="" src="/images/2018/05/csharp_loves_ts-300x128.png" alt="I love C# and TS" srcset="/images/2018/05/csharp_loves_ts-300x128.png 300w, /images/2018/05/csharp_loves_ts-768x328.png 768w, /images/2018/05/csharp_loves_ts-1024x437.png 1024w, /images/2018/05/csharp_loves_ts.png 1132w" sizes="(max-width: 250px) 100vw, 250px" /> 
+<img class="alignleft" title="" src="/images/2018/05/csharp_loves_ts-300x128.png" alt="I love C# and TS" srcset="/images/2018/05/csharp_loves_ts-300x128.png 300w, /images/2018/05/csharp_loves_ts-768x328.png 768w, /images/2018/05/csharp_loves_ts-1024x437.png 1024w, /images/2018/05/csharp_loves_ts.png 1132w" sizes="(max-width: 250px) 100vw, 250px" />
 
   * **Back-end / Desktop / Mobile** – C# (.NET core, ASP.NET MVC, Xamarin)
   * **Front-end** – JavaScript / TypeScript, Angular/AngularJS, React, Vue
