@@ -718,7 +718,7 @@ So now you know how to display an image for any given state, from SPRITE\_STATE\
 
 **Chains** are a simple concept. You just tell the sprite engine that it is a chain, then number each state incrementally. Look at this code from Bald Bull.spr:
 
-<div class="codecolorer-container text default" style="overflow:auto;white-space:nowrap;height:300px;">
+<div class="codecolorer-container text default">
   <div class="text codecolorer">
     "SPRITE_STATE_STAND_RIGHT": {<br /> "isChain":"1",<br /> "cropX":"0",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_0": {<br /> "cropX":"63"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_1": {<br /> "cropX":"125"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_2": {<br /> "cropX":"187"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_3": {<br /> "cropX":"249"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_4": {<br /> "cropX":"311"<br /> }
   </div>
@@ -752,7 +752,7 @@ The only thing that changed was the X value in each frame since the Y was always
 
 So the example from above that introduced chains effectively functions the exact same as this, thanks to inheritance:
 
-<div class="codecolorer-container text default" style="overflow:auto;white-space:nowrap;height:300px;">
+<div class="codecolorer-container text default">
   <div class="text codecolorer">
     "SPRITE_STATE_STAND_RIGHT": {<br /> "isChain":"1",<br /> "cropX":"0",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_0": {<br /> "cropX":"63",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_1": {<br /> "cropX":"125",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_2": {<br /> "cropX":"187",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_3": {<br /> "cropX":"249",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> },<br /> "SPRITE_STATE_STAND_RIGHT_4": {<br /> "cropX":"311",<br /> "cropY":"0",<br /> "cropW":"62",<br /> "cropH":"140"<br /> }
   </div>
@@ -1013,7 +1013,7 @@ For 2, look at Jason.spr by caustik as an example. In the metadata, he included 
 
 When the sprite is destroyed, it spawns an external file &#8220;Jason (Death).spi&#8221; which then handles the death animation. here is that file:
 
-<div class="codecolorer-container text default" style="overflow:auto;white-space:nowrap;height:300px;">
+<div class="codecolorer-container text default">
   <div class="text codecolorer">
     {<br /> "SPRITE_META_DATA" :<br /> {<br /> &nbsp; "credits" :<br /> [<br /> &nbsp; {<br /> &nbsp; &nbsp; "author": "Caustik",<br /> &nbsp; &nbsp; "description": "Scripted by Caustik (caustik.com)",<br /> &nbsp; &nbsp; "url": "http://www.caustik.com/"<br /> &nbsp; }<br /> ]<br /> },<br /> &nbsp; "SPRITE_STATE_DEFAULT" :<br /> {<br /> &nbsp; "uri": "jasonsophia.png",<br /> &nbsp; "sizeMultiplier": "2",<br /> &nbsp; "frameDelay": "200",<br /> &nbsp; "cropX": "325", "cropY" : "129", "cropW" : "16", "cropH" : "16",<br /> &nbsp; "transparent": "0088FF",<br /> &nbsp; "autoClose": "1",<br /> &nbsp; "isChain": "1"<br /> },<br /> &nbsp; "SPRITE_STATE_DEFAULT_0" : { "cropX": "205" },<br /> &nbsp; "SPRITE_STATE_DEFAULT_1" : { "cropX": "285", "cropY": "128" },<br /> &nbsp; "SPRITE_STATE_DEFAULT_2" : { "cropX": "325", "cropY": "124" }<br /> }
   </div>
