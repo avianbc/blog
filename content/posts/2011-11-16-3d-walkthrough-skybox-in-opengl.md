@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img src="http://br4d.net/wp-content/uploads/2015/01/walkthrough-292x300.png" alt="walkthrough" width="292" height="300" class="alignleft size-medium wp-image-397" srcset="http://br4d.net/wp-content/uploads/2015/01/walkthrough-292x300.png 292w, http://br4d.net/wp-content/uploads/2015/01/walkthrough.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](http://br4d.net/wp-content/uploads/2015/01/walkthrough.png)
+[<img src="/images/2015/01/walkthrough-292x300.png" alt="walkthrough" width="292" height="300" class="alignleft size-medium wp-image-397" srcset="/images/2015/01/walkthrough-292x300.png 292w, /images/2015/01/walkthrough.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/walkthrough.png)
 
 This is a walkthrough with a bunch of random items. Included are: a giant pyramid (hide it by pressing the p key!), a snowman, a bird, a torus, a rotating texture, and a golden spiral of teapots in the background.
 
@@ -21,8 +21,8 @@ Look at the myKeyboard() function to see what keys move. This program also relie
 
 Dependencies:
 
-  * [Download grass.bmp](http://br4d.net/wp-content/uploads/2015/01/grass.bmp)
-  * [Download BitmapLoader.h](http://br4d.net/wp-content/uploads/2015/01/BitmapLoader.h)
+  * [Download grass.bmp](/images/2015/01/grass.bmp)
+  * [Download BitmapLoader.h](/images/2015/01/BitmapLoader.h)
 
 <div class="codecolorer-container cpp default" style="overflow:auto;white-space:nowrap;height:300px;">
   <div class="cpp codecolorer">

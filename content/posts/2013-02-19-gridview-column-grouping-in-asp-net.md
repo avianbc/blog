@@ -18,11 +18,11 @@ If you are writing code to show a large amount of records in an ASP.NET GridView
 
 What kind of grouping am I referring to? Here is an example of what this code does. Here is what a standard GridView would look like:
 
-[<img class="alignnone size-full wp-image-299" title="before" src="http://br4d.net/wp-content/uploads/2013/02/before.png" alt="" width="536" height="236" srcset="http://br4d.net/wp-content/uploads/2013/02/before.png 536w, http://br4d.net/wp-content/uploads/2013/02/before-300x132.png 300w" sizes="(max-width: 536px) 100vw, 536px" />](http://br4d.net/wp-content/uploads/2013/02/before.png)
+[<img class="alignnone size-full wp-image-299" title="before" src="/images/2013/02/before.png" alt="" width="536" height="236" srcset="/images/2013/02/before.png 536w, /images/2013/02/before-300x132.png 300w" sizes="(max-width: 536px) 100vw, 536px" />](/images/2013/02/before.png)
 
 After using this function, this same table would render as:
 
-[<img class="alignnone size-full wp-image-300" title="after" src="http://br4d.net/wp-content/uploads/2013/02/after.png" alt="" width="530" height="239" srcset="http://br4d.net/wp-content/uploads/2013/02/after.png 530w, http://br4d.net/wp-content/uploads/2013/02/after-300x135.png 300w" sizes="(max-width: 530px) 100vw, 530px" />](http://br4d.net/wp-content/uploads/2013/02/after.png)
+[<img class="alignnone size-full wp-image-300" title="after" src="/images/2013/02/after.png" alt="" width="530" height="239" srcset="/images/2013/02/after.png 530w, /images/2013/02/after-300x135.png 300w" sizes="(max-width: 530px) 100vw, 530px" />](/images/2013/02/after.png)
 
 You can specify which columns to group, as well as how many columns to group. There are many ways to use this function. Just make sure to call it after DataBinding has occurred. A good place to ensure this is the DataBound event handler of the GridView itself which fires upon finish of DataBinding.
 

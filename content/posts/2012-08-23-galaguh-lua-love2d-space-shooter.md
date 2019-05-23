@@ -11,7 +11,7 @@ categories:
   - Programming
 ---
 <div class="pull-left" style="padding: 10px;">
-  <a title="" href="http://br4d.net/wp-content/uploads/2015/01/galaguh.jpg"><img class="alignnone size-medium wp-image-346" title="" src="http://br4d.net/wp-content/uploads/2015/01/galaguh-219x300.jpg" alt="galaguh" width="219" height="300" srcset="http://br4d.net/wp-content/uploads/2015/01/galaguh-219x300.jpg 219w, http://br4d.net/wp-content/uploads/2015/01/galaguh.jpg 490w" sizes="(max-width: 219px) 100vw, 219px" /></a>
+  <a title="" href="/images/2015/01/galaguh.jpg"><img class="alignnone size-medium wp-image-346" title="" src="/images/2015/01/galaguh-219x300.jpg" alt="galaguh" width="219" height="300" srcset="/images/2015/01/galaguh-219x300.jpg 219w, /images/2015/01/galaguh.jpg 490w" sizes="(max-width: 219px) 100vw, 219px" /></a>
 </div>
 
 This game was actually my final project for my Programming Languages class at Marshall University. It is a space-style shooter in the spirit of the classic Galaga. The game was built on top of the LOVE2D game engine and is mostly coded in Lua.
@@ -24,7 +24,7 @@ This program currently only works in LOVE2D 0.7.0. The recent release of LOVE2D 
 
 Downloads:
 
-  * [Galaguh.exe](http://br4d.net/wp-content/uploads/2015/01/galaguh.exe)
-  * [Galaguh.love](http://br4d.net/wp-content/uploads/2015/01/galaguh.love)
-  * [Companion Powerpoint](http://br4d.net/wp-content/uploads/2015/01/galaguh.pptx)
+  * [Galaguh.exe](/images/2015/01/galaguh.exe)
+  * [Galaguh.love](/images/2015/01/galaguh.love)
+  * [Companion Powerpoint](/images/2015/01/galaguh.pptx)
   * [LOVE2D Website](http://love2d.org/)

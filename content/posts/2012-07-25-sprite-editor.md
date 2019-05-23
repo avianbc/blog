@@ -11,7 +11,7 @@ categories:
   - Sprite Editor
 ---
 <div class="pull-right">
-  <a href="http://br4d.net/wp-content/uploads/2015/01/spriteeditor.jpg"><img src="http://br4d.net/wp-content/uploads/2015/01/spriteeditor-300x157.jpg" alt="spriteeditor" width="300" height="157" class="alignnone size-medium wp-image-355" srcset="http://br4d.net/wp-content/uploads/2015/01/spriteeditor-300x157.jpg 300w, http://br4d.net/wp-content/uploads/2015/01/spriteeditor.jpg 646w" sizes="(max-width: 300px) 100vw, 300px" /></a>
+  <a href="/images/2015/01/spriteeditor.jpg"><img src="/images/2015/01/spriteeditor-300x157.jpg" alt="spriteeditor" width="300" height="157" class="alignnone size-medium wp-image-355" srcset="/images/2015/01/spriteeditor-300x157.jpg 300w, /images/2015/01/spriteeditor.jpg 646w" sizes="(max-width: 300px) 100vw, 300px" /></a>
 </div>
 
 [Caustik](http://caustik.com) wrote a neat program that lets [sprites](http://en.wikipedia.org/wiki/Sprite_%28computer_graphics%29) walk around on your desktop and perform all kinds of random interactions with each other. The program is networked as well, so if you throw a sprite off of your screen it actually goes to another user&#8217;s desktop.

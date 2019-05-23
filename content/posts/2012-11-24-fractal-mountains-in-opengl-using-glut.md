@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img src="http://br4d.net/wp-content/uploads/2015/01/fractalmountains-292x300.png" alt="fractalmountains" width="292" height="300" class="alignleft size-medium wp-image-376" srcset="http://br4d.net/wp-content/uploads/2015/01/fractalmountains-292x300.png 292w, http://br4d.net/wp-content/uploads/2015/01/fractalmountains.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](http://br4d.net/wp-content/uploads/2015/01/fractalmountains.png)
+[<img src="/images/2015/01/fractalmountains-292x300.png" alt="fractalmountains" width="292" height="300" class="alignleft size-medium wp-image-376" srcset="/images/2015/01/fractalmountains-292x300.png 292w, /images/2015/01/fractalmountains.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/fractalmountains.png)
 
 This was a project from my Computer Graphics course at Marshall University. The mountains are randomly generated from a normalized pseudo-random number generator and a fractal function. Every time you resize the windows or launch the program, they are drawn differently.
 
@@ -22,8 +22,8 @@ This program relies upon GLUT and uses a bitmap for the grass texture. As such, 
 Dependencies:
 
   * [GLUT Official Site](http://user.xmission.com/~nate/glut.html)
-  * [Download BitmapLoader.h](http://br4d.net/wp-content/uploads/2015/01/BitmapLoader.h)
-  * [Download grass.bmp texture](http://br4d.net/wp-content/uploads/2015/01/grass.bmp)
+  * [Download BitmapLoader.h](/images/2015/01/BitmapLoader.h)
+  * [Download grass.bmp texture](/images/2015/01/grass.bmp)
 
 <div class="codecolorer-container cpp default" style="overflow:auto;white-space:nowrap;height:300px;">
   <div class="cpp codecolorer">

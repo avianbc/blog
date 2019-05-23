@@ -23,4 +23,4 @@ You can choose between stable and unstable builds by selecting the appropriate c
 
 Here is a screen shot of a fresh Ubuntu + Cinnamon install before I went crazy customizing it:
 
-[<img class="alignnone size-medium wp-image-285" title="Ubuntu  Screenshot with Cinnamon" src="http://br4d.net/wp-content/uploads/2012/11/Screenshot-from-2012-11-30-114227-300x93.png" alt="" width="300" height="93" />](http://br4d.net/wp-content/uploads/2012/11/Screenshot-from-2012-11-30-114227.png)
+[<img class="alignnone size-medium wp-image-285" title="Ubuntu  Screenshot with Cinnamon" src="/images/2012/11/Screenshot-from-2012-11-30-114227-300x93.png" alt="" width="300" height="93" />](/images/2012/11/Screenshot-from-2012-11-30-114227.png)

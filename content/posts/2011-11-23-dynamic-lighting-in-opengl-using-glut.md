@@ -12,7 +12,7 @@ categories:
   - Programming
 ---
 <div class="pull-left" style="padding:`0px;">
-  <a href="http://br4d.net/wp-content/uploads/2015/01/dynamiclighting.png"><img src="http://br4d.net/wp-content/uploads/2015/01/dynamiclighting.png" alt="dynamiclighting" width="218" height="183" class="alignnone size-full wp-image-384" /></a>
+  <a href="/images/2015/01/dynamiclighting.png"><img src="/images/2015/01/dynamiclighting.png" alt="dynamiclighting" width="218" height="183" class="alignnone size-full wp-image-384" /></a>
 </div>
 
 This is a simple program to show dynamic lighting. The heavy lifting is done in the shadePolygons() function which determines the luminosity of the surface of the cube according to the angle.  

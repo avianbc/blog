@@ -15,5 +15,5 @@ NGif is a C# .NET library to handle encoding and decoding of animated GIFs. I fo
 
 Links:
 
-  * [Download bugfixed NGif_Bugfixes.rar](http://br4d.net/wp-content/uploads/2015/01/NGif_Bugfixes.rar)
+  * [Download bugfixed NGif_Bugfixes.rar](/images/2015/01/NGif_Bugfixes.rar)
   * [Official NGif Website](http://www.codeproject.com/Articles/11505/NGif-Animated-GIF-Encoder-for-NET)

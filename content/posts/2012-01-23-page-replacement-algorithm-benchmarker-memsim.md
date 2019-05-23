@@ -12,4 +12,4 @@ categories:
 ---
 This Java program simulates three common page replacement algorithms and displays benchmarks such as number of faults (and more). Also provided in the *.rar file is trace files which were captured in Linux and can be loaded into the program via command line to test either LRU, FIFO, or Random algorithms for comparison.
 
-[Download memsim.rar](http://br4d.net/wp-content/uploads/2015/01/memsim.rar)
+[Download memsim.rar](/images/2015/01/memsim.rar)

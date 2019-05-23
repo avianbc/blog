@@ -12,7 +12,7 @@ categories:
   - Programming
 ---
 <div class="pull-left" style="padding:10px;">
-  <a href="http://br4d.net/wp-content/uploads/2015/01/dynamictextures.png"><img src="http://br4d.net/wp-content/uploads/2015/01/dynamictextures-290x300.png" alt="dynamictextures" width="290" height="300" class="alignnone size-medium wp-image-381" srcset="http://br4d.net/wp-content/uploads/2015/01/dynamictextures-290x300.png 290w, http://br4d.net/wp-content/uploads/2015/01/dynamictextures.png 351w" sizes="(max-width: 290px) 100vw, 290px" /></a>
+  <a href="/images/2015/01/dynamictextures.png"><img src="/images/2015/01/dynamictextures-290x300.png" alt="dynamictextures" width="290" height="300" class="alignnone size-medium wp-image-381" srcset="/images/2015/01/dynamictextures-290x300.png 290w, /images/2015/01/dynamictextures.png 351w" sizes="(max-width: 290px) 100vw, 290px" /></a>
 </div>
 
 The textures in this small program were generated procedurally and added to 3 sides of a cube. If you look at the sourcem the createTexture functions actually create the three textures. After created, the textures are then added onto a GL_POLYGON. Finally, simple lighting and rotation is added.

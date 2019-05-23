@@ -48,7 +48,7 @@ While there is some documentation for the *.spr file format, it can be underwhel
 
 If you right click your favorite sprite and open it with notepad, you&#8217;ll notice it is nothing more than plain text. This text tells the sprite engine how and what to display. When a sprite is opened, this text is read by the sprites engine which is then rendered using the sprites engine according to the file&#8217;s contents:
 
-<img class="alignnone size-full wp-image-135" title="chickendotspr" src="http://br4d.net/wp-content/uploads/2012/08/chickendotspr.png" alt="Chicken.spr" width="778" height="475" srcset="http://br4d.net/wp-content/uploads/2012/08/chickendotspr.png 778w, http://br4d.net/wp-content/uploads/2012/08/chickendotspr-300x183.png 300w" sizes="(max-width: 778px) 100vw, 778px" /> 
+<img class="alignnone size-full wp-image-135" title="chickendotspr" src="/images/2012/08/chickendotspr.png" alt="Chicken.spr" width="778" height="475" srcset="/images/2012/08/chickendotspr.png 778w, /images/2012/08/chickendotspr-300x183.png 300w" sizes="(max-width: 778px) 100vw, 778px" /> 
 
 * * *
 
@@ -60,7 +60,7 @@ Even though Sprite Editor manages all of this under-the-hood for you and makes s
 
 Here is the same sprite from above but showing its parts:
 
-<img class="alignnone size-full wp-image-139" title="spriteskeleton" src="http://br4d.net/wp-content/uploads/2012/08/spriteskeleton.png" alt="Sprite FIle Format" width="778" height="482" srcset="http://br4d.net/wp-content/uploads/2012/08/spriteskeleton.png 778w, http://br4d.net/wp-content/uploads/2012/08/spriteskeleton-300x186.png 300w" sizes="(max-width: 778px) 100vw, 778px" /> 
+<img class="alignnone size-full wp-image-139" title="spriteskeleton" src="/images/2012/08/spriteskeleton.png" alt="Sprite FIle Format" width="778" height="482" srcset="/images/2012/08/spriteskeleton.png 778w, /images/2012/08/spriteskeleton-300x186.png 300w" sizes="(max-width: 778px) 100vw, 778px" /> 
 
 * * *
 
@@ -670,11 +670,11 @@ A quick tangent onÂ _co-ordinate systems_:
 
 These should sound familiar from your high school algebra classes since everyone has studied the [Cartesian coordinate system](http://en.wikipedia.org/wiki/Cartesian_coordinate_system)Â that uses the (x,y) ordered pairs format to depict locations on a plane:
 
-<img class="alignnone size-full wp-image-157" title="cartesian" src="http://br4d.net/wp-content/uploads/2012/08/cartesian.png" alt="" width="289" height="212" /> 
+<img class="alignnone size-full wp-image-157" title="cartesian" src="/images/2012/08/cartesian.png" alt="" width="289" height="212" /> 
 
 In the above diagram: up is +Y, down is -Y, right is +X, and left and -X. Windows uses a modified version of this. Basically the Y axis is flipped: up is -Y, down is +Y, right is +X, left is -X. Here is a diagram to further illustrate this:
 
-<img title="coordinates" src="http://br4d.net/wp-content/uploads/2012/08/coordinates.png" alt="" width="208" height="175" /> 
+<img title="coordinates" src="/images/2012/08/coordinates.png" alt="" width="208" height="175" /> 
 
 > All sprites and all windows applications use these coordinates so make sure you are using correct Y values! The origin (0,0)Â is always at the top left cornerÂ of a sprite or window.Â Sprite EditorÂ does handle coordinates for you under-the-hoodÂ if you use it to Crop or Grab Y values.<figure>To grab coordinates using Sprite Editor: Right click on the parameter you wish to set and in the context menu select &#8220;Set Value To&#8221; > Image X/Y Value. Once you do this, click the desired location on the image and Sprite Editor will set the parameter to the correct X/Y value for you.</figure> 
 
@@ -686,7 +686,7 @@ In the above diagram: up is +Y, down is -Y, right is +X, and left and -X. Window
 
 Now to illustrate the concept of how the sprite engineÂ chooses what to display, lets look at a sprite submitted by IceAge: [Bald Bull from Punch Out](http://sprites.caustik.com/topic/405-bald-bull-punchout-arcade-version/)! Here is the source sprite sheet that he used:
 
-<img class="alignnone size-full wp-image-160" title="Bald_Bull_Idle" src="http://br4d.net/wp-content/uploads/2012/08/Bald_Bull_Idle.png" alt="" width="496" height="127" srcset="http://br4d.net/wp-content/uploads/2012/08/Bald_Bull_Idle.png 496w, http://br4d.net/wp-content/uploads/2012/08/Bald_Bull_Idle-300x77.png 300w" sizes="(max-width: 496px) 100vw, 496px" /> 
+<img class="alignnone size-full wp-image-160" title="Bald_Bull_Idle" src="/images/2012/08/Bald_Bull_Idle.png" alt="" width="496" height="127" srcset="/images/2012/08/Bald_Bull_Idle.png 496w, /images/2012/08/Bald_Bull_Idle-300x77.png 300w" sizes="(max-width: 496px) 100vw, 496px" /> 
 
 Now look at this section of Bald Bull.spr:
 
@@ -698,13 +698,13 @@ Now look at this section of Bald Bull.spr:
 
 This tells the sprite engine that the image to crop from (uri)Â is &#8220;Bald\_Bull\_idle.png&#8221;. To crop the image, it provides X, Y, W, and H values. This is the X, Y, Width, and Height of a rectangular area of the sprite sheet to select, crop, and display. The units are in pixels, which just represents one small colored dot on the monitor. If you open the above sprite sheet in Windows Paint and zoom in as far as possible you will see this:
 
-<img class="alignnone size-full wp-image-166" title="baldbullpixels" src="http://br4d.net/wp-content/uploads/2012/08/baldbullpixels.png" alt="" width="343" height="282" srcset="http://br4d.net/wp-content/uploads/2012/08/baldbullpixels.png 343w, http://br4d.net/wp-content/uploads/2012/08/baldbullpixels-300x247.png 300w" sizes="(max-width: 343px) 100vw, 343px" /> 
+<img class="alignnone size-full wp-image-166" title="baldbullpixels" src="/images/2012/08/baldbullpixels.png" alt="" width="343" height="282" srcset="/images/2012/08/baldbullpixels.png 343w, /images/2012/08/baldbullpixels-300x247.png 300w" sizes="(max-width: 343px) 100vw, 343px" /> 
 
 Each one of those squares is 1 pixel. Also notice that when you move your cursor over the image it will tell you the coordinates on the bottom left corner in MS Paint.
 
 So the above code is saying to crop at X,Y values of (0,0) with a width of 62 pixelsÂ and a height of 140 pixels. This is the result (in the red rectangle) of what is cropped and displayed:
 
-<img class="alignnone size-full wp-image-167" title="Bald_Bull_Cropped" src="http://br4d.net/wp-content/uploads/2012/08/Bald_Bull_Cropped.png" alt="" width="496" height="127" srcset="http://br4d.net/wp-content/uploads/2012/08/Bald_Bull_Cropped.png 496w, http://br4d.net/wp-content/uploads/2012/08/Bald_Bull_Cropped-300x77.png 300w" sizes="(max-width: 496px) 100vw, 496px" /> 
+<img class="alignnone size-full wp-image-167" title="Bald_Bull_Cropped" src="/images/2012/08/Bald_Bull_Cropped.png" alt="" width="496" height="127" srcset="/images/2012/08/Bald_Bull_Cropped.png 496w, /images/2012/08/Bald_Bull_Cropped-300x77.png 300w" sizes="(max-width: 496px) 100vw, 496px" /> 
 
 The top left corner of the rectangleÂ isÂ (0,0), theÂ top right corner is (62,0), the bottom left corner is (0,140) and the bottom right corner is (62,140). So when SPRITE\_STATE\_DEFAULT is the current state, this is what is displayed to the user!<figure>To easily set the cropX/Y/W/H params using Sprite Editor: select any valid non-metadata state in the tree and click and drag on the image. The black rectangle that appears is the crop area and Sprite Editor will automatically set the cropX/Y/W/H values for you in the state you selected. This functionality is called Quick Crop.</figure> 
 
@@ -730,7 +730,7 @@ What is new here is the &#8220;**isChain&#8221;: &#8220;1&#8221;** and the numbe
 
 The 1st frame that is displayed is specified in SPRITE\_STATE\_STAND\_RIGHT\_0, the 2nd is SPRITE\_STATE\_STAND\_RIGHT\_1, the 3rd is SPRITE\_STATE\_STAND\_RIGHT\_2, and so on. So the above code provides an animation of 5 frames when bald bull is facing his right side, all displaying different rectangular areas of the source sprite sheet.
 
-<img title="baldbullchain" src="http://br4d.net/wp-content/uploads/2012/08/baldbullchain.png" alt="" width="496" height="127" /> 
+<img title="baldbullchain" src="/images/2012/08/baldbullchain.png" alt="" width="496" height="127" /> 
 
 > Note that chains start with STATE\_NAME\_0 instead of STATE\_NAME\_1!<figure>Sprite Editor assists in chain creation. If you right click any valid non-metadata state in the tree and select Add State > Increment State Chain, Sprite Editor will automatically set isChain: 1 in the state root as well as provide the next incremented state for you to edit or add parameters to.</figure> 
 
@@ -762,7 +762,7 @@ So the example from above that introduced chains effectively functions the exact
 
 Here is a diagram showing the heirarchy. Note that SPRITE\_STATE\_* means any state:
 
-<img class="alignnone size-full wp-image-220" title="inheritance" src="http://br4d.net/wp-content/uploads/2012/08/inheritance.png" alt="" width="888" height="96" srcset="http://br4d.net/wp-content/uploads/2012/08/inheritance.png 888w, http://br4d.net/wp-content/uploads/2012/08/inheritance-300x32.png 300w" sizes="(max-width: 888px) 100vw, 888px" /> 
+<img class="alignnone size-full wp-image-220" title="inheritance" src="/images/2012/08/inheritance.png" alt="" width="888" height="96" srcset="/images/2012/08/inheritance.png 888w, /images/2012/08/inheritance-300x32.png 300w" sizes="(max-width: 888px) 100vw, 888px" /> 
 
 * * *
 
@@ -1001,7 +1001,7 @@ For 1, look at Taz.spr by IceAge as an example. He included &#8220;death&#8221; 
   </div>
 </div>
 
-Here is what it looks like when he dies (without the loop, of course):<img src="http://br4d.net/wp-content/uploads/2012/08/Taz_Death.gif" alt="" title="Taz_Death" width="63" height="71" class="alignnone size-full wp-image-231" /> 
+Here is what it looks like when he dies (without the loop, of course):<img src="/images/2012/08/Taz_Death.gif" alt="" title="Taz_Death" width="63" height="71" class="alignnone size-full wp-image-231" /> 
 
 For 2, look at Jason.spr by caustik as an example. In the metadata, he included a &#8220;death&#8221; action and a &#8220;spawn&#8221; attribute:
 

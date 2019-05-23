@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img src="http://br4d.net/wp-content/uploads/2015/01/3dwireframesolids-292x300.png" alt="3dwireframesolids" width="292" height="300" class="alignleft size-medium wp-image-391" srcset="http://br4d.net/wp-content/uploads/2015/01/3dwireframesolids-292x300.png 292w, http://br4d.net/wp-content/uploads/2015/01/3dwireframesolids.png 489w" sizes="(max-width: 292px) 100vw, 292px" />](http://br4d.net/wp-content/uploads/2015/01/3dwireframesolids.png)
+[<img src="/images/2015/01/3dwireframesolids-292x300.png" alt="3dwireframesolids" width="292" height="300" class="alignleft size-medium wp-image-391" srcset="/images/2015/01/3dwireframesolids-292x300.png 292w, /images/2015/01/3dwireframesolids.png 489w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/3dwireframesolids.png)
 
 This is esentially the same thing as the code from 3D wireframe except now it has textures. Instead of GL\_LINE\_LOOP as in the last example, the solid was rendered using GL_POLYGON and colored accordingly.
 
