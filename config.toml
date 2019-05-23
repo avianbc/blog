@@ -1,5 +1,5 @@
-baseurl = "http://www.example.com"
-title = "bradleycarey"
+baseurl = "http://www.bradleycarey.com"
+title = "bradleycarey.com"
 
 theme = "hugo-coder"
 
@@ -31,16 +31,11 @@ disqusShortname = "bradleycarey"
     # Git Commit in Footer, uncomment the line below to enable it.
     #commit = "https://github.com/avianbc/blog/tree"
 
-    rtl = false
-
-    # Use inverted colors
-    inverted = false
-
     # Series see also post count
     maxSeeAlsoItems = 5
 
     # Custom CSS
-    custom_css = []
+    custom_css = ["css/codecolorer.css","css/custom.css"]
 
 [taxonomies]
   category = "categories"
@@ -53,16 +48,25 @@ disqusShortname = "bradleycarey"
     weight = 1
     url = "https://github.com/avianbc/"
 [[params.social]]
-    name = "LinkedIn"
-    icon = "fab fa-linkedin"
-    weight = 4
-    url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
+    name = "Stack Overflow"
+    icon = "fab fa-stack-overflow"
+    weight = 2
+    url = "https://stackoverflow.com/users/636942/br4d"
 [[params.social]]
     name = "LinkedIn"
-    icon = "fab fa-stack-overflow"
+    icon = "fab fa-linkedin"
+    weight = 3
+    url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
+[[params.social]]
+    name = "last.fm"
+    icon = "fab fa-lastfm"
     weight = 4
-    url = "https://stackoverflow.com/users/636942/br4d"
-
+    url = "https://www.last.fm/user/avianbc"
+[[params.social]]
+    name = "Soundcloud"
+    icon = "fab fa-soundcloud"
+    weight = 5
+    url = "https://soundcloud.com/avianbc"
 
 [languages]
     [languages.en]
