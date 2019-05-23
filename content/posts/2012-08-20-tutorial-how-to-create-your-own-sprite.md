@@ -46,7 +46,7 @@ While there is some documentation for the *.spr file format, it can be underwhel
 
 <strong id="what">What is a sprite?</strong>
 
-If you right click your favorite sprite and open it with notepad, you&#8217;ll notice it is nothing more than plain text. This text tells the sprite engine how and what to display. When a sprite is opened, this text is read by the sprites engine which is then rendered using the sprites engine according to the file&#8217;s contents:
+If you right click your favorite sprite and open it with notepad, you’ll notice it is nothing more than plain text. This text tells the sprite engine how and what to display. When a sprite is opened, this text is read by the sprites engine which is then rendered using the sprites engine according to the file’s contents:
 
 <img class="alignnone size-full wp-image-135" title="chickendotspr" src="/images/2012/08/chickendotspr.png" alt="Chicken.spr" width="778" height="475" srcset="/images/2012/08/chickendotspr.png 778w, /images/2012/08/chickendotspr-300x183.png 300w" sizes="(max-width: 778px) 100vw, 778px" /> 
 
@@ -222,11 +222,11 @@ There are many more states which are all triggered by various actions performed 
   </tr>
 </table>
 
-All of these states are displayed depending on user input, with a few exceptions. SPRITE\_META\_DATA is special because it holds a basic description of the sprite. It tells who authored the sprite, the actions it is capable of, the flags which modify its behavior, version number, and a spawn parameter which means the sprite can actually spawn other sprites (more on this later).<figure>To add a state in Sprite Editor: Make sure you have created a new file from File > New then right click the name of the file in the tree. Select &#8220;Add state&#8221; from the context menu and it will list the possible states for you.</figure> 
+All of these states are displayed depending on user input, with a few exceptions. SPRITE\_META\_DATA is special because it holds a basic description of the sprite. It tells who authored the sprite, the actions it is capable of, the flags which modify its behavior, version number, and a spawn parameter which means the sprite can actually spawn other sprites (more on this later).<figure>To add a state in Sprite Editor: Make sure you have created a new file from File > New then right click the name of the file in the tree. Select “Add state” from the context menu and it will list the possible states for you.</figure> 
 
-&nbsp;
+ 
 
-You&#8217;ll notice in the above table that FLY left and right states have the fly parameter as their trigger. To use these states you must specify that the sprite is a FLYER by using a parameter in SPRITE\_META\_DATA. More on parameters next.
+You’ll notice in the above table that FLY left and right states have the fly parameter as their trigger. To use these states you must specify that the sprite is a FLYER by using a parameter in SPRITE\_META\_DATA. More on parameters next.
 
 * * *
 
@@ -236,11 +236,11 @@ A parameter is basically specifies which part of the sprite you are setting and 
 
 For example, the walkMultiplier parameter specifies the speed of which the sprite walks. If it is not specified, it walks at the default speed. If you set it to 2, the sprite will walk twice as fast when the user presses the arrow key. In this example, walkMultiplier is the **parameter** and 2 is the **value** of that parameter.<figure>To add a parameter using Sprite Editor: Right click any state on the tree and select Add Parameter. It will list all possible parameters for you to select from.</figure> 
 
-&nbsp;
+ 
 
 Within each state, you will find nothing more than a nest of parameters and their associated values. There are two types of parameters: **attributes** and **properties**.
 
-> SPRITE\_META\_DATA is unique since it only contains unique &#8220;attribute&#8221; parameters that describe the file such as telling who the author is, the actions the sprite performs, the version number of the sprite, etc. All other &#8220;property&#8221; parameters are universal and can be used in any valid non-metadata state.
+> SPRITE\_META\_DATA is unique since it only contains unique “attribute” parameters that describe the file such as telling who the author is, the actions the sprite performs, the version number of the sprite, etc. All other “property” parameters are universal and can be used in any valid non-metadata state.
 
 Property parameters must have an attached value and must be found within a valid state from the [table above](#statetable). Here is a complete list of possible params:
 
@@ -331,7 +331,7 @@ Property parameters must have an attached value and must be found within a valid
     </td>
     
     <td>
-      Specifies the sprite creator&#8217;s details. Valid parameters are author, description, and url.
+      Specifies the sprite creator’s details. Valid parameters are author, description, and url.
     </td>
   </tr>
   
@@ -367,7 +367,7 @@ Property parameters must have an attached value and must be found within a valid
     </td>
     
     <td>
-      Specifies specific clipping areas. See <a href=&#8221;#fixtures&#8221;>Fixtures</a> at bottom of page.
+      Specifies specific clipping areas. See <a href=”#fixtures”>Fixtures</a> at bottom of page.
     </td>
   </tr>
   
@@ -475,7 +475,7 @@ Property parameters must have an attached value and must be found within a valid
     </td>
     
     <td>
-      Sets the X value of the crop area. See: <a href=&#8221;#cropping&#8221;>Cropping</a>
+      Sets the X value of the crop area. See: <a href=”#cropping”>Cropping</a>
     </td>
   </tr>
   
@@ -547,7 +547,7 @@ Property parameters must have an attached value and must be found within a valid
     </td>
     
     <td>
-      After you select an area of the spritesheet to display, it centers automatically. If one STATE has a larger or smaller size than another it may cause the sprite not to line up correctly. This param is used to offset a frame&#8217;s X value so that each state lines up better.
+      After you select an area of the spritesheet to display, it centers automatically. If one STATE has a larger or smaller size than another it may cause the sprite not to line up correctly. This param is used to offset a frame’s X value so that each state lines up better.
     </td>
   </tr>
   
@@ -676,9 +676,9 @@ In the above diagram: up is +Y, down is -Y, right is +X, and left and -X. Window
 
 <img title="coordinates" src="/images/2012/08/coordinates.png" alt="" width="208" height="175" /> 
 
-> All sprites and all windows applications use these coordinates so make sure you are using correct Y values! The origin (0,0)Â is always at the top left cornerÂ of a sprite or window.Â Sprite EditorÂ does handle coordinates for you under-the-hoodÂ if you use it to Crop or Grab Y values.<figure>To grab coordinates using Sprite Editor: Right click on the parameter you wish to set and in the context menu select &#8220;Set Value To&#8221; > Image X/Y Value. Once you do this, click the desired location on the image and Sprite Editor will set the parameter to the correct X/Y value for you.</figure> 
+> All sprites and all windows applications use these coordinates so make sure you are using correct Y values! The origin (0,0)Â is always at the top left cornerÂ of a sprite or window.Â Sprite EditorÂ does handle coordinates for you under-the-hoodÂ if you use it to Crop or Grab Y values.<figure>To grab coordinates using Sprite Editor: Right click on the parameter you wish to set and in the context menu select “Set Value To” > Image X/Y Value. Once you do this, click the desired location on the image and Sprite Editor will set the parameter to the correct X/Y value for you.</figure> 
 
-&nbsp;
+ 
 
 * * *
 
@@ -696,7 +696,7 @@ Now look at this section of Bald Bull.spr:
   </div>
 </div>
 
-This tells the sprite engine that the image to crop from (uri)Â is &#8220;Bald\_Bull\_idle.png&#8221;. To crop the image, it provides X, Y, W, and H values. This is the X, Y, Width, and Height of a rectangular area of the sprite sheet to select, crop, and display. The units are in pixels, which just represents one small colored dot on the monitor. If you open the above sprite sheet in Windows Paint and zoom in as far as possible you will see this:
+This tells the sprite engine that the image to crop from (uri)Â is “Bald\_Bull\_idle.png”. To crop the image, it provides X, Y, W, and H values. This is the X, Y, Width, and Height of a rectangular area of the sprite sheet to select, crop, and display. The units are in pixels, which just represents one small colored dot on the monitor. If you open the above sprite sheet in Windows Paint and zoom in as far as possible you will see this:
 
 <img class="alignnone size-full wp-image-166" title="baldbullpixels" src="/images/2012/08/baldbullpixels.png" alt="" width="343" height="282" srcset="/images/2012/08/baldbullpixels.png 343w, /images/2012/08/baldbullpixels-300x247.png 300w" sizes="(max-width: 343px) 100vw, 343px" /> 
 
@@ -708,7 +708,7 @@ So the above code is saying to crop at X,Y values of (0,0) with a width of 62 pi
 
 The top left corner of the rectangleÂ isÂ (0,0), theÂ top right corner is (62,0), the bottom left corner is (0,140) and the bottom right corner is (62,140). So when SPRITE\_STATE\_DEFAULT is the current state, this is what is displayed to the user!<figure>To easily set the cropX/Y/W/H params using Sprite Editor: select any valid non-metadata state in the tree and click and drag on the image. The black rectangle that appears is the crop area and Sprite Editor will automatically set the cropX/Y/W/H values for you in the state you selected. This functionality is called Quick Crop.</figure> 
 
-&nbsp;
+ 
 
 * * *
 
@@ -726,7 +726,7 @@ So now you know how to display an image for any given state, from SPRITE\_STATE\
 
 As you seen in the previous section, this is telling the sprite engine that when bald bull is in his SPRITE\_STATE\_STAND_RIGHT state to crop the rectangular area x=0, y=0, width=62, and height=142. This is the same area that was highlighted in the picture from the previous section, shown by the red rectangle!
 
-What is new here is the &#8220;**isChain&#8221;: &#8220;1&#8221;** and the numbered states. You have to tell the sprites engine that you need to display multiple frames for a state by setting isChain: 1, then you enumerate the states. By enumerating the states, I mean:
+What is new here is the “**isChain”: “1”** and the numbered states. You have to tell the sprites engine that you need to display multiple frames for a state by setting isChain: 1, then you enumerate the states. By enumerating the states, I mean:
 
 The 1st frame that is displayed is specified in SPRITE\_STATE\_STAND\_RIGHT\_0, the 2nd is SPRITE\_STATE\_STAND\_RIGHT\_1, the 3rd is SPRITE\_STATE\_STAND\_RIGHT\_2, and so on. So the above code provides an animation of 5 frames when bald bull is facing his right side, all displaying different rectangular areas of the source sprite sheet.
 
@@ -736,9 +736,9 @@ The 1st frame that is displayed is specified in SPRITE\_STATE\_STAND\_RIGHT\_0, 
 
 <strong id="gifs">Animated GIFs</strong>
 
-&nbsp;
+ 
 
-Cropping can be a time consuming process, even if you use the sprite editor&#8217;s quick crop or X/Y grabbing capabilities. If you want to save time, just use **animated gifs**! Each frame of an animated gif will automatically be rendered as if it were a chain. All you have to do is provide the URI (filename) of each gif file for each state and there is no need to worry about X and Y values.
+Cropping can be a time consuming process, even if you use the sprite editor’s quick crop or X/Y grabbing capabilities. If you want to save time, just use **animated gifs**! Each frame of an animated gif will automatically be rendered as if it were a chain. All you have to do is provide the URI (filename) of each gif file for each state and there is no need to worry about X and Y values.
 
 * * *
 
@@ -748,7 +748,7 @@ Inheritance can be overwhelming at first but at its core it is a very simple con
 
 If you specify a parameter in any SPRITE\_STATE\_* such as SPRITE\_STATE\_STAND\_RIGHT, then each of the followingÂ chains (SPRITE\_STATE\_STAND\_RIGHT\_0, SPRITE\_STATE\_STAND\_RIGHT\_1, etc.) will also have the same parameter set to the same exact value unless you specify otherwise. In this example, SPRITE\_STATE\_STAND\_RIGHT is the **parent** state and SPRITE\_STATE\_STAND\_RIGHT\_0 is the **child** state.
 
-The only thing that changed was the X value in each frame since the Y was always 0, width was always 62, and the height was always 140. So the sprite engine knew that SPRITE\_STATE\_STAND\_RIGHT\_0 would have the values of &#8220;cropY&#8221;:&#8221;0&#8243;, &#8220;cropW&#8221;:&#8221;62&#8243;, &#8220;cropH&#8221;:&#8221;140&#8243;.
+The only thing that changed was the X value in each frame since the Y was always 0, width was always 62, and the height was always 140. So the sprite engine knew that SPRITE\_STATE\_STAND\_RIGHT\_0 would have the values of “cropY”:”0″, “cropW”:”62″, “cropH”:”140″.
 
 So the example from above that introduced chains effectively functions the exact same as this, thanks to inheritance:
 
@@ -768,7 +768,7 @@ Here is a diagram showing the heirarchy. Note that SPRITE\_STATE\_* means any st
 
 <strong id="metadata">SPRITE_META_DATA</strong>
 
-As mentioned in the states section, metadata is unique in that it describes the file itself. It is the first thing looked at by the sprite engine. As such, it has special &#8220;metadata&#8221; parameters and values that are attached to it: actions, flags, credits, version, spawn, fixtures.
+As mentioned in the states section, metadata is unique in that it describes the file itself. It is the first thing looked at by the sprite engine. As such, it has special “metadata” parameters and values that are attached to it: actions, flags, credits, version, spawn, fixtures.
 
 <strong id="actions">actions</strong> specify to the sprite engine what the sprite is capable of doing. For each item listed in this list of actions, there will be a corresponding state. Here is a table summarizing each action and what STATE the action indicates to the sprite engine:
 
@@ -842,9 +842,9 @@ As mentioned in the states section, metadata is unique in that it describes the 
       SPRITE_STATE_DESTROY and SPRITE_STATE_DESTROY_RIGHT
     </td>
   </tr>
-</table><figure>Sprite Editor helps editing Metadata actions. Right click SPRITE\_META\_DATA in the tree and Add Paramater &#8220;actions&#8221; if it is not already present. When you right click actions, the Add New Action submenu will contain a comprehensive list of all actions for you to add.</figure> 
+</table><figure>Sprite Editor helps editing Metadata actions. Right click SPRITE\_META\_DATA in the tree and Add Paramater “actions” if it is not already present. When you right click actions, the Add New Action submenu will contain a comprehensive list of all actions for you to add.</figure> 
 
-&nbsp;
+ 
 
 <strong id="flags">flags</strong> turn on special behaviors for the sprite. Here is a list of all supported flags:
 
@@ -932,7 +932,7 @@ As mentioned in the states section, metadata is unique in that it describes the 
 
 <strong id="credits">credits</strong>provides the sprite engine with details fo the personwho created that sprite. If you right click a sprite, you can see these. Note that a sprite can have many sets of credits, each with an author, description, and url. Here is a list of parameters:
 
-&nbsp;
+ 
 
 <table id="creditstable" width="100%" border="1">
   <tr>
@@ -971,14 +971,14 @@ As mentioned in the states section, metadata is unique in that it describes the 
     </td>
     
     <td>
-      URL of author&#8217;s website which launches when right click menu is selected.
+      URL of author’s website which launches when right click menu is selected.
     </td>
   </tr>
-</table><figure>SPRITE\_META\_DATA, SPRITE\_STATE\_DEFAULT, credits, and version are automatically added to new files in Sprite Editor. To add more than one set of credits, right click the [1] in the tree under credits and select &#8220;Add New Group&#8221;.</figure> 
+</table><figure>SPRITE\_META\_DATA, SPRITE\_STATE\_DEFAULT, credits, and version are automatically added to new files in Sprite Editor. To add more than one set of credits, right click the [1] in the tree under credits and select “Add New Group”.</figure> 
 
-<strong id="version">version</strong>stores an integer value indicating if how new the sprite is. If a submitted sprite has an error, it can be revised with a higher verison number and the sprites engine will make sure everyone&#8217;s local copy will get properly updated.
+<strong id="version">version</strong>stores an integer value indicating if how new the sprite is. If a submitted sprite has an error, it can be revised with a higher verison number and the sprites engine will make sure everyone’s local copy will get properly updated.
 
-&nbsp;
+ 
 
 <strong id="spawn">spawn</strong> is used to spawn other sprites upon death. This is useful for creation of death animations, which conventially are stored in a seperate file. See [Sprite Death Animations](#death).
 
@@ -993,35 +993,35 @@ As of now there are two methods for creating sprite death animations:
   1. You can use SPRITE\_STATE\_DESTROY_\* state and the destroy attribute to create the animation within the existing \*.spr file.
   2. You can use a seperate *.spi file and the spawn attribute to encapsulate the death animation in a seperate file.
 
-For 1, look at Taz.spr by IceAge as an example. He included &#8220;death&#8221; as an action in metadata and then provided the correspondign DESTROY states and uses an animated gif for them:
+For 1, look at Taz.spr by IceAge as an example. He included “death” as an action in metadata and then provided the correspondign DESTROY states and uses an animated gif for them:
 
 <div class="codecolorer-container text default" style="overflow:auto;white-space:nowrap;">
   <div class="text codecolorer">
-    "SPRITE_STATE_DESTROY_LEFT" :<br /> {<br /> &nbsp; "uri": "Taz_Death.gif"<br /> },<br /> "SPRITE_STATE_DESTROY_RIGHT" :<br /> {<br /> &nbsp; "uri": "Taz_Death.gif"<br /> }
+    "SPRITE_STATE_DESTROY_LEFT" :<br /> {<br />   "uri": "Taz_Death.gif"<br /> },<br /> "SPRITE_STATE_DESTROY_RIGHT" :<br /> {<br />   "uri": "Taz_Death.gif"<br /> }
   </div>
 </div>
 
 Here is what it looks like when he dies (without the loop, of course):<img src="/images/2012/08/Taz_Death.gif" alt="" title="Taz_Death" width="63" height="71" class="alignnone size-full wp-image-231" /> 
 
-For 2, look at Jason.spr by caustik as an example. In the metadata, he included a &#8220;death&#8221; action and a &#8220;spawn&#8221; attribute:
+For 2, look at Jason.spr by caustik as an example. In the metadata, he included a “death” action and a “spawn” attribute:
 
 <div class="codecolorer-container text default" style="overflow:auto;white-space:nowrap;">
   <div class="text codecolorer">
-    "spawn" :<br /> [<br /> {<br /> &nbsp; "uri": "Jason (Death).spi",<br /> &nbsp; "spawnX": "0",<br /> &nbsp; "spawnY": "0"<br /> }<br /> ]
+    "spawn" :<br /> [<br /> {<br />   "uri": "Jason (Death).spi",<br />   "spawnX": "0",<br />   "spawnY": "0"<br /> }<br /> ]
   </div>
 </div>
 
-When the sprite is destroyed, it spawns an external file &#8220;Jason (Death).spi&#8221; which then handles the death animation. here is that file:
+When the sprite is destroyed, it spawns an external file “Jason (Death).spi” which then handles the death animation. here is that file:
 
 <div class="codecolorer-container text default">
   <div class="text codecolorer">
-    {<br /> "SPRITE_META_DATA" :<br /> {<br /> &nbsp; "credits" :<br /> [<br /> &nbsp; {<br /> &nbsp; &nbsp; "author": "Caustik",<br /> &nbsp; &nbsp; "description": "Scripted by Caustik (caustik.com)",<br /> &nbsp; &nbsp; "url": "http://www.caustik.com/"<br /> &nbsp; }<br /> ]<br /> },<br /> &nbsp; "SPRITE_STATE_DEFAULT" :<br /> {<br /> &nbsp; "uri": "jasonsophia.png",<br /> &nbsp; "sizeMultiplier": "2",<br /> &nbsp; "frameDelay": "200",<br /> &nbsp; "cropX": "325", "cropY" : "129", "cropW" : "16", "cropH" : "16",<br /> &nbsp; "transparent": "0088FF",<br /> &nbsp; "autoClose": "1",<br /> &nbsp; "isChain": "1"<br /> },<br /> &nbsp; "SPRITE_STATE_DEFAULT_0" : { "cropX": "205" },<br /> &nbsp; "SPRITE_STATE_DEFAULT_1" : { "cropX": "285", "cropY": "128" },<br /> &nbsp; "SPRITE_STATE_DEFAULT_2" : { "cropX": "325", "cropY": "124" }<br /> }
+    {<br /> "SPRITE_META_DATA" :<br /> {<br />   "credits" :<br /> [<br />   {<br />     "author": "Caustik",<br />     "description": "Scripted by Caustik (caustik.com)",<br />     "url": "http://www.caustik.com/"<br />   }<br /> ]<br /> },<br />   "SPRITE_STATE_DEFAULT" :<br /> {<br />   "uri": "jasonsophia.png",<br />   "sizeMultiplier": "2",<br />   "frameDelay": "200",<br />   "cropX": "325", "cropY" : "129", "cropW" : "16", "cropH" : "16",<br />   "transparent": "0088FF",<br />   "autoClose": "1",<br />   "isChain": "1"<br /> },<br />   "SPRITE_STATE_DEFAULT_0" : { "cropX": "205" },<br />   "SPRITE_STATE_DEFAULT_1" : { "cropX": "285", "cropY": "128" },<br />   "SPRITE_STATE_DEFAULT_2" : { "cropX": "325", "cropY": "124" }<br /> }
   </div>
 </div>
 
-> *.spi files are traditioanlly used to encapsulate death animations, but this is not necessary since you can just use DESTROY states instead. Also notice caustik uses &#8220;autoClose: 1&#8221; to make sure the sprite closes after the death animation is complete instead of looping indefinitely.<figure>External files such as image URIs and *.spi death animations will show up in Sprite Editor after loaded under the Menu item &#8220;View&#8221; > &#8220;Dependencies&#8221;. You can click any of them to open them up in the editor.</figure> 
+> *.spi files are traditioanlly used to encapsulate death animations, but this is not necessary since you can just use DESTROY states instead. Also notice caustik uses “autoClose: 1” to make sure the sprite closes after the death animation is complete instead of looping indefinitely.<figure>External files such as image URIs and *.spi death animations will show up in Sprite Editor after loaded under the Menu item “View” > “Dependencies”. You can click any of them to open them up in the editor.</figure> 
 
-&nbsp;
+ 
 
 * * *
 
@@ -1035,11 +1035,11 @@ This is useful if you have a STATE\_*\_RIGHT and need to create an appropriate L
 
 <strong id="transparency">Transparency</strong>
 
-Also, if a sprite sheet does not have a **transparent** or colorless background then it will be shown when you load your sprite up making it look ugly. This is what the &#8220;transparent&#8221; parameter is for. if you look at Bald Bull&#8217;s spr file text contents once again, you&#8217;ll notice thatÂ itÂ has &#8220;transparent&#8221;:&#8221;<span style="color: #baefca;">bafeca</span>&#8221; in his SPRITE\_STATE\_DEFAULT section. The BAFECA is just a [HTML hex color code](http://www.w3schools.com/html/html_colors.asp).
+Also, if a sprite sheet does not have a **transparent** or colorless background then it will be shown when you load your sprite up making it look ugly. This is what the “transparent” parameter is for. if you look at Bald Bull’s spr file text contents once again, you’ll notice thatÂ itÂ has “transparent”:”<span style="color: #baefca;">bafeca</span>” in his SPRITE\_STATE\_DEFAULT section. The BAFECA is just a [HTML hex color code](http://www.w3schools.com/html/html_colors.asp).
 
-> The way you count in HEX is 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F. Hex is base-16 while our number system is only base-10, so the letters (A to F) indicate the extra digits (10 to 16). The color code&#8217;s first two digits are RED, second two are GREEN, last two and BLUE. 0 is darkest and F is the lightest. So FFFFFF would be white. 000000 is black. <span style="color: #ff0000;">FF0000</span> is pure red. <span style="color: #00ff00;">00FF00</span> is pure green. <span style="color: #0000ff;">0000FF</span> is pure blue.
+> The way you count in HEX is 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F. Hex is base-16 while our number system is only base-10, so the letters (A to F) indicate the extra digits (10 to 16). The color code’s first two digits are RED, second two are GREEN, last two and BLUE. 0 is darkest and F is the lightest. So FFFFFF would be white. 000000 is black. <span style="color: #ff0000;">FF0000</span> is pure red. <span style="color: #00ff00;">00FF00</span> is pure green. <span style="color: #0000ff;">0000FF</span> is pure blue.
 
-You do not have to fret over learning HTML hex color codes. Sprite Editor makes it easy!<figure>Right Click SPRITE\_STATE\_DEFAULT in the tree and Add Parameter > transparent. After it is added, right click &#8220;transparent&#8221; and Set Value To > Image Color Code. Click somewhere in the image that has the background color you wish to make transparent and Sprite Editor grabs the HEX value for you and automatically sets it to the newly added transparent param.</figure> 
+You do not have to fret over learning HTML hex color codes. Sprite Editor makes it easy!<figure>Right Click SPRITE\_STATE\_DEFAULT in the tree and Add Parameter > transparent. After it is added, right click “transparent” and Set Value To > Image Color Code. Click somewhere in the image that has the background color you wish to make transparent and Sprite Editor grabs the HEX value for you and automatically sets it to the newly added transparent param.</figure> 
 
 * * *
 
@@ -1084,4 +1084,4 @@ Sprite Editor has validation built in to help you make sure the structure of you
       * Checks if isChain:1 is set and there is no subsequent incremented state.
       * Chain numbers must be sequential.<figure>Sprite Validator can bea useful tool in debugging your sprite. Give it a try before submitting it! Note that all params and states are case sensitive.</figure> 
 
-&nbsp;
+ 

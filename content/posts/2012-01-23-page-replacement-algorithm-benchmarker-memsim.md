@@ -1,6 +1,6 @@
 ---
 id: 364
-title: 'Page Replacement Algorithm Benchmarker &#8211; Memsim'
+title: 'Page Replacement Algorithm Benchmarker – Memsim'
 date: 2012-01-23T23:11:15-04:00
 author: brad
 layout: post

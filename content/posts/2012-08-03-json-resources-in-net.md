@@ -35,7 +35,7 @@ If you have static JSON data, you can build a class using the JSON structure as 
 If the JSON structure is unknown, then you have fallen into the fuzzy realm of polymorphic JSONs. This used to be extremely tricky, but thankfully the new features in .NET have made it a lot less painful. Specifically the usage of generics, dynamics, and implicitly typed variables (var). If the JSON is not nested repeatedly, you can use:
 
 > <pre>var jss = new JavaScriptSerializer();
-var dict = jss.Deserialize&lt;Dictionary&lt;dynamic,string&gt;&gt;(jsonString);</pre>
+var dict = jss.Deserialize<Dictionary<dynamic,string>>(jsonString);</pre>
 
 The problem in this method arises when you have a 2-3+ level nested structure in the JSON file. It will result in dictionaries of dictionaries of dictionaries and will be tricky to work with. Thankfully, there are many robust 3rd party libraries which will make it even easier!
 
@@ -50,29 +50,29 @@ while (token != null) {
 
   * **Case 3: Partial Deserialization**
 
-If you only need to deserialize parts of a JSON string, there isn&#8217;t many options. You may do some string manipulation to trim unnecessary sections, then deserialization using this method is inefficient on larger JSON files. Json.NET provides [methods](http://james.newtonking.com/projects/json/help/html/SerializingJSONFragments.htm) for performing this on JSON fragments.
+If you only need to deserialize parts of a JSON string, there isn’t many options. You may do some string manipulation to trim unnecessary sections, then deserialization using this method is inefficient on larger JSON files. Json.NET provides [methods](http://james.newtonking.com/projects/json/help/html/SerializingJSONFragments.htm) for performing this on JSON fragments.
 
 * * *
 
   * **Leftovers******
 
 <p style="padding-left: 30px;">
-  <strong>&#8211; Serialization</strong>
+  <strong>– Serialization</strong>
 </p>
 
 [DataContractJsonSerializer](http://msdn.microsoft.com/en-us/library/system.runtime.serialization.json.datacontractjsonserializer.aspx) and [Json.NET](http://james.newtonking.com/projects/json/help/html/ReducingSerializedJSONSize.htm) support [attributes](http://msdn.microsoft.com/en-us/library/z0w1kczw%28v=vs.100%29.aspx) in order to control which members of a class are serialized. Json.NET has a [guide](http://james.newtonking.com/projects/json/help/html/SerializationGuide.htm) that introduces its many methods and settings when it comes to serialization. It has almost any feature you could possibly think of.
 
-<strong style="padding-left: 30px;">&#8211; Schema</strong>
+<strong style="padding-left: 30px;">– Schema</strong>
 
 Need to perform some kind of validation on a JSON? Well, there is a [draft](http://json-schema.org/) for a standard JSON schema, similar to those used in XML which can in turn be used to perform validation. Newer versions of Json.NET support this feature.
 
 <p style="padding-left: 30px;">
-  <strong>&#8211; Other Tools</strong>
+  <strong>– Other Tools</strong>
 </p>
 
 If you look hard enough on the web, there are many tools available when it comes to working with JSON files. Here are a few of them:
 
-  1. [JSONLint](http://jsonlint.com/) &#8211; Powerful and popular online JSON validator.
-  2. [JSON Viewer](http://jsonviewer.stack.hu/) &#8211; Provides an online implementation of a JSON formatter/tidying which can be useful for readability when working with large JSON files.
-  3. [JSON Editor](http://braincast.nl/samples/jsoneditor/) &#8211; This website offers the ability to convert JSON to XML and vice versa.
-  4. [JSON Schema Generator](http://www.jsonschema.net/) &#8211; generates a schema for you to use in validation.
+  1. [JSONLint](http://jsonlint.com/) – Powerful and popular online JSON validator.
+  2. [JSON Viewer](http://jsonviewer.stack.hu/) – Provides an online implementation of a JSON formatter/tidying which can be useful for readability when working with large JSON files.
+  3. [JSON Editor](http://braincast.nl/samples/jsoneditor/) – This website offers the ability to convert JSON to XML and vice versa.
+  4. [JSON Schema Generator](http://www.jsonschema.net/) – generates a schema for you to use in validation.

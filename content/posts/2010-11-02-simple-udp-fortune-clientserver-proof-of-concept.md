@@ -10,7 +10,7 @@ categories:
   - Java
   - Programming
 ---
-This program is a simple client/server UDP/Datagram network program. The client sends a random number which is then used to display a random fortune on the client&#8217;s screen.
+This program is a simple client/server UDP/Datagram network program. The client sends a random number which is then used to display a random fortune on the client’s screen.
 
 <!--more-->
 

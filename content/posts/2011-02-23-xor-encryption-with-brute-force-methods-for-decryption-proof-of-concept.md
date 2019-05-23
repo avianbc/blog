@@ -15,9 +15,9 @@ This project evolved from my time in the Cyber Security class at Marshall Univer
   1. Select a text file as the active file for encryption/decryption.
   2. Enter your choice of operation.
   3. If the file has been previously encrypted, you can decrypt it as long as you know the key.
-  4. If you don&#8217;t know the key to an encrypted file, select the brute force method to have the program try all possible combinations to detemine which key was originally used to decrypt the file.
+  4. If you don’t know the key to an encrypted file, select the brute force method to have the program try all possible combinations to detemine which key was originally used to decrypt the file.
 
-This program uses a wordlist of more than 58,000 words from the English language when brute forcing, which is parsed into a java TreeSet for maximum speed. As such, a text file containing words to match it to is required. I&#8217;ve used the one found at this link: [Corncob Wordlist](http://www.mieliestronk.com/wordlist.html)
+This program uses a wordlist of more than 58,000 words from the English language when brute forcing, which is parsed into a java TreeSet for maximum speed. As such, a text file containing words to match it to is required. I’ve used the one found at this link: [Corncob Wordlist](http://www.mieliestronk.com/wordlist.html)
 
 <div class="codecolorer-container java default">
   <div class="java codecolorer">

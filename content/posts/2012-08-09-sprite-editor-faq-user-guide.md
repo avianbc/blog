@@ -91,12 +91,12 @@ Sprite Editor Frequently Asked Questions and User Guide Â» Here you will find 
       Is there any other shortcuts for setting parameter values?
     </div>
     
-      * Right click a Parameter andÂ go to &#8220;Set Current Value To&#8221;. Here you are given a few options: 
+      * Right click a Parameter andÂ go to “Set Current Value To”. Here you are given a few options: 
           1. X or Y value. Useful for cropX,Y.
           2. Image color code. Useful for capturing the background color of a sprite sheet for transparency.
-          3. Use Current Image Filename. Useful for easily setting URI parameter to currently displayed image&#8217;s filename.
+          3. Use Current Image Filename. Useful for easily setting URI parameter to currently displayed image’s filename.
   * <div>
-      What does &#8220;Add Next Chain&#8221; do?
+      What does “Add Next Chain” do?
     </div>
     
       * <div>
@@ -106,7 +106,7 @@ Sprite Editor Frequently Asked Questions and User Guide Â» Here you will find 
       * For example, if you select SPRITE\_STATE\_WALK\_LEFT\_0 and click Add next Chain, it will add SPRITE\_STATE\_WALK\_LEFT\_1 for you.
       * If isChain: 1 is not set in the root parameter, it will automagically be set for you.
   * <div>
-      Why can&#8217;t MegaMan.spr shoot Chicken.spr?
+      Why can’t MegaMan.spr shoot Chicken.spr?
     </div>
     
       * <div>
@@ -114,7 +114,7 @@ Sprite Editor Frequently Asked Questions and User Guide Â» Here you will find 
         </div>
 
   * <div>
-      What are &#8220;Dependencies&#8221;?
+      What are “Dependencies”?
     </div>
     
       * <div>

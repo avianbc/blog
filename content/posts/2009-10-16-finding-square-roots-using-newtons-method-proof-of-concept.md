@@ -1,6 +1,6 @@
 ---
 id: 368
-title: 'Finding square roots using Newton&#8217;s Method (Proof of Concept)'
+title: 'Finding square roots using Newton’s Method (Proof of Concept)'
 date: 2009-10-16T23:15:06-04:00
 author: brad
 layout: post

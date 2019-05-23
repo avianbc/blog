@@ -37,7 +37,7 @@ Through the years I have seen RegExes that match things from the simple, to the 
 
 > #?([a-f0-9]{6}|[a-f0-9]{3})
 
-As you can see, this pattern first matches the literal &#8216;#&#8217; followed by exactly 3 or 6 valid hex digits (a-f, 0-9). This pattern should probably be used sparingly since there are [many](http://acko.net/blog/farbtastic-jquery-color-picker-plug-in/) [other](http://msdn.microsoft.com/en-us/library/system.windows.forms.colordialog.aspx) [methods](http://jscolor.com/) for getting color input from the user. Though, this may be used to validate the input after they have made their selection.
+As you can see, this pattern first matches the literal ‘#’ followed by exactly 3 or 6 valid hex digits (a-f, 0-9). This pattern should probably be used sparingly since there are [many](http://acko.net/blog/farbtastic-jquery-color-picker-plug-in/) [other](http://msdn.microsoft.com/en-us/library/system.windows.forms.colordialog.aspx) [methods](http://jscolor.com/) for getting color input from the user. Though, this may be used to validate the input after they have made their selection.
 
 2. **Valid URLs**
 
@@ -89,7 +89,7 @@ Note that minor changes can increase the power of this regex:Â  ^[ s]+ will fi
 
 Another one useful for programmers in RegEx enables search/replace functionality. These RegExes are very useful if you want to automate the removal of dead or commented out code. Just open your favorite IDE, select Find -> Replace, enable regexes,a nd search for the given patternÂ to quickly remove the unnecessary clutter.
 
-Different languages use different syntax for comments, so I&#8217;m going to try and list as many as I can think of off the top of my head:
+Different languages use different syntax for comments, so I’m going to try and list as many as I can think of off the top of my head:
 
 > #.*$
 
@@ -107,7 +107,7 @@ This pattern matches multiline comments in the form of /\* Comment goes here \*/
 
 This one matches doubleslash style comments such as // Comment goes here. Note that it will match the entire line if the string // is found. This is another very common style for comments.
 
-> ^.\*&#8217;.\*$
+> ^.\*’.\*$
 
 Finally, this pattern matches VB style comments which begin with an apostrophe.
 

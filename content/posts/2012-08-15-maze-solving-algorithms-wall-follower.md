@@ -1,6 +1,6 @@
 ---
 id: 93
-title: 'Maze Solving Algorithms &#8211; Wall Follower'
+title: 'Maze Solving Algorithms – Wall Follower'
 date: 2012-08-15T10:44:53-04:00
 author: brad
 layout: post
@@ -40,7 +40,7 @@ So we know which direction the movement was. How can we use this? Depending on w
 
 </table> 
 
-&nbsp;<table border=1> 
+ <table border=1> 
 
 <th colspan="5">
   Using Left-Hand Rule:
@@ -60,7 +60,7 @@ So, lets sum it up with some pseudocode. To initialize the algorithm, make sure 
 
 <div class="codecolorer-container text default">
   <div class="text codecolorer">
-    start loop:<br /> // calculate facing direction using knowledge of current and previous X,Y<br /> deltaX = currentX - previousX<br /> deltaY = currentY - previousY<br /> facing direction = direction calculated from deltaX/Y<br /> <br /> // enumerate next movement in order of priority<br /> new array[4] &nbsp;// declare array to hold priorities<br /> switch(direction) // populate array according to right hand rule results from table above<br /> {<br /> &nbsp; case North: &nbsp;array[0] = East, array[1] = North, array[2] = West, array[3] = South<br /> &nbsp; case South: &nbsp;array[0] = West, array[1] = South, array[2] = East, array[3] = North<br /> &nbsp; case East: &nbsp;array[0] = South, array[1] = East, array[2] = North, array[3] = West<br /> &nbsp; case West: &nbsp;array[0] = north, array[1] = West, array[2] = South, array[3] = East<br /> }<br /> <br /> if(leftHandRule) { switch positions of array[0] and array[2] }<br /> <br /> for each direction in array<br /> {<br /> &nbsp; calculate new X and Y<br /> &nbsp; if new X/Y == finish, all done!<br /> &nbsp; if newX/Y is not out of bounds and is reachable (no walls obstructing passage)<br /> &nbsp; then previous = current and current = newX/Y (also break out of foreach loop)<br /> }<br /> end loop
+    start loop:<br /> // calculate facing direction using knowledge of current and previous X,Y<br /> deltaX = currentX - previousX<br /> deltaY = currentY - previousY<br /> facing direction = direction calculated from deltaX/Y<br /> <br /> // enumerate next movement in order of priority<br /> new array[4]  // declare array to hold priorities<br /> switch(direction) // populate array according to right hand rule results from table above<br /> {<br />   case North:  array[0] = East, array[1] = North, array[2] = West, array[3] = South<br />   case South:  array[0] = West, array[1] = South, array[2] = East, array[3] = North<br />   case East:  array[0] = South, array[1] = East, array[2] = North, array[3] = West<br />   case West:  array[0] = north, array[1] = West, array[2] = South, array[3] = East<br /> }<br /> <br /> if(leftHandRule) { switch positions of array[0] and array[2] }<br /> <br /> for each direction in array<br /> {<br />   calculate new X and Y<br />   if new X/Y == finish, all done!<br />   if newX/Y is not out of bounds and is reachable (no walls obstructing passage)<br />   then previous = current and current = newX/Y (also break out of foreach loop)<br /> }<br /> end loop
   </div>
 </div>
 
