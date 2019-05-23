@@ -81,3 +81,8 @@ disqusShortname = "bradleycarey"
         name = "Blog"
         weight = 2
         url = "/posts/"
+
+        [[languages.en.menu.main]]
+        name = "Contact Me"
+        weight = 3
+        url = "/contact/"

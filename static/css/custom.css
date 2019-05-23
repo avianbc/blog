@@ -36,3 +36,24 @@
 .clear {
   clear: both;
 }
+input[type=text], input[type=email], input[type=tel], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 9px;
+  resize: vertical
+}
+input[type=submit], button {
+  background-color: #000;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+input[type=submit]:hover, button:hover {
+  background-color: #444;
+}
