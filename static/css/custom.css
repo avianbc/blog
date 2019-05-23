@@ -1,0 +1,38 @@
+.avatar img {
+  border-radius: 0 !important;
+}
+.img-rounded {
+  border-radius: 4px;
+}
+.img-thumbnail {
+  padding: 4px;
+  line-height: 1.625;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+}
+.img-circle {
+  border-radius: 50%;
+}
+.alignleft {
+  float: right;
+}
+.alignright {
+  float: left;
+}
+.textleft {
+  text-align: right;
+}
+.textright {
+  text-align: left;
+}
+.clear {
+  clear: both;
+}
