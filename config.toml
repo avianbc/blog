@@ -20,7 +20,7 @@ disqusShortname = "bradleycarey"
     description = "Bradley Carey's personal website"
     keywords = "blog,developer,personal"
     info = "Full Stack Developer"
-    avatarurl = "images/avatar.jpg"
+    avatarurl = "images/avatar.png"
     footercontent = "My name is Brad and I love learning new things."
 
     dateformat = "Jan 2, 2006"
