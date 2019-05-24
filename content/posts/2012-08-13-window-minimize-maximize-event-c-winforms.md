@@ -7,8 +7,7 @@ layout: post
 permalink: /window-minimize-maximize-event-c-winforms/
 categories:
   - Programming
-  - .NET
-  - 'CSharp'
+  - CSharp
 ---
 If you are working in C# winforms and need to respond to window minimize and maximize events, it seems that winforms does not provide native event handlers. Sucha feat is still very much possible through hooking into the Windows API.
 

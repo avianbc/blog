@@ -8,11 +8,8 @@ guid: http://avian.netne.net/blog/?p=12
 permalink: /json-resources-in-net/
 categories:
   - Programming
-tags:
-  - .NET
-  - 'CSharp'
+  - CSharp
   - JSON
-  - Programming
 ---
 While working on Sprite Editor, I had to dig deep into the web in order to come up with a fast, lightweight method for the deserialization or parsing JSON files. The .NET 4  Framework does have a few methods to enable this functionality, but they are not very customizable or powerful.
 

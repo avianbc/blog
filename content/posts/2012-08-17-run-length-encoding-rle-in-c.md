@@ -7,10 +7,8 @@ layout: post
 guid: http://avian.netne.net/blog/?p=120
 permalink: /run-length-encoding-rle-in-c/
 categories:
-  - Programming
-tags:
-  - algorithms
-  - 'CSharp'
+  - Algorithms
+  - CSharp
   - Programming
 ---
 I recently came across a file format that required usage of [Run Length Encoding](http://en.wikipedia.org/wiki/Run-length_encoding) to handle. This involved writing methods for both decoding and encoding. Here are my results:
