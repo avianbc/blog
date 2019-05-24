@@ -16,7 +16,7 @@ Maze solving algorithms are a well known area of research. Of these, one of the 
 
 <!--more-->
 
-The first step in implementing any algorithm?Â Lets do some brainstorming. Through the process, this blog will serve as my [rubber duck](http://en.wikipedia.org/wiki/Rubber_duck_debugging).
+The first step in implementing any algorithm? Lets do some brainstorming. Through the process, this blog will serve as my [rubber duck](http://en.wikipedia.org/wiki/Rubber_duck_debugging).
 
 So, say we want to implement a wall follower who follows the right-hand rule. What information do we need? For starters, we will need to know what direction the maze solver is facing in order to determine which direction to prioritize. How do we determine this? Easy: simple math. We either can have the solver remember the last movement direction using a variable or property or we can compute it manually if we know the previous and current coordinates.
 

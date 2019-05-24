@@ -55,7 +55,7 @@ By now you should recognize this pattern. The only tough part about constructing
 
 > [2-9]d{2}-d{3}-d{4}
 
-This pattern matches simple, 7 digit US telephone numbers.Â  Note that the number must be hyphen seperated and the first digit must be between 2 and 9 for it to be valid.
+This pattern matches simple, 7 digit US telephone numbers.  Note that the number must be hyphen seperated and the first digit must be between 2 and 9 for it to be valid.
 
 Edit: Steven Levithan has an [excellent write-up](http://blog.stevenlevithan.com/archives/validate-phone-number) on this subject that covers far more, including International phone numbers.
 
@@ -63,13 +63,13 @@ Edit: Steven Levithan has an [excellent write-up](http://blog.stevenlevithan.com
 
 > d{1,3}.d{1,3}.d{1,3}.d{1,3}
 
-This is the simplest solution. It will match anyÂ IPv4 addressÂ in the range from 0.0.0.0 to 999.999.999.999. Any octet values greater than 255 are invalid, so you may consider using this for IPv4 matching instead:
+This is the simplest solution. It will match any IPv4 address in the range from 0.0.0.0 to 999.999.999.999. Any octet values greater than 255 are invalid, so you may consider using this for IPv4 matching instead:
 
 > ((\[0-9]|[1-9\]\[0-9\]|1\[0-9]{2}|2[0-4\]\[0-9\]|25\[0-5]).){3}([0-9]|[1-9\]\[0-9\]|1\[0-9]{2}|2[0-4\]\[0-9\]|25[0-5])
 
 This matches similar values to the one above but restricts it to values from 0.0.0.0 to 255.255.255.255.
 
-For most cases, this regexÂ can lead to code smells. You should peruse your programming language documentation for something similar to [IPAddress.TryParse()](http://msdn.microsoft.com/en-us/library/system.net.ipaddress.tryparse) found in the .NETÂ framework before resorting to this method for validation.
+For most cases, this regex can lead to code smells. You should peruse your programming language documentation for something similar to [IPAddress.TryParse()](http://msdn.microsoft.com/en-us/library/system.net.ipaddress.tryparse) found in the .NET framework before resorting to this method for validation.
 
 6. **Host Names**
 
@@ -81,25 +81,25 @@ This pattern matches exactly to the specification defined in the [IETF RFC](http
 
 > <tt>[ s]+</tt>
 
-This one is useful for editors that support regular expressions. If you wish to trim all whitespace (r, n, t, and spaces) from code to make it more compact, this regular expression will accomplish this. In particular, JavaScript developers who wish to trim all unnecessary whitespace before pushing theÂ code live (in order to minimize file size) may find this useful.
+This one is useful for editors that support regular expressions. If you wish to trim all whitespace (r, n, t, and spaces) from code to make it more compact, this regular expression will accomplish this. In particular, JavaScript developers who wish to trim all unnecessary whitespace before pushing the code live (in order to minimize file size) may find this useful.
 
-Note that minor changes can increase the power of this regex:Â  ^[ s]+ will find whitespace at the beginning of a line, [Â s]+$ will find whitespace at the end of a line, or you may combine these together. Also, you can substitute by changing s which matches returns, newlines, tabs for r, n, and t respectively or remove the leading space to not include spaces.
+Note that minor changes can increase the power of this regex:  ^[ s]+ will find whitespace at the beginning of a line, [ s]+$ will find whitespace at the end of a line, or you may combine these together. Also, you can substitute by changing s which matches returns, newlines, tabs for r, n, and t respectively or remove the leading space to not include spaces.
 
 8. **Comments**
 
-Another one useful for programmers in RegEx enables search/replace functionality. These RegExes are very useful if you want to automate the removal of dead or commented out code. Just open your favorite IDE, select Find -> Replace, enable regexes,a nd search for the given patternÂ to quickly remove the unnecessary clutter.
+Another one useful for programmers in RegEx enables search/replace functionality. These RegExes are very useful if you want to automate the removal of dead or commented out code. Just open your favorite IDE, select Find -> Replace, enable regexes,a nd search for the given pattern to quickly remove the unnecessary clutter.
 
 Different languages use different syntax for comments, so I’m going to try and list as many as I can think of off the top of my head:
 
 > #.*$
 
-ThisÂ pattern matches all single line comments that begin with the pound sign (#). Useful for Perl and RubyÂ programmers.
+This pattern matches all single line comments that begin with the pound sign (#). Useful for Perl and Ruby programmers.
 
 > ^s\*#.\*$
 
 This one is a stronger version of the one above adapted to match compiler directives and pragmas in C / C++ source code.
 
-> Â /\*.\*?*/
+>  /\*.\*?*/
 
 This pattern matches multiline comments in the form of /\* Comment goes here \*/. This style is common in many programming languages such as C++ and Java.
 
@@ -113,7 +113,7 @@ Finally, this pattern matches VB style comments which begin with an apostrophe.
 
 9. **Credit Cards**
 
-> Â ^4[0-9]{12}(?:[0-9]{3})?
+>  ^4[0-9]{12}(?:[0-9]{3})?
 
 Matches a valid Visa credit card, both new and old style since the newer cards have a few extra digits. Visa cards must begin with 4.
 
@@ -121,7 +121,7 @@ Matches a valid Visa credit card, both new and old style since the newer cards h
 
 Matches a valid MasterCard number. MasterCard must begin with 5.
 
-> Â ^3\[47\]\[0-9\]{13}$
+>  ^3\[47\]\[0-9\]{13}$
 
 Matches a valid Amex card (must begin with a 3).
 
@@ -131,4 +131,4 @@ Note that before using these, it would be best to strip white-space and hyphens 
 
 > ^(19|20)dd\[- /.\](0\[1-9]|1\[012])[- /.\](0[1-9]|[12\]\[0-9\]|3[01])$
 
-This matches dates in the format of yyyy-mm-dd. This enforces hyphen delimiters and also checks that the date is within a valid range. Most programming languages have a rich syntax for dates and date/time validation. You should probably check documentation for it before resorting to using a regex.Â Also you couldÂ check our [jQuery](http://jqueryui.com/demos/datepicker/) if you are building a web app or website.
+This matches dates in the format of yyyy-mm-dd. This enforces hyphen delimiters and also checks that the date is within a valid range. Most programming languages have a rich syntax for dates and date/time validation. You should probably check documentation for it before resorting to using a regex. Also you could check our [jQuery](http://jqueryui.com/demos/datepicker/) if you are building a web app or website.

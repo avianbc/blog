@@ -14,7 +14,7 @@ tags:
   - JSON
   - Programming
 ---
-While working on Sprite Editor, I had to dig deep into the web in order to come up with a fast, lightweight method for the deserialization or parsing JSON files. The .NET 4Â  Framework does have a few methods to enable this functionality, but they are not very customizable or powerful.
+While working on Sprite Editor, I had to dig deep into the web in order to come up with a fast, lightweight method for the deserialization or parsing JSON files. The .NET 4  Framework does have a few methods to enable this functionality, but they are not very customizable or powerful.
 
 <!--more-->
 
@@ -24,10 +24,10 @@ Basically, it comes down to one of a few use cases:
   2. You have a dynamic JSON, whose structure can (and will) change (polymorphic).
   3. You have either of the above cases, but only need a subset of the data.
 
-  * **Case 1:Â  Static JSON **Deserialization**
+  * **Case 1:  Static JSON **Deserialization**
 **
 
-If you have static JSON data, you can build a class using the JSON structure as a model and use either [JavaScriptSerializer](http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx) to instantiate and set the members of the class. The class file must match the JSON structure exactly or else it will not be parsed correctly. Thankfully, there are a few tools to automate this process:Â  [JSON2CSharp](http://json2csharp.com/) and [JSONPack](http://jsonpack.com/) will generate a class file for you.
+If you have static JSON data, you can build a class using the JSON structure as a model and use either [JavaScriptSerializer](http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx) to instantiate and set the members of the class. The class file must match the JSON structure exactly or else it will not be parsed correctly. Thankfully, there are a few tools to automate this process:  [JSON2CSharp](http://json2csharp.com/) and [JSONPack](http://jsonpack.com/) will generate a class file for you.
 
   * **Case 2: Polymorphic JSON **Deserialization**
 **
