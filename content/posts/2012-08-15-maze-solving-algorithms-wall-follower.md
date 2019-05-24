@@ -10,7 +10,7 @@ categories:
   - Programming
 tags:
   - algorithms
-  - 'C#'
+  - 'CSharp'
   - maze
   - Programming
 ---
@@ -32,21 +32,21 @@ So, say we want to implement a wall follower who follows the right-hand rule. Wh
 
 If deltaX is 1, we the solver went east and if -1 it was west. If deltaY is 1 then direction was south and -1 is north.
 
-So we know which direction the movement was. How can we use this? Depending on which direction the movement was, there are 4 priorities:<table border=1> 
+So we know which direction the movement was. How can we use this? Depending on which direction the movement was, there are 4 priorities:<table border=1>
 
 <th colspan="5">
   Using Right-Hand Rule:
 </th>
 
-</table> 
+</table>
 
- <table border=1> 
+ <table border=1>
 
 <th colspan="5">
   Using Left-Hand Rule:
 </th>
 
-</table> 
+</table>
 
 See a pattern? The left wall follower is the same as the right wall follower, except the 1st and 3rd priorities are exchanged! This means you can use one algorithm for both by passing one parameter indicating which wall to follow. This is consistent with [DRY](http://en.wikipedia.org/wiki/Don't_repeat_yourself) to avoid duplicate code.
 

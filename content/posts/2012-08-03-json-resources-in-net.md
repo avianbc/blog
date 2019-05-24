@@ -10,7 +10,7 @@ categories:
   - Programming
 tags:
   - .NET
-  - 'C#'
+  - 'CSharp'
   - JSON
   - Programming
 ---
@@ -24,13 +24,13 @@ Basically, it comes down to one of a few use cases:
   2. You have a dynamic JSON, whose structure can (and will) change (polymorphic).
   3. You have either of the above cases, but only need a subset of the data.
 
-  * **Case 1:Â  Static JSON **Deserialization**  
-** 
+  * **Case 1:Â  Static JSON **Deserialization**
+**
 
 If you have static JSON data, you can build a class using the JSON structure as a model and use either [JavaScriptSerializer](http://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer.aspx) to instantiate and set the members of the class. The class file must match the JSON structure exactly or else it will not be parsed correctly. Thankfully, there are a few tools to automate this process:Â  [JSON2CSharp](http://json2csharp.com/) and [JSONPack](http://jsonpack.com/) will generate a class file for you.
 
-  * **Case 2: Polymorphic JSON **Deserialization**  
-** 
+  * **Case 2: Polymorphic JSON **Deserialization**
+**
 
 If the JSON structure is unknown, then you have fallen into the fuzzy realm of polymorphic JSONs. This used to be extremely tricky, but thankfully the new features in .NET have made it a lot less painful. Specifically the usage of generics, dynamics, and implicitly typed variables (var). If the JSON is not nested repeatedly, you can use:
 
@@ -42,7 +42,7 @@ The problem in this method arises when you have a 2-3+ level nested structure in
 The most widely used one is [Json.NET](http://james.newtonking.com/projects/json-net.aspx). Though there are others such as [fastJSON](http://fastjson.codeplex.com/), which contains a [nice write-up](http://www.codeproject.com/Articles/159450/fastJSON) on the pros and cons of each library. Through the usage of JTokens and JObjects, I achieved this functionality using a method similar to that of traversing linked lists:
 
 <pre style="padding-left: 30px;">JObject root = JObject.Parse(jsonString);
-JToken token = root.Children().ToList().First(); 
+JToken token = root.Children().ToList().First();
 while (token != null) {
     // process each token individually
     token = token.Next;

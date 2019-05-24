@@ -7,7 +7,7 @@ layout: post
 guid: http://br4d.net/?p=354
 permalink: /sprite-editor/
 categories:
-  - 'C#'
+  - 'CSharp'
   - Sprite Editor
 ---
 <div class="pull-right">

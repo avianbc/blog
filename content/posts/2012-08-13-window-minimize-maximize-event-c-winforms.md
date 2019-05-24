@@ -10,7 +10,7 @@ categories:
   - Programming
 tags:
   - .NET
-  - 'C#'
+  - 'CSharp'
   - winforms
 ---
 If you are working in C# winforms and need to respond to window minimize and maximize events, it seems that winforms does not provide native event handlers. Sucha feat is still very much possible through hooking into the Windows API.

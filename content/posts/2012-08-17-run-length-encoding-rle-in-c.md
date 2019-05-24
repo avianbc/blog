@@ -10,7 +10,7 @@ categories:
   - Programming
 tags:
   - algorithms
-  - 'C#'
+  - 'CSharp'
   - Programming
 ---
 I recently came across a file format that required usage of [Run Length Encoding](http://en.wikipedia.org/wiki/Run-length_encoding) to handle. This involved writing methods for both decoding and encoding. Here are my results:

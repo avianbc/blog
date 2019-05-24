@@ -7,7 +7,7 @@ layout: post
 guid: http://br4d.net/?p=357
 permalink: /ngif-c-library-with-assorted-bugfixes/
 categories:
-  - 'C#'
+  - 'CSharp'
   - Programming
   - Sprite Editor
 ---

@@ -53,11 +53,6 @@ disqusShortname = "bradleycarey"
     icon = "fab fa-lastfm"
     weight = 4
     url = "https://www.last.fm/user/avianbc"
-[[params.social]]
-    name = "Soundcloud"
-    icon = "fab fa-soundcloud"
-    weight = 5
-    url = "https://soundcloud.com/avianbc"
 
 [languages]
     [languages.en]

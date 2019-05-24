@@ -7,7 +7,7 @@ layout: post
 guid: http://br4d.net/?p=609
 permalink: /enum-friendly-names-via-displayattribute-and-descriptionattribute-mvc-5-edition/
 categories:
-  - 'C#'
+  - 'CSharp'
   - Programming
   - Uncategorized
 ---
@@ -15,7 +15,7 @@ Are you using enums in dropdowns or radiobuttons or something similar? Instead o
 
 When MVC 5 came out, it included new [helpers](https://msdn.microsoft.com/en-us/library/system.web.mvc.html.selectextensions.enumdropdownlistfor%28v=vs.118%29.aspx) for [Enums](https://msdn.microsoft.com/en-us/library/system.web.mvc.html.enumhelper%28v=vs.118%29.aspx) (which was fantastic). However, MS used the typical DisplayAttribute (the [DisplayAttribute.Name property](https://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.displayattribute.name%28v=vs.110%29.aspx) to be exact) instead of the DescriptionAttribute to pull this off.
 
-I wrote an Enum extension method that attempts to grab the name from both of these attributes. This method should work great with legacy and the newer MVC apps. 
+I wrote an Enum extension method that attempts to grab the name from both of these attributes. This method should work great with legacy and the newer MVC apps.
 
 Keep in mind, that it is probably best to be consistent and use only DisplayAttribute in future projects, as this basically deprecates the DescriptionAttribute method but this could be useful for legacy projects that have been updated to MVC 5.
 

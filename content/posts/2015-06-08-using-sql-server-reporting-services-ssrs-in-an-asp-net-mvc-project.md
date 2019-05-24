@@ -8,7 +8,7 @@ guid: http://br4d.net/?p=574
 permalink: /using-sql-server-reporting-services-ssrs-in-an-asp-net-mvc-project/
 categories:
   - ASP.NET
-  - 'C#'
+  - 'CSharp'
   - Programming
   - SQL
   - Uncategorized
