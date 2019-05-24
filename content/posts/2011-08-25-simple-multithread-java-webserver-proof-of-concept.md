@@ -12,8 +12,168 @@ categories:
 ---
 This project was nothing more than a proof-of-concept and should not be put into usage (get apache instead). It is a simple webserver written in Java that can take simultaneous requests via multithreading, parse the request, and properly respond. This program served as my forray into multithreading as well as the gritty details to what happens behind the scenes in a webserver.
 
-<div class="codecolorer-container java default">
-  <div class="java codecolorer">
-    <span class="co3">/**<br /> &nbsp;* web server and client<br /> &nbsp;* @author Bradley Carey<br /> &nbsp;*/</span><br /> &nbsp;<br /> <span class="kw1">import</span> <span class="co2">java.io.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.net.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.util.*</span><span class="sy0">;</span><br /> &nbsp;<br /> <span class="kw1">public</span> <span class="kw1">final</span> <span class="kw1">class</span> WebServer<br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">void</span> main<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> argv<span class="br0">&#91;</span><span class="br0">&#93;</span><span class="br0">&#41;</span> <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//set port number</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> port <span class="sy0">=</span> <span class="nu0">8080</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+serversocket"><span class="kw3">ServerSocket</span></a> myServerSocket <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//establish listen socket</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">try</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; myServerSocket <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+serversocket"><span class="kw3">ServerSocket</span></a><span class="br0">&#40;</span>port<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">catch</span> <span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span class="kw3">IOException</span></a> e<span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"Could not listen on port # "</span> <span class="sy0">+</span> port<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">exit</span><span class="br0">&#40;</span><span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//process http service requests in infinite loop</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span><span class="br0">&#40;</span><span class="kw2">true</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//listen for tcp connection requests</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+socket"><span class="kw3">Socket</span></a> clientSocket <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">try</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; clientSocket <span class="sy0">=</span> myServerSocket.<span class="me1">accept</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">catch</span> <span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span class="kw3">IOException</span></a> e<span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"Accept failed on port # "</span> <span class="sy0">+</span> port<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">exit</span><span class="br0">&#40;</span><span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; HttpRequest request <span class="sy0">=</span> <span class="kw1">new</span> HttpRequest<span class="br0">&#40;</span>clientSocket<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span class="kw3">Thread</span></a> thread <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span class="kw3">Thread</span></a><span class="br0">&#40;</span>request<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; thread.<span class="me1">start</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw1">final</span> <span class="kw1">class</span> HttpRequest <span class="kw1">implements</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span class="kw3">Runnable</span></a><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">final</span> <span class="kw1">static</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> CRLF <span class="sy0">=</span> <span class="st0">"<span class="es0">\r</span><span class="es0">\n</span>"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+socket"><span class="kw3">Socket</span></a> socket<span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw1">public</span> HttpRequest<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+socket"><span class="kw3">Socket</span></a> socket<span class="br0">&#41;</span> <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">this</span>.<span class="me1">socket</span> <span class="sy0">=</span> socket<span class="sy0">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw4">void</span> run<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">try</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; processRequest<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">catch</span> <span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a> e<span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span>e<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//throw new UnsupportedOperationException("Not supported yet.");</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw1">private</span> <span class="kw4">void</span> processRequest<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//get reference to socket's input & output streams and setup filters</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+inputstream"><span class="kw3">InputStream</span></a> is <span class="sy0">=</span> socket.<span class="me1">getInputStream</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+inputstreamreader"><span class="kw3">InputStreamReader</span></a> isr <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+inputstreamreader"><span class="kw3">InputStreamReader</span></a><span class="br0">&#40;</span>is<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+outputstream"><span class="kw3">OutputStream</span></a> os <span class="sy0">=</span> socket.<span class="me1">getOutputStream</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+dataoutputstream"><span class="kw3">DataOutputStream</span></a> dos <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+dataoutputstream"><span class="kw3">DataOutputStream</span></a><span class="br0">&#40;</span>os<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+bufferedreader"><span class="kw3">BufferedReader</span></a> br <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+bufferedreader"><span class="kw3">BufferedReader</span></a><span class="br0">&#40;</span>isr<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> requestLine <span class="sy0">=</span> br.<span class="me1">readLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span>requestLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> headerLine <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span><span class="br0">&#40;</span>headerLine <span class="sy0">=</span> br.<span class="me1">readLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>.<span class="me1">length</span><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="sy0">!=</span> <span class="nu0"></span><span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span>headerLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+stringtokenizer"><span class="kw3">StringTokenizer</span></a> tokens <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+stringtokenizer"><span class="kw3">StringTokenizer</span></a><span class="br0">&#40;</span>requestLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; tokens.<span class="me1">nextToken</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> fileName <span class="sy0">=</span> tokens.<span class="me1">nextToken</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>fileName.<span class="me1">equals</span><span class="br0">&#40;</span><span class="st0">"/"</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fileName <span class="sy0">=</span> <span class="st0">"/default.htm"</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; fileName <span class="sy0">=</span> <span class="st0">"."</span> <span class="sy0">+</span> fileName<span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"<span class="es0">\n</span>fileName:"</span> <span class="sy0">+</span> fileName<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+fileinputstream"><span class="kw3">FileInputStream</span></a> fis <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">boolean</span> fileExists <span class="sy0">=</span> <span class="kw2">true</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">try</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fis <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+fileinputstream"><span class="kw3">FileInputStream</span></a><span class="br0">&#40;</span>fileName<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">catch</span> <span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filenotfoundexception"><span class="kw3">FileNotFoundException</span></a> e<span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fileExists <span class="sy0">=</span> <span class="kw2">false</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> statusLine <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> contentTypeLine <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> entityBody <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>fileExists<span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; statusLine <span class="sy0">=</span> <span class="st0">"HTTP/1.1 202 Accepted"</span> <span class="sy0">+</span> CRLF<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; contentTypeLine <span class="sy0">=</span> <span class="st0">"Content-type: "</span> <span class="sy0">+</span> contentType<span class="br0">&#40;</span>fileName<span class="br0">&#41;</span> <span class="sy0">+</span> CRLF<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">else</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; statusLine <span class="sy0">=</span> <span class="st0">"HTTP/1.1 404 Not Found"</span> <span class="sy0">+</span> CRLF<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; contentTypeLine <span class="sy0">=</span> <span class="st0">"text/html"</span> <span class="sy0">+</span> CRLF<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; entityBody <span class="sy0">=</span> <span class="st0">"<HTML>"</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<HEAD><TITLE>Not Found</TITLE></HEAD>"</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<BODY>404 Not Found</BODY></HTML>"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//Send the status line</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; dos.<span class="me1">writeBytes</span><span class="br0">&#40;</span>statusLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"statusLine: "</span> <span class="sy0">+</span> statusLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//Send the content type line</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; dos.<span class="me1">writeBytes</span><span class="br0">&#40;</span>contentTypeLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"contentTypeLine: "</span> <span class="sy0">+</span> contentTypeLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"entityBody: "</span> <span class="sy0">+</span> entityBody<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//Send a blank line to indicate the end of the header line</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; dos.<span class="me1">writeBytes</span><span class="br0">&#40;</span>CRLF<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">//Send the entity body</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>fileExists<span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sendBytes<span class="br0">&#40;</span>fis, os<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fis.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">else</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; os.<span class="me1">write</span><span class="br0">&#40;</span>entityBody.<span class="me1">getBytes</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; dos.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; os.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; br.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; socket.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">void</span> sendBytes<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+fileinputstream"><span class="kw3">FileInputStream</span></a> fis, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+outputstream"><span class="kw3">OutputStream</span></a> os<span class="br0">&#41;</span> <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">byte</span><span class="br0">&#91;</span><span class="br0">&#93;</span> buffer <span class="sy0">=</span> <span class="kw1">new</span> <span class="kw4">byte</span><span class="br0">&#91;</span><span class="nu0">1024</span><span class="br0">&#93;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> bytes <span class="sy0">=</span> <span class="nu0"></span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span><span class="br0">&#40;</span><span class="br0">&#40;</span>bytes <span class="sy0">=</span> fis.<span class="me1">read</span><span class="br0">&#40;</span>buffer<span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="sy0">!=</span> <span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; os.<span class="me1">write</span><span class="br0">&#40;</span>buffer, <span class="nu0"></span>, bytes<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw1">private</span> <span class="kw1">static</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> contentType<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> fileName<span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>fileName.<span class="me1">endsWith</span><span class="br0">&#40;</span><span class="st0">".htm"</span><span class="br0">&#41;</span> <span class="sy0">||</span> fileName.<span class="me1">endsWith</span><span class="br0">&#40;</span><span class="st0">".html"</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> <span class="st0">"text/html"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>fileName.<span class="me1">endsWith</span><span class="br0">&#40;</span><span class="st0">".gif"</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> <span class="st0">"image/gif"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>fileName.<span class="me1">endsWith</span><span class="br0">&#40;</span><span class="st0">".jpg"</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> <span class="st0">"image/jpg"</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> <span class="st0">"application/octet-stream"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+{{< highlight java >}}
+/**
+ * web server and client
+ * @author Bradley Carey
+ */
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public final class WebServer
+{
+    public static void main(String argv[]) throws Exception
+    {
+        //set port number
+        int port = 8080;
+        ServerSocket myServerSocket = null;
+
+        //establish listen socket
+        try {
+            myServerSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            System.out.println("Could not listen on port # " + port);
+            System.exit(-1);
+        }
+
+        //process http service requests in infinite loop
+        while(true)
+        {
+            //listen for tcp connection requests
+            Socket clientSocket = null;
+            try {
+                clientSocket = myServerSocket.accept();
+            } catch (IOException e) {
+                System.out.println("Accept failed on port # " + port);
+                System.exit(-1);
+            }
+
+            HttpRequest request = new HttpRequest(clientSocket);
+            Thread thread = new Thread(request);
+            thread.start();
+        }
+    }
+}
+
+final class HttpRequest implements Runnable
+{
+    final static String CRLF = "\r\n";
+    Socket socket;
+
+    public HttpRequest(Socket socket) throws Exception
+    {
+        this.socket = socket;
+    }
+
+    public void run()
+    {
+        try
+        {
+            processRequest();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private void processRequest() throws Exception
+    {
+        //get reference to socket's input & output streams and setup filters
+        InputStream is = socket.getInputStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        OutputStream os = socket.getOutputStream();
+        DataOutputStream dos = new DataOutputStream(os);
+        BufferedReader br = new BufferedReader(isr);
+
+        String requestLine = br.readLine();
+        System.out.println(requestLine);
+
+        String headerLine = null;
+        while ((headerLine = br.readLine()).length() != 0) {
+            System.out.println(headerLine);
+        }
+
+        StringTokenizer tokens = new StringTokenizer(requestLine);
+        tokens.nextToken();
+        String fileName = tokens.nextToken();
+
+        if (fileName.equals("/"))
+                fileName = "/default.htm";
+
+        fileName = "." + fileName;
+
+        System.out.println("\nfileName:" + fileName);
+
+        FileInputStream fis = null;
+        boolean fileExists = true;
+        try {
+            fis = new FileInputStream(fileName);
+        } catch (FileNotFoundException e) {
+            fileExists = false;
+        }
+
+        String statusLine = null;
+        String contentTypeLine = null;
+        String entityBody = null;
+        if (fileExists) {
+            statusLine = "HTTP/1.1 202 Accepted" + CRLF;
+            contentTypeLine = "Content-type: " + contentType(fileName) + CRLF;
+        } else {
+            statusLine = "HTTP/1.1 404 Not Found" + CRLF;
+            contentTypeLine = "text/html" + CRLF;
+            entityBody = "<HTML>"
+              + "<HEAD><TITLE>Not Found</TITLE></HEAD>"
+              + "<BODY>404 Not Found</BODY></HTML>";
+        }
+
+        //Send the status line
+        dos.writeBytes(statusLine);
+        System.out.println("statusLine: " + statusLine);
+
+        //Send the content type line
+        dos.writeBytes(contentTypeLine);
+        System.out.println("contentTypeLine: " + contentTypeLine);
+        System.out.println("entityBody: " + entityBody);
+
+        //Send a blank line to indicate the end of the header line
+        dos.writeBytes(CRLF);
+
+        //Send the entity body
+        if (fileExists) {
+          sendBytes(fis, os);
+          fis.close();
+        } else {
+          os.write(entityBody.getBytes());
+        }
+
+        dos.close();
+        os.close();
+        br.close();
+        socket.close();
+    }
+
+    private static void sendBytes(FileInputStream fis, OutputStream os) throws Exception
+    {
+        byte[] buffer = new byte[1024];
+        int bytes = 0;
+
+        while((bytes = fis.read(buffer)) != -1) {
+            os.write(buffer, 0, bytes);
+        }
+    }
+
+    private static String contentType(String fileName)
+    {
+        if (fileName.endsWith(".htm") || fileName.endsWith(".html"))
+            return "text/html";
+        if(fileName.endsWith(".gif"))
+            return "image/gif";
+        if(fileName.endsWith(".jpg"))
+            return "image/jpg";
+
+        return "application/octet-stream";
+    }
+}
+{{< /highlight >}}

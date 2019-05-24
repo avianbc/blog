@@ -14,21 +14,19 @@ categories:
 ---
 If you are writing code to show a large amount of records in an ASP.NET GridView control, you should do your best to make them easily readable since it can be overwhelming. I’ve ran across a few different hacks using JQuery to enhance the presentation of GridView records, but this seems to lag the user’s browser when a large number of rows is encountered. I have wrote a small function that performs this action server-side and rids the user of the content-rendering JQuery lag spike.
 
-<!--more-->
-
 What kind of grouping am I referring to? Here is an example of what this code does. Here is what a standard GridView would look like:
 
-[<img class="alignnone size-full wp-image-299" title="before" src="/images/2013/02/before.png" alt="" width="536" height="236" srcset="/images/2013/02/before.png 536w, /images/2013/02/before-300x132.png 300w" sizes="(max-width: 536px) 100vw, 536px" />](/images/2013/02/before.png)
+<img class="alignnone size-full wp-image-299" title="before" src="/images/2013/02/before.png" alt="" width="536" height="236" srcset="/images/2013/02/before.png 536w, /images/2013/02/before-300x132.png 300w" sizes="(max-width: 536px) 100vw, 536px" />
 
 After using this function, this same table would render as:
 
-[<img class="alignnone size-full wp-image-300" title="after" src="/images/2013/02/after.png" alt="" width="530" height="239" srcset="/images/2013/02/after.png 530w, /images/2013/02/after-300x135.png 300w" sizes="(max-width: 530px) 100vw, 530px" />](/images/2013/02/after.png)
+<img class="alignnone size-full wp-image-300" title="after" src="/images/2013/02/after.png" alt="" width="530" height="239" srcset="/images/2013/02/after.png 530w, /images/2013/02/after-300x135.png 300w" sizes="(max-width: 530px) 100vw, 530px" />
 
 You can specify which columns to group, as well as how many columns to group. There are many ways to use this function. Just make sure to call it after DataBinding has occurred. A good place to ensure this is the DataBound event handler of the GridView itself which fires upon finish of DataBinding.
 
 The syntax for using it is:
 
-GroupGridView(gridRows As GridViewRowCollection, whichColumn As Integer, howManyColumns As Integer)
+`GroupGridView(gridRows As GridViewRowCollection, whichColumn As Integer, howManyColumns As Integer)`
 
 where:
 
@@ -40,10 +38,39 @@ howManyColumns is the number of columns to iterate through and group together.
 
 For example:
 
-GroupGridView(GridViewID.Rows, 0, 3)
+`GroupGridView(GridViewID.Rows, 0, 3)`
 
-<div class="codecolorer-container vb default">
-  <div class="vb codecolorer">
-    <span class="kw2">Private</span> <span class="kw2">Sub</span> GroupGridView(gridRows <span class="kw4">As</span> GridViewRowCollection, whichColumn <span class="kw4">As</span> <span class="kw1">Integer</span>, howManyColumns <span class="kw4">As</span> <span class="kw1">Integer</span>)<br />     <span class="kw3">If</span> howManyColumns = 0 <span class="kw3">Then</span> Return<br /> <br />     <span class="kw4">Dim</span> i <span class="kw4">As</span> <span class="kw1">Integer</span>, count <span class="kw4">As</span> <span class="kw1">Integer</span> = 1<br />     <span class="kw4">Dim</span> rowList <span class="kw4">As</span> <span class="kw2">New</span> ArrayList()<br /> <br />     rowList.Add(gridRows(0))<br />     <span class="kw4">Dim</span> ctrl = gridRows(0).Cells(whichColumn)<br /> <br />     <span class="kw3">For</span> i = 1 <span class="kw3">To</span> gridRows.Count - 1<br />         <span class="kw4">Dim</span> nextCell <span class="kw4">As</span> TableCell = gridRows(i).Cells(whichColumn)<br />         <span class="kw3">If</span> ctrl.Text = nextCell.Text <span class="kw3">Then</span><br />             count += 1<br />             nextCell.Visible = <span class="kw5">False</span><br />             rowList.Add(gridRows(i))<br />         <span class="kw3">Else</span><br />             <span class="kw3">If</span> count > 1 <span class="kw3">Then</span><br />                 ctrl.RowSpan = count<br />                 GroupGridView(<span class="kw2">New</span> GridViewRowCollection(rowList), whichColumn + 1, howManyColumns - 1)<br />             <span class="kw3">End</span> <span class="kw3">If</span><br />             count = 1<br />             rowList.Clear()<br />             ctrl = gridRows(i).Cells(whichColumn)<br />             rowList.Add(gridRows(i))<br />         <span class="kw3">End</span> <span class="kw3">If</span><br />     <span class="kw3">Next</span><br /> <br />     <span class="kw3">If</span> count > 1 <span class="kw3">Then</span><br />         ctrl.RowSpan = count<br />         GroupGridView(<span class="kw2">New</span> GridViewRowCollection(rowList), whichColumn + 1, howManyColumns - 1)<br />     <span class="kw3">End</span> <span class="kw3">If</span><br /> <span class="kw3">End</span> <span class="kw2">Sub</span>
-  </div>
-</div>
+{{< highlight vb >}}
+Private Sub GroupGridView(gridRows As GridViewRowCollection, whichColumn As Integer, howManyColumns As Integer)
+    If howManyColumns = 0 Then Return
+
+    Dim i As Integer, count As Integer = 1
+    Dim rowList As New ArrayList()
+
+    rowList.Add(gridRows(0))
+    Dim ctrl = gridRows(0).Cells(whichColumn)
+
+    For i = 1 To gridRows.Count - 1
+        Dim nextCell As TableCell = gridRows(i).Cells(whichColumn)
+        If ctrl.Text = nextCell.Text Then
+            count += 1
+            nextCell.Visible = False
+            rowList.Add(gridRows(i))
+        Else
+            If count > 1 Then
+                ctrl.RowSpan = count
+                GroupGridView(New GridViewRowCollection(rowList), whichColumn + 1, howManyColumns - 1)
+            End If
+            count = 1
+            rowList.Clear()
+            ctrl = gridRows(i).Cells(whichColumn)
+            rowList.Add(gridRows(i))
+        End If
+    Next
+
+    If count > 1 Then
+        ctrl.RowSpan = count
+        GroupGridView(New GridViewRowCollection(rowList), whichColumn + 1, howManyColumns - 1)
+    End If
+End Sub
+{{< /highlight >}}

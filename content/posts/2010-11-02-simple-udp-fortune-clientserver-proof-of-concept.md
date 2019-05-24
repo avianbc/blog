@@ -12,20 +12,121 @@ categories:
 ---
 This program is a simple client/server UDP/Datagram network program. The client sends a random number which is then used to display a random fortune on the client’s screen.
 
-<!--more-->
+#Client
 
-Client:
+{{< highlight java >}}
+/**
+ * Fortune Cookie Client. Sends random number to specified host via UDP and prints reply.
+ * @author Bradley Carey
+ * @version November 2, 2010
+ */
 
-<div class="codecolorer-container java default">
-  <div class="java codecolorer">
-    <span class="co3">/**<br /> &nbsp;* Fortune Cookie Client. Sends random number to specified host via UDP and prints reply.<br /> &nbsp;* @author Bradley Carey<br /> &nbsp;* @version November 2, 2010<br /> &nbsp;*/</span><br /> &nbsp;<br /> <span class="kw1">import</span> <span class="co2">java.io.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.net.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.util.*</span><span class="sy0">;</span><br /> &nbsp;<br /> <span class="kw1">public</span> <span class="kw1">class</span> FortuneClient<br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">void</span> main<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a><span class="br0">&#91;</span><span class="br0">&#93;</span> args<span class="br0">&#41;</span> <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>args.<span class="me1">length</span><span class="sy0"><=</span> <span class="nu0">1</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"You must specify a valid hostname and port number."</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">exit</span><span class="br0">&#40;</span><span class="nu0"></span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> hostname <span class="sy0">=</span> args<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> port <span class="sy0">=</span> args<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+inetaddress"><span class="kw3">InetAddress</span></a> destination <span class="sy0">=</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+inetaddress"><span class="kw3">InetAddress</span></a>.<span class="me1">getByName</span><span class="br0">&#40;</span>hostname<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+random"><span class="kw3">Random</span></a> myRandom <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+random"><span class="kw3">Random</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> requestNo <span class="sy0">=</span> myRandom.<span class="me1">nextInt</span><span class="br0">&#40;</span><span class="nu0">10</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> toSend <span class="sy0">=</span> <span class="st0">""</span> <span class="sy0">+</span> requestNo<span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagramsocket"><span class="kw3">DatagramSocket</span></a> mySocket <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagramsocket"><span class="kw3">DatagramSocket</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; mySocket.<span class="me1">setSoTimeout</span><span class="br0">&#40;</span><span class="nu0">2000</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">byte</span><span class="br0">&#91;</span><span class="br0">&#93;</span> os <span class="sy0">=</span> toSend.<span class="me1">getBytes</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a> sendThis <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a><span class="br0">&#40;</span>os, os.<span class="me1">length</span>, destination, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+integer"><span class="kw3">Integer</span></a>.<span class="me1">parseInt</span><span class="br0">&#40;</span>port<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; mySocket.<span class="me1">send</span><span class="br0">&#40;</span>sendThis<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">try</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a> replyPacket <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a><span class="br0">&#40;</span><span class="kw1">new</span> <span class="kw4">byte</span><span class="br0">&#91;</span><span class="nu0">1024</span><span class="br0">&#93;</span>, <span class="nu0">1024</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mySocket.<span class="me1">receive</span><span class="br0">&#40;</span>replyPacket<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> recvMsg <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a><span class="br0">&#40;</span>replyPacket.<span class="me1">getData</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; recvMsg <span class="sy0">=</span> recvMsg.<span class="me1">replaceAll</span><span class="br0">&#40;</span><span class="st0">"<span class="es0">\n</span>"</span>,<span class="st0">""</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"Fortune: "</span> <span class="sy0">+</span> recvMsg<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">catch</span> <span class="br0">&#40;</span>SocketTimeoutException e<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"Error: Timeout!"</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span>toSend<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; mySocket.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
-Server:
+public class FortuneClient
+{
+    public static void main(String[] args) throws Exception
+    {
+        if (args.length<= 1)
+        {
+            System.out.println("You must specify a valid hostname and port number.");
+            System.exit(0);
+        }
+        String hostname = args[0];
+        String port = args[1];
 
-<div class="codecolorer-container java default">
-  <div class="java codecolorer">
-    <span class="co3">/**<br /> &nbsp;* Fortune Cookie server program.<br /> &nbsp;* @author Bradley Carey<br /> &nbsp;* @version November 2, 2010<br /> &nbsp;*/</span><br /> &nbsp;<br /> <span class="kw1">import</span> <span class="co2">java.io.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.util.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.net.*</span><span class="sy0">;</span><br /> &nbsp;<br /> <span class="kw1">public</span> <span class="kw1">class</span> FortuneServer<br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">void</span> main<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a><span class="br0">&#91;</span><span class="br0">&#93;</span> args<span class="br0">&#41;</span> <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; Scanner myScanner <span class="sy0">=</span> <span class="kw1">new</span> Scanner<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">in</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"Enter port number: "</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> port <span class="sy0">=</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+integer"><span class="kw3">Integer</span></a>.<span class="me1">parseInt</span><span class="br0">&#40;</span>myScanner.<span class="me1">nextLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagramsocket"><span class="kw3">DatagramSocket</span></a> socket <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagramsocket"><span class="kw3">DatagramSocket</span></a><span class="br0">&#40;</span>port<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+random"><span class="kw3">Random</span></a> random <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+random"><span class="kw3">Random</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span><span class="br0">&#40;</span><span class="kw2">true</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a> request <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a><span class="br0">&#40;</span><span class="kw1">new</span> <span class="kw4">byte</span><span class="br0">&#91;</span><span class="nu0">1024</span><span class="br0">&#93;</span>, <span class="nu0">1024</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; socket.<span class="me1">receive</span><span class="br0">&#40;</span>request<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+inetaddress"><span class="kw3">InetAddress</span></a> clientHost <span class="sy0">=</span> request.<span class="me1">getAddress</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> clientPort <span class="sy0">=</span> request.<span class="me1">getPort</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> fortuneNo <span class="sy0">=</span> random.<span class="me1">nextInt</span><span class="br0">&#40;</span><span class="nu0">10</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> fortune <span class="sy0">=</span> <span class="st0">""</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0"></span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"A feather in the hand is better than a bird in the air."</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">1</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Better ask twice than lose yourself once."</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">2</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Disbelief destroys the magic."</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">3</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Fortune Not Found: Abort, Retry, Ignore?"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">4</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Help! I'm being held prisoner in a chinese bakery!"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">5</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Please visit us at www.wontonfood.com"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">6</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Confucius says: Man who run behind car get exhausted!"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">7</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Unexpected statement."</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">8</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"The cake IS a lie."</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span>fortuneNo <span class="sy0">==</span> <span class="nu0">9</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Cannot find host. Your fortune is void."</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fortune <span class="sy0">+=</span> <span class="st0">"Error: Your fortune does not exist."</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">byte</span><span class="br0">&#91;</span><span class="br0">&#93;</span> fortunereply <span class="sy0">=</span> fortune.<span class="me1">getBytes</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a> reply <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+datagrampacket"><span class="kw3">DatagramPacket</span></a><span class="br0">&#40;</span>fortunereply, fortunereply.<span class="me1">length</span>, clientHost, clientPort<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; socket.<span class="me1">send</span><span class="br0">&#40;</span>reply<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+        InetAddress destination = InetAddress.getByName(hostname);
+
+        Random myRandom = new Random();
+        int requestNo = myRandom.nextInt(10);
+        String toSend = "" + requestNo;
+
+        DatagramSocket mySocket = new DatagramSocket();
+        mySocket.setSoTimeout(2000);
+        byte[] os = toSend.getBytes();
+        DatagramPacket sendThis = new DatagramPacket(os, os.length, destination, Integer.parseInt(port));
+        mySocket.send(sendThis);
+
+        try
+        {
+            DatagramPacket replyPacket = new DatagramPacket(new byte[1024], 1024);
+            mySocket.receive(replyPacket);
+            String recvMsg = new String(replyPacket.getData());
+            recvMsg = recvMsg.replaceAll("\n","");
+            System.out.println("Fortune: " + recvMsg);
+        }
+        catch (SocketTimeoutException e)
+        {
+            System.out.println("Error: Timeout!");
+        }
+
+        System.out.println(toSend);
+        mySocket.close();
+    }
+}
+{{< /highlight >}}
+
+#Server
+
+{{< highlight java >}}
+/**
+ * Fortune Cookie server program.
+ * @author Bradley Carey
+ * @version November 2, 2010
+ */
+
+import java.io.*;
+import java.util.*;
+import java.net.*;
+
+public class FortuneServer
+{
+    public static void main(String[] args) throws Exception
+    {
+        Scanner myScanner = new Scanner(System.in);
+        System.out.print("Enter port number: ");
+        int port = Integer.parseInt(myScanner.nextLine());
+        DatagramSocket socket = new DatagramSocket(port);
+        Random random = new Random();
+        while(true)
+        {
+            DatagramPacket request = new DatagramPacket(new byte[1024], 1024);
+            socket.receive(request);
+
+            InetAddress clientHost = request.getAddress();
+            int clientPort = request.getPort();
+            int fortuneNo = random.nextInt(10);
+
+            String fortune = "";
+            if(fortuneNo == 0)
+                fortune += "A feather in the hand is better than a bird in the air.";
+            else if(fortuneNo == 1)
+                fortune += "Better ask twice than lose yourself once.";
+            else if(fortuneNo == 2)
+                fortune += "Disbelief destroys the magic.";
+            else if(fortuneNo == 3)
+                fortune += "Fortune Not Found: Abort, Retry, Ignore?";
+            else if(fortuneNo == 4)
+                fortune += "Help! I'm being held prisoner in a chinese bakery!";
+            else if(fortuneNo == 5)
+                fortune += "Please visit us at www.wontonfood.com";
+            else if(fortuneNo == 6)
+                fortune += "Confucius says: Man who run behind car get exhausted!";
+            else if(fortuneNo == 7)
+                fortune += "Unexpected statement.";
+            else if(fortuneNo == 8)
+                fortune += "The cake IS a lie.";
+            else if(fortuneNo == 9)
+                fortune += "Cannot find host. Your fortune is void.";
+            else
+                fortune += "Error: Your fortune does not exist.";
+
+            byte[] fortunereply = fortune.getBytes();
+            DatagramPacket reply = new DatagramPacket(fortunereply, fortunereply.length, clientHost, clientPort);
+            socket.send(reply);
+        }
+    }
+}
+{{< /highlight >}}

@@ -17,28 +17,32 @@ This script is a very simplified version of the imagery section of my old websit
   3. On line #6 you need to specify the path to the full images, which is probably the same path that you used on step #1.
   4. If you notice on line #7, each image is displayed inside of a html DIV container that uses the CSS class titled “gallery”. I included the CSS that I used in my imagery section in the second code box below. Feel free to customize this CSS to go along with your website’s layout.
 
-<div class="codecolorer-container php default" style="overflow:auto;white-space:nowrap;">
-  <table cellspacing="0" cellpadding="0">
-    <tr>
-      <td class="line-numbers">
-        <div>
-          1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />
-        </div>
-      </td>
-      
-      <td>
-        <div class="php codecolorer">
-          <span class="kw2"><?php</span><br /> <span class="kw1">foreach</span><span class="br0">(</span><span class="kw2">new</span> DirectoryIterator<span class="br0">(</span><span class="st_h">'/path/to/images'</span><span class="br0">)</span> <span class="kw1">as</span> <span class="re0">$iterator</span><span class="br0">)</span><br /> <span class="br0">{</span><br />     <span class="kw1">if</span><span class="br0">(</span><span class="re0">$iterator</span><span class="sy0">-></span><span class="me1">isFile</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span><br />     <span class="br0">{</span><br />         <span class="re0">$thumbPath</span> <span class="sy0">=</span> <span class="st0">"./path/to/thumbs/thumb_"</span> <span class="sy0">.</span> <span class="re0">$iterator</span><span class="sy0">-></span><span class="me1">getFilename</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br />         <span class="kw1">echo</span> <span class="st_h">'<a href="./pathto/fullsize/images/'</span> <span class="sy0">.</span> <span class="re0">$iterator</span><span class="sy0">-></span><span class="me1">getFilename</span><span class="br0">(</span><span class="br0">)</span> <span class="sy0">.</span> <span class="st_h">'\ ><div class="gallery"><img src='</span><span class="sy0">;</span><br />         <span class="kw1">echo</span> <span class="re0">$thumbPath</span> <span class="sy0">.</span> <span class="st0">""</span> <span class="sy0">/></span>\n<span class="sy0"><</span>p<span class="sy0">></span><span class="st0">" . <span class="es4">$iterator->getFilename</span>() . "</span><span class="sy0"></</span>p<span class="sy0">></</span>div<span class="sy0">></</span>a<span class="sy0">></span>\n<span class="st0">";<br />     }<br /> }<br /> ?></span>
-        </div>
-      </td>
-    </tr>
-  </table>
-</div>
+{{< highlight php >}}
+<?php
+foreach(new DirectoryIterator('/path/to/images') as $iterator)
+{
+    if($iterator->isFile())
+    {
+        $thumbPath = "./path/to/thumbs/thumb_" . $iterator->getFilename();
+        echo '<a href="./pathto/fullsize/images/' . $iterator->getFilename() . '\ ><div class="gallery"><img src=';
+        echo $thumbPath . "" />\n<p>" . $iterator->getFilename() . "</p></div></a>\n";
+    }
+}
+?>
+{{< /highlight >}}
 
 Here is the CSS code for the gallery class that I used:
 
-<div class="codecolorer-container css default" style="overflow:auto;white-space:nowrap;">
-  <div class="css codecolorer">
-    <style type<span class="sy0">=</span><span class="st0">"text/css"</span><span class="sy0">></span><br />     div<span class="re1">.gallery</span> <span class="br0">{</span><br />       <span class="kw1">float</span><span class="sy0">:</span> <span class="kw2">left</span><span class="sy0">;</span><br />       <span class="kw1">width</span><span class="sy0">:</span> <span class="re3">104px</span><span class="sy0">;</span><br />       <span class="kw1">padding</span><span class="sy0">:</span> <span class="re3">5px</span><span class="sy0">;</span><br />       <span class="kw1">margin</span><span class="sy0">:</span> <span class="re3">5px</span><span class="sy0">;</span><br />       <span class="kw1">padding-top</span><span class="sy0">:</span> <span class="re3">5px</span><span class="sy0">;</span><br />       <span class="kw1">border</span><span class="sy0">:</span> <span class="re3">1px</span> <span class="kw2">dashed</span> <span class="re0">#000000</span><span class="sy0">;</span><br />       <span class="kw1">height</span><span class="sy0">:</span> <span class="re3">120px</span><span class="sy0">;</span><br />     <span class="br0">}</span><br /> </style<span class="sy0">></span>
-  </div>
-</div>
+{{< highlight css >}}
+<style type="text/css">
+    div.gallery {
+      float: left;
+      width: 104px;
+      padding: 5px;
+      margin: 5px;
+      padding-top: 5px;
+      border: 1px dashed #000000;
+      height: 120px;
+    }
+</style>
+{{< /highlight >}}

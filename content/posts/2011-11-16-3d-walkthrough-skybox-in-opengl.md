@@ -17,15 +17,310 @@ This is a walkthrough with a bunch of random items. Included are: a giant pyrami
 
 Look at the myKeyboard() function to see what keys move. This program also relies upon texture.bmp as well as grass.bmp and BitmapLoader.h in order to run.
 
-<!--more-->
-
 Dependencies:
 
   * [Download grass.bmp](/images/2015/01/grass.bmp)
   * [Download BitmapLoader.h](/images/2015/01/BitmapLoader.h)
 
-<div class="codecolorer-container cpp default">
-  <div class="cpp codecolorer">
-    <span class="co1">// Bradley Carey</span><br /> <span class="co1">// 11/16/2011</span><br /> &nbsp;<br /> <span class="co2">#include "stdafx.h"</span><br /> <span class="co2">#include <stdio.h></span><br /> <span class="co2">#include <stdlib.h></span><br /> <span class="co2">#include <math.h></span><br /> <span class="co2">#include "GL/glut.h"</span><br /> <span class="co2">#include "BitmapLoader.h"</span><br /> &nbsp;<br /> <span class="kw4">void</span> init<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> display<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> myIdle<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> createTexture1<span class="br0">&#40;</span><span class="kw4">unsigned</span> <span class="kw4">char</span> <span class="sy2">*</span>mytexture1, BITMAPINFOHEADER myBitmap1<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> createTexture2<span class="br0">&#40;</span><span class="kw4">unsigned</span> <span class="kw4">char</span> <span class="sy2">*</span>mytexture2, BITMAPINFOHEADER myBitmap2<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">float</span> randf<span class="br0">&#40;</span><span class="kw4">float</span> a, <span class="kw4">float</span> b<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">int</span> main<span class="br0">&#40;</span><span class="kw4">int</span> argc, <span class="kw4">char</span><span class="sy2">**</span> argv<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">double</span> eyeX <span class="sy1">=</span> <span class="nu0">30</span>, eyeY <span class="sy1">=</span> <span class="nu0"></span>, eyeZ <span class="sy1">=</span> <span class="nu0">60</span>, atX <span class="sy1">=</span> <span class="nu0"></span>, atY <span class="sy1">=</span> <span class="nu0"></span>, atZ <span class="sy1">=</span> <span class="nu0"></span>, theta <span class="sy1">=</span><span class="nu0"></span><span class="sy4">;</span><br /> <span class="kw4">float</span> rotation <span class="sy1">=</span> <span class="sy2">-</span><span class="nu0">90</span><span class="sy4">;</span><br /> <span class="kw4">bool</span> draw <span class="sy1">=</span> <span class="kw2">true</span><span class="sy4">;</span><br /> BITMAPINFOHEADER myBitmap1, myBitmap2<span class="sy4">;</span><br /> <span class="kw4">unsigned</span> <span class="kw4">char</span> <span class="sy2">*</span>mytexture1, <span class="sy2">*</span>mytexture2<span class="sy4">;</span><br /> &nbsp;<br /> <span class="kw4">void</span> createTexture1<span class="br0">&#40;</span><span class="kw4">unsigned</span> <span class="kw4">char</span> <span class="sy2">*</span>mytexture1, BITMAPINFOHEADER myBitmap1<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glEnable<span class="br0">&#40;</span>GL_TEXTURE_2D<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexImage2D<span class="br0">&#40;</span>GL_TEXTURE_2D,<span class="nu0"></span>,<span class="nu0">3</span>,myBitmap1.<span class="me1">biWidth</span>,myBitmap1.<span class="me1">biHeight</span>,<span class="nu0"></span>,GL_RGB, GL_UNSIGNED_BYTE, mytexture1<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> createTexture2<span class="br0">&#40;</span><span class="kw4">unsigned</span> <span class="kw4">char</span> <span class="sy2">*</span>mytexture2, BITMAPINFOHEADER myBitmap2<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glEnable<span class="br0">&#40;</span>GL_TEXTURE_2D<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexImage2D<span class="br0">&#40;</span>GL_TEXTURE_2D,<span class="nu0"></span>,<span class="nu0">3</span>,myBitmap2.<span class="me1">biWidth</span>,myBitmap2.<span class="me1">biHeight</span>,<span class="nu0"></span>,GL_RGB, GL_UNSIGNED_BYTE, mytexture2<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glTexParameterf<span class="br0">&#40;</span>GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">float</span> randf<span class="br0">&#40;</span><span class="kw4">float</span> a, <span class="kw4">float</span> b<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">return</span> <span class="br0">&#40;</span><span class="br0">&#40;</span>b<span class="sy2">-</span>a<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span><span class="br0">&#40;</span><span class="kw4">float</span><span class="br0">&#41;</span><span class="kw3">rand</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="kw2">RAND_MAX</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy2">+</span>a<span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> init<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; mytexture1 <span class="sy1">=</span> LoadBitmapFile<span class="br0">&#40;</span><span class="st0">"grass.bmp"</span>, <span class="sy3">&</span>myBitmap1<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>mytexture1<span class="sy1">==</span><span class="kw2">NULL</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">printf</span><span class="br0">&#40;</span><span class="st0">"grass load failed<span class="es1">\n</span>"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> w<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; scanf_s<span class="br0">&#40;</span><span class="st0">"%i"</span>,<span class="sy3">&</span>w<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">exit</span><span class="br0">&#40;</span><span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="kw1">else</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">printf</span><span class="br0">&#40;</span><span class="st0">"grass.bmp load succeeded<span class="es1">\n</span>"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; mytexture2 <span class="sy1">=</span> LoadBitmapFile<span class="br0">&#40;</span><span class="st0">"texture.bmp"</span>, <span class="sy3">&</span>myBitmap2<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>mytexture2<span class="sy1">==</span><span class="kw2">NULL</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">printf</span><span class="br0">&#40;</span><span class="st0">"texture load failed<span class="es1">\n</span>"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> w<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; scanf_s<span class="br0">&#40;</span><span class="st0">"%i"</span>,<span class="sy3">&</span>w<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">exit</span><span class="br0">&#40;</span><span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="kw1">else</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">printf</span><span class="br0">&#40;</span><span class="st0">"texture.bmp load succeeded<span class="es1">\n</span>"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; GLfloat light_ambient<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu16">0.2</span>, <span class="nu16">0.2</span>, <span class="nu16">0.2</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; GLfloat light_diffuse<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu16">0.8</span>, <span class="nu16">0.8</span>, <span class="nu16">0.8</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; GLfloat light_position<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu16">1.0</span>, <span class="nu16">20.0</span>, <span class="nu16">2.0</span>, <span class="nu16">0.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; GLfloat light_specular<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu16">0.5</span>, <span class="nu16">0.5</span>, <span class="nu16">0.5</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; glLightfv<span class="br0">&#40;</span>GL_LIGHT0, GL_AMBIENT, light_ambient<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glLightfv<span class="br0">&#40;</span>GL_LIGHT0, GL_DIFFUSE, light_diffuse<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glLightfv<span class="br0">&#40;</span>GL_LIGHT0, GL_POSITION, light_position<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glLightfv<span class="br0">&#40;</span>GL_LIGHT0, GL_POSITION, light_specular<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; glEnable<span class="br0">&#40;</span>GL_LIGHTING<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glEnable<span class="br0">&#40;</span>GL_LIGHT0<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glEnable<span class="br0">&#40;</span>GL_DEPTH_TEST<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; glClearColor<span class="br0">&#40;</span><span class="nu16">0.0</span>, <span class="nu16">0.0</span>, <span class="nu16">0.4</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glMatrixMode<span class="br0">&#40;</span>GL_PROJECTION<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; gluPerspective<span class="br0">&#40;</span><span class="nu0">60</span>, <span class="nu0">1</span>, <span class="nu0">1</span>, <span class="nu0">8000</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> display<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glClear<span class="br0">&#40;</span>GL_COLOR_BUFFER_BIT <span class="sy3">|</span> GL_DEPTH_BUFFER_BIT<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glMatrixMode<span class="br0">&#40;</span>GL_MODELVIEW<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glLoadIdentity<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; gluLookAt<span class="br0">&#40;</span>eyeX, eyeY, eyeZ, atX, atY, atZ, <span class="nu0"></span>, <span class="nu0">1</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//glRotatef(theta, 0, 1, 0);</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw4">float</span> white<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu0">1</span>, <span class="nu0">1</span>, <span class="nu0">1</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> red<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu0">1</span>, <span class="nu0"></span>, <span class="nu0"></span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> green<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu0"></span>, <span class="nu16">0.8</span>, <span class="nu16">0.1</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> blue<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu0"></span>, <span class="nu0"></span>, <span class="nu0">1</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> brown<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu16">0.64</span>, <span class="nu16">0.16</span>, <span class="nu16">0.16</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> gold<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu16">0.8</span>, <span class="nu16">0.49</span>, <span class="nu16">0.19</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> orange<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span><span class="nu0">1</span>, <span class="nu16">0.5</span>, <span class="nu0"></span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">////begin pyramid</span><br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>draw<span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glMaterialfv<span class="br0">&#40;</span>GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gold<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glBegin<span class="br0">&#40;</span>GL_TRIANGLE_FAN<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span> &nbsp;<span class="nu17">0.0f</span>, &nbsp;<span class="nu17">30.0f</span>, <span class="nu17">0.0f</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="nu17">50.0f</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span> <span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="nu17">50.0f</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span> <span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span> <span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="sy2">-</span><span class="nu17">50.0f</span>, <span class="nu17">50.0f</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glEnd<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//begin stairs</span><br /> &nbsp; &nbsp; <span class="kw1">for</span><span class="br0">&#40;</span><span class="kw4">int</span> i<span class="sy1">=</span><span class="nu0">10</span><span class="sy4">;</span> i<span class="sy1">></span><span class="nu0">1</span><span class="sy4">;</span> i<span class="sy2">--</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">float</span> rand0m<span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#123;</span>randf<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span>, randf<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span>, randf<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span>, <span class="nu16">1.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glMaterialfv<span class="br0">&#40;</span>GL_FRONT, GL_AMBIENT_AND_DIFFUSE, rand0m<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0">8</span>,<span class="br0">&#40;</span><span class="nu0">10</span><span class="sy2">-</span>i<span class="br0">&#41;</span><span class="sy2">-</span><span class="nu16">9.5</span>,<span class="nu0">8</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidCube<span class="br0">&#40;</span>i<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//begin cones</span><br /> &nbsp; &nbsp; <span class="kw1">for</span><span class="br0">&#40;</span><span class="kw4">int</span> i<span class="sy1">=</span><span class="nu0">19</span><span class="sy4">;</span> i<span class="sy1">></span><span class="nu0">1</span><span class="sy4">;</span> i<span class="sy2">--</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glMaterialfv<span class="br0">&#40;</span>GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span><span class="nu0">10</span><span class="sy2">*</span>i,<span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span><span class="nu0">40</span>,<span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0"></span>,<span class="br0">&#40;</span><span class="nu0">10</span><span class="sy2">-</span>i<span class="br0">&#41;</span>,<span class="nu0">8</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidCone<span class="br0">&#40;</span><span class="nu0">1</span>,<span class="nu0">4</span>,<span class="nu0">10</span>,<span class="nu0">10</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//begin teapots</span><br /> &nbsp; &nbsp; <span class="kw1">for</span><span class="br0">&#40;</span><span class="kw4">int</span> i<span class="sy1">=</span><span class="nu0">30</span><span class="sy4">;</span> i<span class="sy1">></span><span class="nu0">1</span><span class="sy4">;</span> i<span class="sy2">--</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glMaterialfv<span class="br0">&#40;</span>GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span><span class="nu0">4</span><span class="sy2">*</span>i,<span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0"></span>,<span class="br0">&#40;</span><span class="nu0">10</span><span class="sy2">-</span>i<span class="br0">&#41;</span><span class="sy2">+</span><span class="nu0">80</span>,<span class="sy2">-</span><span class="nu0">200</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidTeapot<span class="br0">&#40;</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">// this is a texture</span><br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; createTexture2<span class="br0">&#40;</span>mytexture2, myBitmap2<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span>theta,<span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span><span class="nu0">90</span>,<span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glBegin<span class="br0">&#40;</span>GL_POLYGON<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu0">4</span>, <span class="nu0">4</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu0">4</span>,<span class="sy2">-</span><span class="nu0">4</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span> <span class="nu0">4</span>,<span class="sy2">-</span><span class="nu0">4</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0">1</span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span> <span class="nu0">4</span>, <span class="nu0">4</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glEnd<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//begin donut</span><br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="nu0">5</span>,<span class="nu0">10</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span>theta,<span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glMaterialfv<span class="br0">&#40;</span>GL_FRONT, GL_AMBIENT_AND_DIFFUSE, orange<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidTorus<span class="br0">&#40;</span><span class="nu16">0.8</span>, <span class="nu0">2</span>, <span class="nu0">40</span>, <span class="nu0">50</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//begin snowman</span><br /> &nbsp; &nbsp; glMaterialfv<span class="br0">&#40;</span>GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span> &nbsp;<span class="co1">//head</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="nu16">2.3</span><span class="sy2">-</span><span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidSphere<span class="br0">&#40;</span><span class="nu0">1</span>,<span class="nu0">20</span>,<span class="nu0">20</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span> <span class="co1">//middle</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="nu16">0.5</span><span class="sy2">-</span><span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidSphere<span class="br0">&#40;</span><span class="nu16">1.5</span>,<span class="nu0">20</span>,<span class="nu0">20</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; glPushMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span> <span class="co1">//bottom</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTranslatef<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="sy2">-</span><span class="nu0">2</span><span class="sy2">-</span><span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glutSolidSphere<span class="br0">&#40;</span><span class="nu0">2</span>,<span class="nu0">20</span>,<span class="nu0">20</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glPopMatrix<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//begin ground</span><br /> &nbsp; &nbsp; createTexture1<span class="br0">&#40;</span>mytexture1, myBitmap1<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glBegin<span class="br0">&#40;</span>GL_POLYGON<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu0">200</span>,<span class="sy2">-</span><span class="nu0">5</span>,<span class="sy2">-</span><span class="nu0">200</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu0">200</span>,<span class="sy2">-</span><span class="nu0">5</span>,<span class="nu0">200</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0">1</span>,<span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span><span class="nu0">200</span>,<span class="sy2">-</span><span class="nu0">5</span>,<span class="nu0">200</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glTexCoord2f<span class="br0">&#40;</span><span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glNormal3f<span class="br0">&#40;</span><span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span> glVertex3f<span class="br0">&#40;</span><span class="nu0">200</span>,<span class="sy2">-</span><span class="nu0">5</span>,<span class="sy2">-</span><span class="nu0">200</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glEnd<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutSwapBuffers<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> myIdle<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; theta <span class="sy2">+</span><span class="sy1">=</span> <span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>theta <span class="sy1">></span> <span class="nu0">360</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; theta <span class="sy2">-</span><span class="sy1">=</span> <span class="nu0">360</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutPostRedisplay<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> myKeyboard<span class="br0">&#40;</span><span class="kw4">unsigned</span> <span class="kw4">char</span> c, <span class="kw4">int</span> x, <span class="kw4">int</span> y<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">switch</span><span class="br0">&#40;</span>c<span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'x'</span><span class="sy4">:</span> eyeX <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> atX <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'X'</span><span class="sy4">:</span> eyeX <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> atX <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'y'</span><span class="sy4">:</span> eyeY <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> atY <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'Y'</span><span class="sy4">:</span> eyeY <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> atY <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'z'</span><span class="sy4">:</span> eyeZ <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> atZ <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'Z'</span><span class="sy4">:</span> eyeZ <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> atZ <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'d'</span><span class="sy4">:</span> atX <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'a'</span><span class="sy4">:</span> atX <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'u'</span><span class="sy4">:</span> atY <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'q'</span><span class="sy4">:</span> atY <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'s'</span><span class="sy4">:</span> atZ <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'w'</span><span class="sy4">:</span> atZ <span class="sy2">+</span><span class="sy1">=</span> <span class="nu16">0.3</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="st0">'p'</span><span class="sy4">:</span> draw <span class="sy1">=</span> <span class="kw2">false</span><span class="sy4">;</span> <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; glutPostRedisplay<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> mySpecialFunc<span class="br0">&#40;</span><span class="kw4">int</span> key, <span class="kw4">int</span> x, <span class="kw4">int</span> y<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw4">double</span> oneDeg <span class="sy1">=</span> <span class="nu16">3.14159</span><span class="sy2">/</span><span class="nu16">180.0</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">double</span> length <span class="sy1">=</span> <span class="nu0"></span>, deltaX <span class="sy1">=</span> <span class="nu0"></span>, deltaZ <span class="sy1">=</span> <span class="nu0"></span>, angle, amount <span class="sy1">=</span> <span class="nu16">0.005</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">switch</span><span class="br0">&#40;</span>key<span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> GLUT_KEY_LEFT<span class="sy4">:</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rotation <span class="sy2">+</span><span class="sy1">=</span> <span class="nu0">1</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>rotation <span class="sy1">></span> <span class="nu16">360.0</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rotation <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">360.0</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atX <span class="sy1">=</span> <span class="kw3">cos</span><span class="br0">&#40;</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atX<span class="sy2">-</span>eyeX<span class="br0">&#41;</span> <span class="sy2">+</span> <span class="kw3">sin</span><span class="br0">&#40;</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atZ<span class="sy2">-</span>eyeZ<span class="br0">&#41;</span> <span class="sy2">+</span> eyeX<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atZ <span class="sy1">=</span> <span class="sy2">-</span><span class="kw3">sin</span><span class="br0">&#40;</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atX<span class="sy2">-</span>eyeX<span class="br0">&#41;</span> <span class="sy2">+</span> <span class="kw3">cos</span><span class="br0">&#40;</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atZ<span class="sy2">-</span>eyeZ<span class="br0">&#41;</span> <span class="sy2">+</span> eyeZ<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> GLUT_KEY_RIGHT<span class="sy4">:</span> <span class="co1">//rotate at point to viewer's right</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rotation <span class="sy2">-</span><span class="sy1">=</span> <span class="nu0">1</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>rotation <span class="sy1">></span> <span class="nu16">360.0</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rotation <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">360.0</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atX <span class="sy1">=</span> <span class="kw3">cos</span><span class="br0">&#40;</span><span class="sy2">-</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atX<span class="sy2">-</span>eyeX<span class="br0">&#41;</span> <span class="sy2">+</span> <span class="kw3">sin</span><span class="br0">&#40;</span><span class="sy2">-</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atZ<span class="sy2">-</span>eyeZ<span class="br0">&#41;</span> <span class="sy2">+</span> eyeX<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atZ <span class="sy1">=</span> <span class="sy2">-</span><span class="kw3">sin</span><span class="br0">&#40;</span><span class="sy2">-</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atX<span class="sy2">-</span>eyeX<span class="br0">&#41;</span> <span class="sy2">+</span> <span class="kw3">cos</span><span class="br0">&#40;</span><span class="sy2">-</span>oneDeg<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atZ<span class="sy2">-</span>eyeZ<span class="br0">&#41;</span> <span class="sy2">+</span> eyeZ<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> GLUT_KEY_UP<span class="sy4">:</span> <span class="co1">//move viewer forward</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; length <span class="sy1">=</span> <span class="kw3">sqrt</span><span class="br0">&#40;</span><span class="br0">&#40;</span>atX <span class="sy2">-</span> eyeX<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atX <span class="sy2">-</span> eyeX<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy2">+</span> <span class="br0">&#40;</span>atY <span class="sy2">-</span> eyeY<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atY <span class="sy2">-</span> eyeY<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy2">+</span> <span class="br0">&#40;</span>atZ <span class="sy2">-</span> eyeZ<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atZ <span class="sy2">-</span> eyeZ<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; angle <span class="sy1">=</span> <span class="br0">&#40;</span><span class="nu16">3.14159</span><span class="sy2">/</span><span class="nu16">180.0</span><span class="br0">&#41;</span><span class="sy2">*</span>rotation<span class="sy4">;</span> <span class="co1">//convert rotation to radians</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; deltaX <span class="sy1">=</span> amount<span class="sy2">*</span><span class="kw3">cos</span><span class="br0">&#40;</span>angle<span class="br0">&#41;</span><span class="sy2">*</span>length<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; deltaZ <span class="sy1">=</span> amount<span class="sy2">*</span><span class="kw3">sin</span><span class="br0">&#40;</span>angle<span class="br0">&#41;</span><span class="sy2">*</span>length<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; eyeX <span class="sy2">+</span><span class="sy1">=</span> deltaX<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; eyeZ <span class="sy2">+</span><span class="sy1">=</span> deltaZ<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atX <span class="sy2">+</span><span class="sy1">=</span> deltaX<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atZ <span class="sy2">+</span><span class="sy1">=</span> deltaZ<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> GLUT_KEY_DOWN<span class="sy4">:</span> <span class="co1">//move viewer down</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; length <span class="sy1">=</span> <span class="kw3">sqrt</span><span class="br0">&#40;</span><span class="br0">&#40;</span>atX <span class="sy2">-</span> eyeX<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atX <span class="sy2">-</span> eyeX<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy2">+</span> <span class="br0">&#40;</span>atY <span class="sy2">-</span> eyeY<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atY <span class="sy2">-</span> eyeY<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy2">+</span> <span class="br0">&#40;</span>atZ <span class="sy2">-</span> eyeZ<span class="br0">&#41;</span><span class="sy2">*</span><span class="br0">&#40;</span>atZ <span class="sy2">-</span> eyeZ<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; angle <span class="sy1">=</span> <span class="br0">&#40;</span><span class="nu16">3.14159</span><span class="sy2">/</span><span class="nu16">180.0</span><span class="br0">&#41;</span><span class="sy2">*</span>rotation<span class="sy4">;</span> <span class="co1">//convert rotation to radians</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; deltaX <span class="sy1">=</span> amount<span class="sy2">*</span><span class="kw3">cos</span><span class="br0">&#40;</span>angle<span class="br0">&#41;</span><span class="sy2">*</span>length<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; deltaZ <span class="sy1">=</span> amount<span class="sy2">*</span><span class="kw3">sin</span><span class="br0">&#40;</span>angle<span class="br0">&#41;</span><span class="sy2">*</span>length<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; eyeX <span class="sy2">-</span><span class="sy1">=</span> deltaX<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; eyeZ <span class="sy2">-</span><span class="sy1">=</span> deltaZ<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atX <span class="sy2">-</span><span class="sy1">=</span> deltaX<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; atZ <span class="sy2">-</span><span class="sy1">=</span> deltaZ<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; glutPostRedisplay<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">int</span> main<span class="br0">&#40;</span><span class="kw4">int</span> argc, <span class="kw4">char</span><span class="sy2">**</span> argv<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glutInit<span class="br0">&#40;</span><span class="sy3">&</span>argc,argv<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitDisplayMode<span class="br0">&#40;</span>GLUT_DOUBLE<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitWindowSize<span class="br0">&#40;</span><span class="nu0">800</span>,<span class="nu0">800</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitWindowPosition<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="nu0">10</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutCreateWindow<span class="br0">&#40;</span><span class="st0">"Walkthrough"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutDisplayFunc<span class="br0">&#40;</span>display<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutIdleFunc<span class="br0">&#40;</span>myIdle<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutSpecialFunc<span class="br0">&#40;</span>mySpecialFunc<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutKeyboardFunc<span class="br0">&#40;</span>myKeyboard<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; init<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutMainLoop<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">return</span> <span class="nu0"></span><span class="sy4">;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+{{< highlight cpp >}}
+// Bradley Carey
+// 11/16/2011
+
+#include "stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "GL/glut.h"
+#include "BitmapLoader.h"
+
+void init();
+void display();
+void myIdle();
+void createTexture1(unsigned char *mytexture1, BITMAPINFOHEADER myBitmap1);
+void createTexture2(unsigned char *mytexture2, BITMAPINFOHEADER myBitmap2);
+float randf(float a, float b);
+int main(int argc, char** argv);
+double eyeX = 30, eyeY = 0, eyeZ = 60, atX = 0, atY = 0, atZ = 0, theta =0;
+float rotation = -90;
+bool draw = true;
+BITMAPINFOHEADER myBitmap1, myBitmap2;
+unsigned char *mytexture1, *mytexture2;
+
+void createTexture1(unsigned char *mytexture1, BITMAPINFOHEADER myBitmap1)
+{
+    glEnable(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D,0,3,myBitmap1.biWidth,myBitmap1.biHeight,0,GL_RGB, GL_UNSIGNED_BYTE, mytexture1);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+}
+
+void createTexture2(unsigned char *mytexture2, BITMAPINFOHEADER myBitmap2)
+{
+    glEnable(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D,0,3,myBitmap2.biWidth,myBitmap2.biHeight,0,GL_RGB, GL_UNSIGNED_BYTE, mytexture2);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+}
+
+float randf(float a, float b)
+{
+    return ((b-a)*((float)rand()/RAND_MAX))+a;
+}
+
+void init()
+{
+    mytexture1 = LoadBitmapFile("grass.bmp", &myBitmap1);
+    if(mytexture1==NULL)
+    {
+        printf("grass load failed\n");
+        int w;
+        scanf_s("%i",&w);
+        exit(0);
+    }
+    else
+        printf("grass.bmp load succeeded\n");
+
+    mytexture2 = LoadBitmapFile("texture.bmp", &myBitmap2);
+    if(mytexture2==NULL)
+    {
+        printf("texture load failed\n");
+        int w;
+        scanf_s("%i",&w);
+        exit(0);
+    }
+    else
+        printf("texture.bmp load succeeded\n");
+
+    GLfloat light_ambient[] = {0.2, 0.2, 0.2, 1.0};
+    GLfloat light_diffuse[] = {0.8, 0.8, 0.8, 1.0};
+    GLfloat light_position[] = {1.0, 20.0, 2.0, 0.0};
+    GLfloat light_specular[] = {0.5, 0.5, 0.5, 1.0};
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_specular);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+
+    glClearColor(0.0, 0.0, 0.4, 0);
+    glMatrixMode(GL_PROJECTION);
+    gluPerspective(60, 1, 1, 8000);
+}
+
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+
+    //glRotatef(theta, 0, 1, 0);
+
+    float white[] = {1, 1, 1, 1.0};
+    float red[] = {1, 0, 0, 1.0};
+    float green[] = {0, 0.8, 0.1, 1.0};
+    float blue[] = {0, 0, 1, 1.0};
+    float brown[] = {0.64, 0.16, 0.16, 1.0};
+    float gold[] = {0.8, 0.49, 0.19, 1.0};
+    float orange[] = {1, 0.5, 0, 1.0};
+
+    ////begin pyramid
+    if(draw)
+    {
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, gold);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex3f(  0.0f,  30.0f, 0.0f);
+        glVertex3f(-50.0f, -50.0f, 50.0f);
+        glVertex3f( 50.0f, -50.0f, 50.0f);
+        glVertex3f( 50.0f, -50.0f, -50.0f);
+        glVertex3f( -50.0f, -50.0f, -50.0f);
+        glVertex3f(-50.0f, -50.0f, 50.0f);
+    glEnd();
+    }
+
+    //begin stairs
+    for(int i=10; i>1; i--)
+    {
+    glPushMatrix();
+        float rand0m[] = {randf(0,1), randf(0,1), randf(0,1), 1.0};
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, rand0m);
+        glTranslatef(8,(10-i)-9.5,8);
+        glutSolidCube(i);
+    glPopMatrix();
+    }
+
+    //begin cones
+    for(int i=19; i>1; i--)
+    {
+    glPushMatrix();
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+        glRotatef(10*i,0,0,1);
+        glRotatef(40,0,1,0);
+        glTranslatef(0,(10-i),8);
+        glutSolidCone(1,4,10,10);
+    glPopMatrix();
+    }
+
+    //begin teapots
+    for(int i=30; i>1; i--)
+    {
+    glPushMatrix();
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+        glRotatef(4*i,0,0,1);
+        glTranslatef(0,(10-i)+80,-200);
+        glutSolidTeapot(1);
+    glPopMatrix();
+    }
+
+    // this is a texture
+    glPushMatrix();
+        createTexture2(mytexture2, myBitmap2);
+        glRotatef(theta,0,1,0);
+        glRotatef(90,0,0,1);
+        glBegin(GL_POLYGON);
+            glTexCoord2f(1,0); glNormal3f(0,0,1); glVertex3f(-4, 4, 0);
+            glTexCoord2f(0,0); glNormal3f(0,0,1); glVertex3f(-4,-4, 0);
+            glTexCoord2f(0,1); glNormal3f(0,0,1); glVertex3f( 4,-4, 0);
+            glTexCoord2f(1,1); glNormal3f(0,0,1); glVertex3f( 4, 4, 0);
+        glEnd();
+    glPopMatrix();
+
+    //begin donut
+    glPushMatrix();
+        glTranslatef(10,5,10);
+        glRotatef(theta,1,1,1);
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, orange);
+        glutSolidTorus(0.8, 2, 40, 50);
+    glPopMatrix();
+
+    //begin snowman
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+    glPushMatrix();  //head
+        glTranslatef(10,2.3-1,0);
+        glutSolidSphere(1,20,20);
+    glPopMatrix();
+
+    glPushMatrix(); //middle
+        glTranslatef(10,0.5-1,0);
+        glutSolidSphere(1.5,20,20);
+    glPopMatrix();
+
+    glPushMatrix(); //bottom
+        glTranslatef(10,-2-1,0);
+        glutSolidSphere(2,20,20);
+    glPopMatrix();
+
+    //begin ground
+    createTexture1(mytexture1, myBitmap1);
+    glBegin(GL_POLYGON);
+        glTexCoord2f(0,0); glNormal3f(0,1,0); glVertex3f(-200,-5,-200);
+        glTexCoord2f(0,1); glNormal3f(0,1,0); glVertex3f(-200,-5,200);
+        glTexCoord2f(1,1); glNormal3f(0,1,0); glVertex3f(200,-5,200);
+        glTexCoord2f(1,0); glNormal3f(0,1,0); glVertex3f(200,-5,-200);
+    glEnd();
+    glutSwapBuffers();
+}
+
+void myIdle()
+{
+    theta += 2;
+    if(theta > 360)
+        theta -= 360;
+    glutPostRedisplay();
+}
+
+void myKeyboard(unsigned char c, int x, int y)
+{
+    switch(c)
+    {
+        case 'x': eyeX -= 0.3; atX -= 0.3; break;
+        case 'X': eyeX += 0.3; atX += 0.3; break;
+        case 'y': eyeY -= 0.3; atY -= 0.3; break;
+        case 'Y': eyeY += 0.3; atY += 0.3; break;
+        case 'z': eyeZ -= 0.3; atZ -= 0.3; break;
+        case 'Z': eyeZ += 0.3; atZ += 0.3; break;
+        case 'd': atX -= 0.3; break;
+        case 'a': atX += 0.3; break;
+        case 'u': atY -= 0.3; break;
+        case 'q': atY += 0.3; break;
+        case 's': atZ -= 0.3; break;
+        case 'w': atZ += 0.3; break;
+        case 'p': draw = false; break;
+    }
+    glutPostRedisplay();
+}
+
+void mySpecialFunc(int key, int x, int y)
+{
+    double oneDeg = 3.14159/180.0;
+    double length = 0, deltaX = 0, deltaZ = 0, angle, amount = 0.005;
+    switch(key)
+    {
+        case GLUT_KEY_LEFT:
+            rotation += 1;
+            if(rotation > 360.0)
+                rotation -= 360.0;
+            atX = cos(oneDeg)*(atX-eyeX) + sin(oneDeg)*(atZ-eyeZ) + eyeX;
+            atZ = -sin(oneDeg)*(atX-eyeX) + cos(oneDeg)*(atZ-eyeZ) + eyeZ;
+            break;
+
+        case GLUT_KEY_RIGHT: //rotate at point to viewer's right
+            rotation -= 1;
+            if(rotation > 360.0)
+                rotation -= 360.0;
+            atX = cos(-oneDeg)*(atX-eyeX) + sin(-oneDeg)*(atZ-eyeZ) + eyeX;
+            atZ = -sin(-oneDeg)*(atX-eyeX) + cos(-oneDeg)*(atZ-eyeZ) + eyeZ;
+            break;
+
+        case GLUT_KEY_UP: //move viewer forward
+            length = sqrt((atX - eyeX)*(atX - eyeX)
+            + (atY - eyeY)*(atY - eyeY)
+            + (atZ - eyeZ)*(atZ - eyeZ));
+            angle = (3.14159/180.0)*rotation; //convert rotation to radians
+            deltaX = amount*cos(angle)*length;
+            deltaZ = amount*sin(angle)*length;
+            eyeX += deltaX;
+            eyeZ += deltaZ;
+            atX += deltaX;
+            atZ += deltaZ;
+            break;
+
+        case GLUT_KEY_DOWN: //move viewer down
+            length = sqrt((atX - eyeX)*(atX - eyeX)
+            + (atY - eyeY)*(atY - eyeY)
+            + (atZ - eyeZ)*(atZ - eyeZ));
+            angle = (3.14159/180.0)*rotation; //convert rotation to radians
+            deltaX = amount*cos(angle)*length;
+            deltaZ = amount*sin(angle)*length;
+            eyeX -= deltaX;
+            eyeZ -= deltaZ;
+            atX -= deltaX;
+            atZ -= deltaZ;
+            break;
+    }
+    glutPostRedisplay();
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE);
+    glutInitWindowSize(800,800);
+    glutInitWindowPosition(10,10);
+    glutCreateWindow("Walkthrough");
+    glutDisplayFunc(display);
+    glutIdleFunc(myIdle);
+    glutSpecialFunc(mySpecialFunc);
+    glutKeyboardFunc(myKeyboard);
+    init();
+    glutMainLoop();
+    return 0;
+}
+{{< /highlight >}}

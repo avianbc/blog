@@ -19,8 +19,294 @@ This project evolved from my time in the Cyber Security class at Marshall Univer
 
 This program uses a wordlist of more than 58,000 words from the English language when brute forcing, which is parsed into a java TreeSet for maximum speed. As such, a text file containing words to match it to is required. I’ve used the one found at this link: [Corncob Wordlist](http://www.mieliestronk.com/wordlist.html)
 
-<div class="codecolorer-container java default">
-  <div class="java codecolorer">
-    <span class="co3">/**<br /> &nbsp;* CS340 Cryptography<br /> &nbsp;* February 23, 2011<br /> &nbsp;* @author Bradley carey<br /> &nbsp;*/</span><br /> &nbsp;<br /> <span class="kw1">import</span> <span class="co2">java.io.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">java.util.*</span><span class="sy0">;</span><br /> <span class="kw1">import</span> <span class="co2">javax.swing.*</span><span class="sy0">;</span><br /> &nbsp;<br /> <span class="kw1">public</span> <span class="kw1">class</span> Encryption<br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">void</span> main<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a><span class="br0">&#91;</span><span class="br0">&#93;</span> args<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+nullpointerexception"><span class="kw3">NullPointerException</span></a>, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filenotfoundexception"><span class="kw3">FileNotFoundException</span></a>, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span class="kw3">IOException</span></a>,<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+numberformatexception"><span class="kw3">NumberFormatException</span></a>, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span class="kw3">Exception</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; Scanner input <span class="sy0">=</span> <span class="kw1">new</span> Scanner<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">in</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+file"><span class="kw3">File</span></a> file <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> strLine <span class="sy0">=</span> <span class="st0">""</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+jfilechooser"><span class="kw3">JFileChooser</span></a> fc <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+jfilechooser"><span class="kw3">JFileChooser</span></a><span class="br0">&#40;</span><span class="st0">"."</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; file <span class="sy0">=</span> openFile<span class="br0">&#40;</span>fc<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; strLine <span class="sy0">=</span> readFile<span class="br0">&#40;</span>file<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span>strLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> select <span class="sy0">=</span> <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span><span class="br0">&#40;</span>select <span class="sy0">!=</span> <span class="nu0"></span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> fName <span class="sy0">=</span> file.<span class="me1">getName</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">""</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>Currently selected file: "</span><span class="st0">" + fName + "</span><span class="st0">"..."</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>1 - Open a different file."</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>2 - Encrypt "</span> <span class="sy0">+</span> fName<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>3 - Decrypt "</span> <span class="sy0">+</span> fName<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>4 - Attempt to brute force the key used to encrypt &nbsp;"</span> <span class="sy0">+</span> fName<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>0 - Quit."</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>What would you like to do? "</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; select <span class="sy0">=</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+integer"><span class="kw3">Integer</span></a>.<span class="me1">parseInt</span><span class="br0">&#40;</span>input.<span class="me1">nextLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">switch</span><span class="br0">&#40;</span>select<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="nu0">1</span><span class="sy0">:</span> <span class="co1">//open file</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; file <span class="sy0">=</span> openFile<span class="br0">&#40;</span>fc<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; strLine <span class="sy0">=</span> readFile<span class="br0">&#40;</span>file<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span>strLine<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="nu0">2</span><span class="sy0">:</span> <span class="co1">// encrypt</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; encrypt<span class="br0">&#40;</span>file, <span class="kw2">true</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="nu0">3</span><span class="sy0">:</span> <span class="co1">//decrypt</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; encrypt<span class="br0">&#40;</span>file, <span class="kw2">false</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="nu0">4</span><span class="sy0">:</span> <span class="co1">// brute force</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bruteForce<span class="br0">&#40;</span>file<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">case</span> <span class="nu0"></span><span class="sy0">:</span> <span class="co1">//exit</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">exit</span><span class="br0">&#40;</span><span class="nu0"></span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">default</span><span class="sy0">:</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"User fail detected. Please stop doing it wrong and try again."</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co3">/**<br /> &nbsp; &nbsp; &nbsp;*<br /> &nbsp; &nbsp; &nbsp;* @param fc : .<br /> &nbsp; &nbsp; &nbsp;* @return &nbsp; : Returns the file to be opened.<br /> &nbsp; &nbsp; &nbsp;*/</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+file"><span class="kw3">File</span></a> openFile<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+jfilechooser"><span class="kw3">JFileChooser</span></a> fc<span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+file"><span class="kw3">File</span></a> file <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"Open a file..."</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> returnVal <span class="sy0">=</span> fc.<span class="me1">showOpenDialog</span><span class="br0">&#40;</span><span class="kw2">null</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>returnVal <span class="sy0">==</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+jfilechooser"><span class="kw3">JFileChooser</span></a>.<span class="me1">APPROVE_OPTION</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; file <span class="sy0">=</span> fc.<span class="me1">getSelectedFile</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"Opened "</span><span class="st0">" + file.getName() + "</span><span class="st0">"..."</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span> <span class="kw1">else</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">println</span><span class="br0">&#40;</span><span class="st0">"User cancelled the process. "</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">+</span> <span class="st0">"File selection unchanged."</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> file<span class="sy0">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co3">/**<br /> &nbsp; &nbsp; &nbsp;*<br /> &nbsp; &nbsp; &nbsp;* @param file : Reads in a file.<br /> &nbsp; &nbsp; &nbsp;* @return &nbsp; &nbsp; : Returns the text in the file.<br /> &nbsp; &nbsp; &nbsp;* @throws FileNotFoundException<br /> &nbsp; &nbsp; &nbsp;* @throws IOException<br /> &nbsp; &nbsp; &nbsp;*/</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> readFile<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+file"><span class="kw3">File</span></a> file<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filenotfoundexception"><span class="kw3">FileNotFoundException</span></a>, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span class="kw3">IOException</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filereader"><span class="kw3">FileReader</span></a> fr <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filereader"><span class="kw3">FileReader</span></a><span class="br0">&#40;</span>file<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+bufferedreader"><span class="kw3">BufferedReader</span></a> br <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+bufferedreader"><span class="kw3">BufferedReader</span></a><span class="br0">&#40;</span>fr<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> strLine <span class="sy0">=</span> <span class="st0">""</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> temp <span class="sy0">=</span> br.<span class="me1">read</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span><span class="br0">&#40;</span>temp <span class="sy0">!=</span> <span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; strLine <span class="sy0">+=</span> <span class="br0">&#40;</span><span class="kw4">char</span><span class="br0">&#41;</span>temp<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; temp <span class="sy0">=</span> br.<span class="me1">read</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; br.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; fr.<span class="me1">close</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span> strLine<span class="sy0">;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co3">/**<br /> &nbsp; &nbsp; &nbsp;*<br /> &nbsp; &nbsp; &nbsp;* @param file &nbsp; &nbsp;: File to be encrypted or decrypted.<br /> &nbsp; &nbsp; &nbsp;* @param encrypt : Encrypt if TRUE, decrypt if FALSE.<br /> &nbsp; &nbsp; &nbsp;* @param brute &nbsp; : Overrides encrypt if TRUE, will brutally force the<br /> &nbsp; &nbsp; &nbsp;* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;selected file open. Does nothing if FALSE.<br /> &nbsp; &nbsp; &nbsp;* @throws UnsupportedEncodingException<br /> &nbsp; &nbsp; &nbsp;* @throws FileNotFoundException<br /> &nbsp; &nbsp; &nbsp;* @throws IOException<br /> &nbsp; &nbsp; &nbsp;* @throws StringIndexOutOfBoundsException<br /> &nbsp; &nbsp; &nbsp;*/</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">void</span> encrypt<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+file"><span class="kw3">File</span></a> file, <span class="kw4">boolean</span> encrypt<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">throws</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+unsupportedencodingexception"><span class="kw3">UnsupportedEncodingException</span></a>, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filenotfoundexception"><span class="kw3">FileNotFoundException</span></a>,<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span class="kw3">IOException</span></a>, <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+stringindexoutofboundsexception"><span class="kw3">StringIndexOutOfBoundsException</span></a><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">byte</span><span class="br0">&#91;</span><span class="br0">&#93;</span> tempbyte <span class="sy0">=</span> <span class="kw1">new</span> <span class="kw4">byte</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">byte</span><span class="br0">&#91;</span><span class="br0">&#93;</span> tempkey <span class="sy0">=</span> <span class="kw1">new</span> <span class="kw4">byte</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> outfile <span class="sy0">=</span> <span class="st0">""</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; Scanner input <span class="sy0">=</span> <span class="kw1">new</span> Scanner<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">in</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filereader"><span class="kw3">FileReader</span></a> fr <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filereader"><span class="kw3">FileReader</span></a><span class="br0">&#40;</span>file<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+bufferedreader"><span class="kw3">BufferedReader</span></a> br <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+bufferedreader"><span class="kw3">BufferedReader</span></a><span class="br0">&#40;</span>fr<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"Enter key: "</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> key <span class="sy0">=</span> input.<span class="me1">nextLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; key <span class="sy0">=</span> key.<span class="me1">substring</span><span class="br0">&#40;</span><span class="nu0"></span>, <span class="nu0">2</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; tempkey <span class="sy0">=</span> key.<span class="me1">getBytes</span><span class="br0">&#40;</span><span class="st0">"US-ASCII"</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> outstr <span class="sy0">=</span> <span class="st0">""</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> txt <span class="sy0">=</span> <span class="st0">""</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">int</span> temp0 <span class="sy0">=</span> br.<span class="me1">read</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span><span class="br0">&#40;</span>temp0 <span class="sy0">!=</span> <span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; txt <span class="sy0">+=</span> <span class="br0">&#40;</span><span class="kw4">char</span><span class="br0">&#41;</span>temp0<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; temp0 <span class="sy0">=</span> br.<span class="me1">read</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>txt.<span class="me1">length</span><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="sy0">%</span> <span class="nu0">2</span> <span class="sy0">!=</span> <span class="nu0"></span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; txt <span class="sy0">+=</span> <span class="st0">" "</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span><span class="br0">&#40;</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0"></span><span class="sy0">;</span> i <span class="sy0"><</span> txt.<span class="me1">length</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">/</span><span class="nu0">2</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="br0">&#40;</span><span class="kw4">byte</span><span class="br0">&#41;</span>txt.<span class="me1">charAt</span><span class="br0">&#40;</span>i<span class="sy0">*</span><span class="nu0">2</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="br0">&#40;</span><span class="kw4">byte</span><span class="br0">&#41;</span>txt.<span class="me1">charAt</span><span class="br0">&#40;</span>i<span class="sy0">*</span><span class="nu0">2</span><span class="sy0">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="br0">&#40;</span><span class="kw4">byte</span><span class="br0">&#41;</span><span class="br0">&#40;</span>tempbyte<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy0">^</span> tempkey<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="br0">&#40;</span><span class="kw4">byte</span><span class="br0">&#41;</span><span class="br0">&#40;</span>tempbyte<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy0">^</span> tempkey<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outstr <span class="sy0">+=</span> <span class="br0">&#40;</span><span class="kw4">char</span><span class="br0">&#41;</span>tempbyte<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy0">+</span> <span class="st0">""</span> <span class="sy0">+</span> <span class="br0">&#40;</span><span class="kw4">char</span><span class="br0">&#41;</span>tempbyte<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>encrypt<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outfile <span class="sy0">+=</span> <span class="st0">"encryptedMessage.txt"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>encrypt<span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outfile <span class="sy0">+=</span> <span class="st0">"decryptedMessage.txt"</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filewriter"><span class="kw3">FileWriter</span></a> fw <span class="sy0">=</span> <span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+filewriter"><span class="kw3">FileWriter</span></a><span class="br0">&#40;</span><span class="kw1">new</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+file"><span class="kw3">File</span></a><span class="br0">&#40;</span><span class="st0">".<span class="es0">\"</span> + outfile));<br /> &nbsp; &nbsp; &nbsp; &nbsp; BufferedWriter bw = new BufferedWriter(fw);<br /> &nbsp; &nbsp; &nbsp; &nbsp; bw.write(outstr);<br /> &nbsp; &nbsp; &nbsp; &nbsp; bw.close();<br /> &nbsp; &nbsp; &nbsp; &nbsp; fw.close();<br /> &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("</span><span class="st0">"<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; + "</span>\nWritten to file<span class="sy0">:</span> <span class="st0">""</span> <span class="sy0">+</span> outfile <span class="sy0">+</span> <span class="st0">""</span>...<span class="st0">"<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; + "</span>\n<span class="st0">" + outstr);<br /> &nbsp; &nbsp; }<br /> &nbsp;<br /> &nbsp; &nbsp; /*<br /> &nbsp; &nbsp; &nbsp;* &nbsp;Decrypts file and returns the file as a string for use in the<br /> &nbsp; &nbsp; &nbsp;* &nbsp;brute force function<br /> &nbsp; &nbsp; &nbsp;* @param file &nbsp;: File to decrypt<br /> &nbsp; &nbsp; &nbsp;* @param key1 &nbsp;: First byte of encryption key<br /> &nbsp; &nbsp; &nbsp;* @param key2 &nbsp;: Second byte of encryption key<br /> &nbsp; &nbsp; &nbsp;*/<br /> &nbsp; &nbsp; public static String decrypt(File file, byte key1, byte key2) throws Exception<br /> &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; String outstr = "</span><span class="st0">";<br /> &nbsp; &nbsp; &nbsp; &nbsp; String txt = "</span><span class="st0">";<br /> &nbsp; &nbsp; &nbsp; &nbsp; byte[] tempbyte = new byte[2];<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; FileReader fr = new FileReader(file);<br /> &nbsp; &nbsp; &nbsp; &nbsp; BufferedReader br = new BufferedReader(fr);<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; int temp0 = br.read();<br /> &nbsp; &nbsp; &nbsp; &nbsp; while(temp0 != -1)<br /> &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; txt += (char)temp0;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; temp0 = br.read();<br /> &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; if(txt.length() % 2 != 0)<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; txt += "</span> <span class="st0">";<br /> &nbsp; &nbsp; &nbsp; &nbsp; for(int i = 0; i < txt.length()/2; i++)<br /> &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte[0] = (byte)txt.charAt(i*2);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte[1] = (byte)txt.charAt(i*2+1);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte[0] = (byte)(tempbyte[0] ^ key1);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempbyte[1] = (byte)(tempbyte[1] ^ key2);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outstr += (char)tempbyte[0] + "</span><span class="st0">" + (char)tempbyte[1];<br /> &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; return outstr;<br /> &nbsp; &nbsp; }<br /> &nbsp;<br /> &nbsp; &nbsp; /* Attempts to discover the 16 bit key used to encrypt the given file<br /> &nbsp; &nbsp; &nbsp;* @param file &nbsp;: File to brute force<br /> &nbsp; &nbsp; &nbsp;*/<br /> &nbsp; &nbsp; public static void bruteForce(File file) throws Exception<br /> &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; ArrayList<String> possibleKeys = new ArrayList<String>(); // holds possible keys<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; TreeSet<String> wordList = new TreeSet<String>(); // populate tree with wordlist<br /> &nbsp; &nbsp; &nbsp; &nbsp; File words = new File("</span>.\\corncob_lowercase.<span class="me1">txt</span><span class="st0">");<br /> &nbsp; &nbsp; &nbsp; &nbsp; Scanner in = new Scanner(words);<br /> &nbsp; &nbsp; &nbsp; &nbsp; while(in.hasNextLine())<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; wordList.add(in.nextLine());<br /> &nbsp; &nbsp; &nbsp; &nbsp; in.close();<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; byte[] tempkey = new byte[2];<br /> &nbsp; &nbsp; &nbsp; &nbsp; FileReader fr = new FileReader(file);<br /> &nbsp; &nbsp; &nbsp; &nbsp; BufferedReader br = new BufferedReader(fr);<br /> &nbsp; &nbsp; &nbsp; &nbsp; for(int i = 32; i <= 126; i++)<br /> &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for(int j = 32; j <= 126; j++)<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempkey[0] = (byte)i;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tempkey[1] = (byte)j;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String decryptedStuff = decrypt(file, tempkey[0], tempkey[1]);<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ArrayList<String> tokens = new ArrayList<String>();<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Scanner tokenize = new Scanner(decryptedStuff);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while (tokenize.hasNext()) &nbsp;//tokenize decrypted ciphertext<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tokens.add(tokenize.next());<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //System.out.println("</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+key"><span class="kw3">Key</span></a><span class="sy0">:</span> <span class="br0">&#91;</span><span class="st0">" + (char)tempkey[0] + "</span><span class="st0">" + (char)tempkey[1] + "</span><span class="br0">&#93;</span> Message<span class="sy0">:</span> <span class="st0">" + decryptedStuff);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //System.out.println("</span>Tokens<span class="sy0">:</span> <span class="br0">&#91;</span><span class="st0">" + tokens + "</span><span class="br0">&#93;</span> and total # of tokens<span class="sy0">:</span> <span class="st0">" + tokens.size());<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; int confidence = 0;<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for(int w = 0; w < tokens.size(); w++)<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String s = tokens.get(w).toLowerCase();<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //s = s.replaceAll("</span><span class="br0">&#91;</span><span class="sy0">^</span>a<span class="sy0">-</span>zA<span class="sy0">-</span>Z<span class="br0">&#93;</span><span class="st0">", "</span><span class="st0">"); // remove all non-alpha characters from current token?<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(s.length() > 3 && wordList.contains(s)) //ignore words less than 3 characters to improve speed<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("</span>Match found using token <span class="br0">&#91;</span><span class="st0">" + s + "</span><span class="br0">&#93;</span> and key <span class="st0">" + (char)tempkey[0] + (char)tempkey[1]);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; confidence++;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(confidence > 1) // add key to list of possible solutions as well as a confidence level<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; possibleKeys.add(confidence + "</span> <span class="st0">" + (char)tempkey[0] + "</span><span class="st0">" + (char)tempkey[1]);<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; Collections.sort(possibleKeys, Collections.reverseOrder()); // sort possible keys in order from highest confidence to least<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("</span>Now printing <span class="nu0">5</span> best matches. <span class="me1">The</span> number at the start is the confidence level and it is followed by the two<span class="sy0">-</span>digit key.<span class="st0">");<br /> &nbsp; &nbsp; &nbsp; &nbsp; for (int r=0; r < possibleKeys.size() && r < 5; r++) // print possible keys that were found<br /> &nbsp; &nbsp; &nbsp; &nbsp; {<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System.out.println(possibleKeys.get(r));<br /> &nbsp; &nbsp; &nbsp; &nbsp; }<br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; String temp = possibleKeys.get(0);<br /> &nbsp; &nbsp; &nbsp; &nbsp; temp = temp.substring(temp.length()-2);<br /> &nbsp; &nbsp; &nbsp; &nbsp; System.out.println("</span>The key used to encrypt was probably <span class="st0">" + temp<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; + "</span>\nIf you feel <span class="kw1">this</span> is incorrect, please refer to the list above.<span class="st0">");<br /> &nbsp; &nbsp; }<br /> }</span>
-  </div>
-</div>
+{{< highlight java >}}
+/**
+ * CS340 Cryptography
+ * February 23, 2011
+ * @author Bradley carey
+ */
+
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+public class Encryption
+{
+    public static void main(String[] args)
+            throws NullPointerException, FileNotFoundException, IOException,
+            NumberFormatException, Exception
+    {
+        Scanner input = new Scanner(System.in);
+        File file = null;
+        String strLine = "";
+        JFileChooser fc = new JFileChooser(".");
+
+        file = openFile(fc);
+        strLine = readFile(file);
+        System.out.println(strLine);
+
+        int select = -1;
+        while(select != 0)
+        {
+            String fName = file.getName();
+            System.out.print(""
+                    + "\nCurrently selected file: "" + fName + ""..."
+                    + "\n1 - Open a different file."
+                    + "\n2 - Encrypt " + fName
+                    + "\n3 - Decrypt " + fName
+                    + "\n4 - Attempt to brute force the key used to encrypt  " + fName
+                    + "\n0 - Quit."
+                    + "\nWhat would you like to do? ");
+            select = Integer.parseInt(input.nextLine());
+            switch(select)
+            {
+                case 1: //open file
+                    file = openFile(fc);
+                    strLine = readFile(file);
+                    System.out.println(strLine);
+                    break;
+                case 2: // encrypt
+                    encrypt(file, true);
+                    break;
+                case 3: //decrypt
+                    encrypt(file, false);
+                    break;
+                case 4: // brute force
+                    bruteForce(file);
+                    break;
+                case 0: //exit
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("User fail detected. Please stop doing it wrong and try again.");
+                    break;
+            }
+        }
+    }
+{{< /highlight >}}
+
+{{< highlight java >}}
+    /**
+     *
+     * @param fc : .
+     * @return   : Returns the file to be opened.
+     */
+    public static File openFile(JFileChooser fc)
+    {
+        File file = null;
+        System.out.println("Open a file...");
+        int returnVal = fc.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            file = fc.getSelectedFile();
+            System.out.println("Opened "" + file.getName() + ""...");
+        } else
+        {
+            System.out.println("User cancelled the process. "
+                    + "File selection unchanged.");
+        }
+        return file;
+    }
+{{< /highlight >}}
+
+{{< highlight java >}}
+    /**
+     *
+     * @param file : Reads in a file.
+     * @return     : Returns the text in the file.
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static String readFile(File file)
+            throws FileNotFoundException, IOException
+    {
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String strLine = "";
+
+        int temp = br.read();
+        while(temp != -1)
+        {
+            strLine += (char)temp;
+            temp = br.read();
+        }
+        br.close();
+        fr.close();
+        return strLine;
+    }
+{{< /highlight >}}
+
+{{< highlight java >}}
+    /**
+     *
+     * @param file    : File to be encrypted or decrypted.
+     * @param encrypt : Encrypt if TRUE, decrypt if FALSE.
+     * @param brute   : Overrides encrypt if TRUE, will brutally force the
+     *                  selected file open. Does nothing if FALSE.
+     * @throws UnsupportedEncodingException
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws StringIndexOutOfBoundsException
+     */
+    public static void encrypt(File file, boolean encrypt)
+            throws UnsupportedEncodingException, FileNotFoundException,
+            IOException, StringIndexOutOfBoundsException
+    {
+        byte[] tempbyte = new byte[2];
+        byte[] tempkey = new byte[2];
+        String outfile = "";
+
+        Scanner input = new Scanner(System.in);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+
+        System.out.print("Enter key: ");
+        String key = input.nextLine();
+        key = key.substring(0, 2);
+        tempkey = key.getBytes("US-ASCII");
+
+        String outstr = "";
+        String txt = "";
+
+        int temp0 = br.read();
+        while(temp0 != -1)
+        {
+            txt += (char)temp0;
+            temp0 = br.read();
+        }
+
+        if(txt.length() % 2 != 0)
+            txt += " ";
+        for(int i = 0; i < txt.length()/2; i++)
+        {
+            tempbyte[0] = (byte)txt.charAt(i*2);
+            tempbyte[1] = (byte)txt.charAt(i*2+1);
+            tempbyte[0] = (byte)(tempbyte[0] ^ tempkey[0]);
+            tempbyte[1] = (byte)(tempbyte[1] ^ tempkey[1]);
+            outstr += (char)tempbyte[0] + "" + (char)tempbyte[1];
+        }
+
+        if(encrypt)
+        {
+            outfile += "encryptedMessage.txt";
+        }
+        else if(!encrypt)
+        {
+            outfile += "decryptedMessage.txt";
+        }
+        FileWriter fw = new FileWriter(new File(".\" + outfile));
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(outstr);
+        bw.close();
+        fw.close();
+        System.out.println("\nWritten to file: " + outfile + "..." + "\n" + outstr);
+    }
+{{< /highlight >}}
+
+{{< highlight java >}}
+    /*
+     *  Decrypts file and returns the file as a string for use in the
+     *  brute force function
+     * @param file  : File to decrypt
+     * @param key1  : First byte of encryption key
+     * @param key2  : Second byte of encryption key
+     */
+    public static String decrypt(File file, byte key1, byte key2) throws Exception
+    {
+        String outstr = "";
+        String txt = "";
+        byte[] tempbyte = new byte[2];
+
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+
+        int temp0 = br.read();
+        while(temp0 != -1)
+        {
+            txt += (char)temp0;
+            temp0 = br.read();
+        }
+
+        if(txt.length() % 2 != 0)
+            txt += " ";
+        for(int i = 0; i < txt.length()/2; i++)
+        {
+            tempbyte[0] = (byte)txt.charAt(i*2);
+            tempbyte[1] = (byte)txt.charAt(i*2+1);
+            tempbyte[0] = (byte)(tempbyte[0] ^ key1);
+            tempbyte[1] = (byte)(tempbyte[1] ^ key2);
+            outstr += (char)tempbyte[0] + "" + (char)tempbyte[1];
+        }
+
+        return outstr;
+    }
+{{< /highlight >}}
+
+{{< highlight java >}}
+    /* Attempts to discover the 16 bit key used to encrypt the given file
+     * @param file  : File to brute force
+     */
+    public static void bruteForce(File file) throws Exception
+    {
+        ArrayList<String> possibleKeys = new ArrayList<String>(); // holds possible keys
+
+        TreeSet<String> wordList = new TreeSet<String>(); // populate tree with wordlist
+        File words = new File(".\\corncob_lowercase.txt");
+        Scanner in = new Scanner(words);
+        while(in.hasNextLine())
+            wordList.add(in.nextLine());
+        in.close();
+
+        byte[] tempkey = new byte[2];
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        for(int i = 32; i <= 126; i++)
+        {
+            for(int j = 32; j <= 126; j++)
+            {
+                tempkey[0] = (byte)i;
+                tempkey[1] = (byte)j;
+                String decryptedStuff = decrypt(file, tempkey[0], tempkey[1]);
+
+                ArrayList<String> tokens = new ArrayList<String>();
+                Scanner tokenize = new Scanner(decryptedStuff);
+                while (tokenize.hasNext())  //tokenize decrypted ciphertext
+                {
+                    tokens.add(tokenize.next());
+                }
+                //System.out.println("Key: [" + (char)tempkey[0] + "" + (char)tempkey[1] + "] Message: " + decryptedStuff);
+                //System.out.println("Tokens: [" + tokens + "] and total # of tokens: " + tokens.size());
+
+                int confidence = 0;
+
+                for(int w = 0; w < tokens.size(); w++)
+                {
+                    String s = tokens.get(w).toLowerCase();
+                    //s = s.replaceAll("[^a-zA-Z]", ""); // remove all non-alpha characters from current token?
+
+                    if(s.length() > 3 && wordList.contains(s)) //ignore words less than 3 characters to improve speed
+                    {
+                        System.out.println("Match found using token [" + s + "] and key " + (char)tempkey[0] + (char)tempkey[1]);
+                        confidence++;
+                    }
+                }
+                if(confidence > 1) // add key to list of possible solutions as well as a confidence level
+                    possibleKeys.add(confidence + " " + (char)tempkey[0] + "" + (char)tempkey[1]);
+            }
+        }
+
+        Collections.sort(possibleKeys, Collections.reverseOrder()); // sort possible keys in order from highest confidence to least
+
+        System.out.println("Now printing 5 best matches. The number at the start is the confidence level and it is followed by the two-digit key.");
+        for (int r=0; r < possibleKeys.size() && r < 5; r++) // print possible keys that were found
+        {
+            System.out.println(possibleKeys.get(r));
+        }
+
+        String temp = possibleKeys.get(0);
+        temp = temp.substring(temp.length()-2);
+        System.out.println("The key used to encrypt was probably " + temp
+                + "\nIf you feel this is incorrect, please refer to the list above.");
+    }
+}
+{{< /highlight >}}

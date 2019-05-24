@@ -15,10 +15,132 @@ categories:
 
 The wireframe you see here is nothing more than the 3d plot of the function [f(x,z) = 4\*cos(sqrt(x\*x+z*z))](http://www.wolframalpha.com/input/?i=plot+4*cos%28sqrt%28x*x%2Bz*z%29%29+from+-6+to+6) rendered using GL\_LINE\_LOOP and a little math. As of now, is is still untextured and without lighting. Though in 3D Wireframe Solids, I added that functionality as well.
 
-<!--more-->
+{{< highlight cpp >}}
+#include "stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "GL/glut.h"
 
-<div class="codecolorer-container cpp default">
-  <div class="cpp codecolorer">
-    <span class="co2">#include "stdafx.h"</span><br /> <span class="co2">#include <stdio.h></span><br /> <span class="co2">#include <stdlib.h></span><br /> <span class="co2">#include <math.h></span><br /> <span class="co2">#include "GL/glut.h"</span><br /> &nbsp;<br /> <span class="kw4">void</span> init<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> display<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> myIdle<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">int</span> main<span class="br0">&#40;</span><span class="kw4">int</span> argc, <span class="kw4">char</span><span class="sy2">**</span> argv<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">float</span> f<span class="br0">&#40;</span><span class="kw4">double</span> x, <span class="kw4">double</span> z<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="kw4">void</span> normalVector<span class="br0">&#40;</span><span class="kw4">float</span> x, <span class="kw4">float</span> y, <span class="kw4">float</span> z, <span class="kw4">float</span> <span class="sy2">*</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> <span class="kw4">float</span> thetaY <span class="sy1">=</span> <span class="nu0"></span><span class="sy4">;</span><br /> <span class="kw4">float</span> thetaX <span class="sy1">=</span> <span class="nu0">20</span><span class="sy4">;</span><br /> <span class="kw4">float</span> increment <span class="sy1">=</span> <span class="nu16">0.5</span><span class="sy4">;</span><br /> <span class="kw4">float</span> xNear <span class="sy1">=</span> <span class="sy2">-</span><span class="nu0">6</span>, xFar <span class="sy1">=</span> <span class="nu0">6</span>, yNear <span class="sy1">=</span> <span class="sy2">-</span><span class="nu0">6</span>, yFar <span class="sy1">=</span> <span class="nu0">6</span>, zNear <span class="sy1">=</span> <span class="sy2">-</span><span class="nu0">6</span>, zFar <span class="sy1">=</span> <span class="nu0">6</span><span class="sy4">;</span><br /> <span class="kw4">float</span> n <span class="sy1">=</span> <span class="nu0">50</span>, m <span class="sy1">=</span> <span class="nu0">50</span><span class="sy4">;</span><br /> &nbsp;<br /> <span class="kw4">void</span> init<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glClearColor<span class="br0">&#40;</span><span class="nu16">1.0</span>, <span class="nu16">1.0</span>, <span class="nu16">1.0</span>, <span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glMatrixMode<span class="br0">&#40;</span>GL_PROJECTION<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glOrtho<span class="br0">&#40;</span>xNear, xFar, yNear, yFar, zNear, zFar<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glColor3f<span class="br0">&#40;</span><span class="nu16">0.0</span>,<span class="nu16">0.0</span>,<span class="nu16">1.0</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">float</span> f<span class="br0">&#40;</span><span class="kw4">double</span> x, <span class="kw4">double</span> z<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">return</span> <span class="nu0">4</span><span class="sy2">*</span><span class="kw3">cos</span><span class="br0">&#40;</span><span class="kw3">sqrt</span><span class="br0">&#40;</span>x<span class="sy2">*</span>x<span class="sy2">+</span>z<span class="sy2">*</span>z<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> normalVector<span class="br0">&#40;</span><span class="kw4">float</span> x, <span class="kw4">float</span> y, <span class="kw4">float</span> z, <span class="kw4">float</span> <span class="sy2">*</span>norm<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; norm<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="nu0">4</span><span class="sy2">*</span><span class="kw3">sin</span><span class="br0">&#40;</span><span class="kw3">sqrt</span><span class="br0">&#40;</span>x<span class="sy2">*</span>x<span class="sy2">+</span>z<span class="sy2">*</span>z<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy2">*</span>x<span class="sy2">/</span><span class="kw3">sqrt</span><span class="br0">&#40;</span>x<span class="sy2">*</span>x<span class="sy2">+</span>z<span class="sy2">*</span>z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; norm<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="nu0">1</span><span class="sy4">;</span><br /> &nbsp; &nbsp; norm<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="nu0">4</span><span class="sy2">*</span><span class="kw3">sin</span><span class="br0">&#40;</span><span class="kw3">sqrt</span><span class="br0">&#40;</span>x<span class="sy2">*</span>x<span class="sy2">+</span>z<span class="sy2">*</span>z<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy2">*</span>z<span class="sy2">/</span><span class="kw3">sqrt</span><span class="br0">&#40;</span>x<span class="sy2">*</span>x<span class="sy2">+</span>z<span class="sy2">*</span>z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> d <span class="sy1">=</span> norm<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="sy2">*</span>norm<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy2">+</span> norm<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy2">*</span>norm<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy2">+</span> norm<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy2">*</span>norm<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>d <span class="sy1">></span> <span class="nu0"></span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span><span class="kw4">int</span> k <span class="sy1">=</span> <span class="nu0"></span><span class="sy4">;</span> k <span class="sy1"><</span> <span class="nu0">3</span><span class="sy4">;</span> k<span class="sy2">++</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; norm<span class="br0">&#91;</span>k<span class="br0">&#93;</span><span class="sy2">/</span><span class="sy1">=</span><span class="kw3">sqrt</span><span class="br0">&#40;</span>d<span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> display<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glClear<span class="br0">&#40;</span>GL_COLOR_BUFFER_BIT <span class="sy3">|</span> GL_DEPTH_BUFFER_BIT<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glMatrixMode<span class="br0">&#40;</span>GL_MODELVIEW<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glLoadIdentity<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span>thetaX,<span class="nu0">1</span>,<span class="nu0"></span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glRotatef<span class="br0">&#40;</span>thetaY,<span class="nu0"></span>,<span class="nu0">1</span>,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> norm<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">double</span> xGap<span class="sy1">=</span><span class="br0">&#40;</span>xNear<span class="sy2">-</span>xFar<span class="br0">&#41;</span><span class="sy2">/</span>n<span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">double</span> zGap<span class="sy1">=</span><span class="br0">&#40;</span>zNear<span class="sy2">-</span>zFar<span class="br0">&#41;</span><span class="sy2">/</span>m<span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span><span class="kw4">int</span> i<span class="sy1">=</span><span class="nu0"></span><span class="sy4">;</span> i<span class="sy1"><</span>n<span class="sy4">;</span> i<span class="sy2">++</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span><span class="kw4">int</span> j<span class="sy1">=</span><span class="nu0"></span><span class="sy4">;</span> j<span class="sy1"><</span>m<span class="sy4">;</span> j<span class="sy2">++</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glBegin<span class="br0">&#40;</span>GL_LINE_LOOP<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">float</span> x <span class="sy1">=</span> xFar <span class="sy2">+</span> i<span class="sy2">*</span>xGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">float</span> z <span class="sy1">=</span> zFar <span class="sy2">+</span> j<span class="sy2">*</span>zGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">float</span> y <span class="sy1">=</span> f<span class="br0">&#40;</span>x,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span>x,y,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; normalVector<span class="br0">&#40;</span>x,y,z,norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glNormal3fv<span class="br0">&#40;</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x <span class="sy1">=</span> xFar <span class="sy2">+</span> i<span class="sy2">*</span>xGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; z <span class="sy1">=</span> zFar <span class="sy2">+</span> <span class="br0">&#40;</span>j<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy2">*</span>zGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; y <span class="sy1">=</span> f<span class="br0">&#40;</span>x,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span>x,y,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; normalVector<span class="br0">&#40;</span>x,y,z,norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glNormal3fv<span class="br0">&#40;</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x <span class="sy1">=</span> xFar <span class="sy2">+</span> <span class="br0">&#40;</span>i<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy2">*</span>xGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; z <span class="sy1">=</span> zFar <span class="sy2">+</span> <span class="br0">&#40;</span>j<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy2">*</span>zGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; y <span class="sy1">=</span> f<span class="br0">&#40;</span>x,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span>x,y,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; normalVector<span class="br0">&#40;</span>x,y,z,norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glNormal3fv<span class="br0">&#40;</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glEnd<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glBegin<span class="br0">&#40;</span>GL_LINE_LOOP<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x <span class="sy1">=</span> xFar <span class="sy2">+</span> i<span class="sy2">*</span>xGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; z <span class="sy1">=</span> zFar <span class="sy2">+</span> j<span class="sy2">*</span>zGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; y <span class="sy1">=</span> f<span class="br0">&#40;</span>x,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span>x,y,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; normalVector<span class="br0">&#40;</span>x,y,z,norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glNormal3fv<span class="br0">&#40;</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x <span class="sy1">=</span> xFar <span class="sy2">+</span> <span class="br0">&#40;</span>i<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy2">*</span>xGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; z <span class="sy1">=</span> zFar <span class="sy2">+</span> <span class="br0">&#40;</span>j<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy2">*</span>zGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; y <span class="sy1">=</span> f<span class="br0">&#40;</span>x,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span>x,y,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; normalVector<span class="br0">&#40;</span>x,y,z,norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glNormal3fv<span class="br0">&#40;</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x <span class="sy1">=</span> xFar <span class="sy2">+</span> <span class="br0">&#40;</span>i<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy2">*</span>xGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; z <span class="sy1">=</span> zFar <span class="sy2">+</span> <span class="br0">&#40;</span>j<span class="br0">&#41;</span><span class="sy2">*</span>zGap<span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; y <span class="sy1">=</span> f<span class="br0">&#40;</span>x,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glVertex3f<span class="br0">&#40;</span>x,y,z<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; normalVector<span class="br0">&#40;</span>x,y,z,norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glNormal3fv<span class="br0">&#40;</span>norm<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; glEnd<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; glutSwapBuffers<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> myIdle<span class="br0">&#40;</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw4">double</span> zzz<span class="sy1">=</span><span class="nu0"></span><span class="sy4">;</span><br /> &nbsp; &nbsp; thetaY <span class="sy2">+</span><span class="sy1">=</span> increment<span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>thetaY <span class="sy1">></span> <span class="nu16">360.0</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; thetaY <span class="sy2">-</span><span class="sy1">=</span> <span class="nu16">360.0</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span><span class="kw4">int</span> i<span class="sy1">=</span><span class="nu0"></span><span class="sy4">;</span> i<span class="sy1"><</span><span class="nu0">1000000</span><span class="sy4">;</span> i<span class="sy2">++</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; zzz <span class="sy1">=</span> <span class="kw3">sqrt</span><span class="br0">&#40;</span><span class="br0">&#40;</span><span class="kw4">double</span><span class="br0">&#41;</span>i<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutPostRedisplay<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">int</span> main<span class="br0">&#40;</span><span class="kw4">int</span> argc, <span class="kw4">char</span><span class="sy2">**</span> argv<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glutInit<span class="br0">&#40;</span><span class="sy3">&</span>argc,argv<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitDisplayMode<span class="br0">&#40;</span>GLUT_DOUBLE<span class="sy3">|</span>GLUT_RGB<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitWindowSize<span class="br0">&#40;</span><span class="nu0">800</span>,<span class="nu0">800</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitWindowPosition<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="nu0">10</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutCreateWindow<span class="br0">&#40;</span><span class="st0">"3D Wireframe Solids"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutDisplayFunc<span class="br0">&#40;</span>display<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutIdleFunc<span class="br0">&#40;</span>myIdle<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; init<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutMainLoop<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw1">return</span> <span class="nu0"></span><span class="sy4">;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+void init();
+void display();
+void myIdle();
+int main(int argc, char** argv);
+float f(double x, double z);
+void normalVector(float x, float y, float z, float *norm);
+
+float thetaY = 0;
+float thetaX = 20;
+float increment = 0.5;
+float xNear = -6, xFar = 6, yNear = -6, yFar = 6, zNear = -6, zFar = 6;
+float n = 50, m = 50;
+
+void init()
+{
+    glClearColor(1.0, 1.0, 1.0, 0);
+    glMatrixMode(GL_PROJECTION);
+    glOrtho(xNear, xFar, yNear, yFar, zNear, zFar);
+    glColor3f(0.0,0.0,1.0);
+
+}
+
+float f(double x, double z)
+{
+    return 4*cos(sqrt(x*x+z*z));
+}
+
+void normalVector(float x, float y, float z, float *norm)
+{
+    norm[0] = 4*sin(sqrt(x*x+z*z))*x/sqrt(x*x+z*z);
+    norm[1] = 1;
+    norm[2] = 4*sin(sqrt(x*x+z*z))*z/sqrt(x*x+z*z);
+    float d = norm[0]*norm[0] + norm[1]*norm[1] + norm[2]*norm[2];
+    if(d > 0)
+        for (int k = 0; k < 3; k++)
+            norm[k]/=sqrt(d);
+}
+
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(thetaX,1,0,0);
+    glRotatef(thetaY,0,1,0);
+    float norm[3];
+    double xGap=(xNear-xFar)/n;
+    double zGap=(zNear-zFar)/m;
+    for (int i=0; i<n; i++)
+    {
+        for (int j=0; j<m; j++)
+        {
+            glBegin(GL_LINE_LOOP);
+                float x = xFar + i*xGap;
+                float z = zFar + j*zGap;
+                float y = f(x,z);
+                glVertex3f(x,y,z);
+                normalVector(x,y,z,norm);
+                glNormal3fv(norm);
+                x = xFar + i*xGap;
+                z = zFar + (j+1)*zGap;
+                y = f(x,z);
+                glVertex3f(x,y,z);
+                normalVector(x,y,z,norm);
+                glNormal3fv(norm);
+                x = xFar + (i+1)*xGap;
+                z = zFar + (j+1)*zGap;
+                y = f(x,z);
+                glVertex3f(x,y,z);
+                normalVector(x,y,z,norm);
+                glNormal3fv(norm);
+            glEnd();
+            glBegin(GL_LINE_LOOP);
+                x = xFar + i*xGap;
+                z = zFar + j*zGap;
+                y = f(x,z);
+                glVertex3f(x,y,z);
+                normalVector(x,y,z,norm);
+                glNormal3fv(norm);
+                x = xFar + (i+1)*xGap;
+                z = zFar + (j+1)*zGap;
+                y = f(x,z);
+                glVertex3f(x,y,z);
+                normalVector(x,y,z,norm);
+                glNormal3fv(norm);
+                x = xFar + (i+1)*xGap;
+                z = zFar + (j)*zGap;
+                y = f(x,z);
+                glVertex3f(x,y,z);
+                normalVector(x,y,z,norm);
+                glNormal3fv(norm);
+            glEnd();
+        }
+    }
+    glutSwapBuffers();
+}
+
+void myIdle()
+{
+    double zzz=0;
+    thetaY += increment;
+    if(thetaY > 360.0)
+        thetaY -= 360.0;
+    for (int i=0; i<1000000; i++)
+        zzz = sqrt((double)i);
+    glutPostRedisplay();
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
+    glutInitWindowSize(800,800);
+    glutInitWindowPosition(10,10);
+    glutCreateWindow("3D Wireframe Solids");
+    glutDisplayFunc(display);
+    glutIdleFunc(myIdle);
+    init();
+    glutMainLoop();
+    return 0;
+}
+{{< /highlight >}}

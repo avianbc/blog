@@ -9,9 +9,7 @@ defaultcontentlanguage = "en"
 paginate = 20
 canonifyurls = true
 
-pygmentsstyle = "b2"
-pygmentscodefences = true
-pygmentscodefencesguesssyntax = true
+pygmentsstyle = "vs"
 
 disqusShortname = "bradleycarey"
 
@@ -26,7 +24,7 @@ disqusShortname = "bradleycarey"
     hideCredits = true
     hideCopyright = true
     maxSeeAlsoItems = 5
-    custom_css = ["css/codecolorer.css","css/custom.css"]
+    custom_css = ["css/custom.css"]
 
 [taxonomies]
     category = "categories"

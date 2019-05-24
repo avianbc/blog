@@ -11,8 +11,12 @@ categories:
 ---
 Due to a severe lack of good IDEs for Lua, I have resorted to using [gedit](http://projects.gnome.org/gedit/ "gEdit"). The External Tools plug-in greatly extends the functionality of gedit by giving the user the ability to run scripts from the press a keyboard shortcut. Go to Tools > External Tools and add a new shortcut. Make sure to set the hotkey of your choice and then enter this script into the edit box on the top right:
 
-<div class="codecolorer-container bash default" style="overflow:auto;white-space:nowrap;">
-  <div class="bash codecolorer">
-    <span class="co0">#!/bin/sh</span><br /> <span class="kw1">if</span> <span class="br0">&#91;</span> <span class="re5">-f</span> <span class="re1">$GEDIT_CURRENT_DOCUMENT_DIR</span><span class="sy0">/</span>main.lua <span class="br0">&#93;</span><br /> <span class="kw1">then</span><br /> love <span class="re1">$GEDIT_CURRENT_DOCUMENT_DIR</span><br /> <span class="kw1">else</span><br /> <span class="kw3">echo</span> <span class="st0">"Error! main.lua not found!"</span><br /> <span class="kw1">fi</span>
-  </div>
-</div>
+{{< highlight bash >}}
+#!/bin/sh
+if [ -f $GEDIT_CURRENT_DOCUMENT_DIR/main.lua ]
+then
+love $GEDIT_CURRENT_DOCUMENT_DIR
+else
+echo "Error! main.lua not found!"
+fi
+{{< /highlight >}}

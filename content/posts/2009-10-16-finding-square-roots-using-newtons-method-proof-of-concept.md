@@ -12,10 +12,63 @@ categories:
 ---
 This program uses the famous method by Isaac Newton to iteratively find the square root of a number. It relies upon an inital guess which is then improved until the answer is accurate within 0.000001.
 
-<!--more-->
+{{< highlight java >}}
+/**
+ * Computes square root of a number (Newton's Method)
+ * @author Bradley Carey
+ * @version 16-Oct-2009
+ */
+import java.util.Scanner;
+public class NewtonsMethod
+{
+    public static void main(String[] args)
+    {
+        Scanner myScanner = new Scanner(System.in);
+        boolean done = false;
+        double guess=0.0;
+        while (true)
+        {
+            done = false;
+            System.out.print("\nEnter the number to take the square root of: ");
+            String answer = myScanner.nextLine();
+            double x = Double.parseDouble(answer);
 
-<div class="codecolorer-container java default">
-  <div class="java codecolorer">
-    <span class="co3">/**<br /> &nbsp;* Computes square root of a number (Newton's Method)<br /> &nbsp;* @author Bradley Carey<br /> &nbsp;* @version 16-Oct-2009<br /> &nbsp;*/</span><br /> <span class="kw1">import</span> <span class="co2">java.util.Scanner</span><span class="sy0">;</span><br /> <span class="kw1">public</span> <span class="kw1">class</span> NewtonsMethod<br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">void</span> main<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a><span class="br0">&#91;</span><span class="br0">&#93;</span> args<span class="br0">&#41;</span><br /> &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; Scanner myScanner <span class="sy0">=</span> <span class="kw1">new</span> Scanner<span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">in</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">boolean</span> done <span class="sy0">=</span> <span class="kw2">false</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">double</span> guess<span class="sy0">=</span><span class="nu0">0.0</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span><span class="kw2">true</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; done <span class="sy0">=</span> <span class="kw2">false</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"<span class="es0">\n</span>Enter the number to take the square root of: "</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span class="kw3">String</span></a> answer <span class="sy0">=</span> myScanner.<span class="me1">nextLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">double</span> x <span class="sy0">=</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+double"><span class="kw3">Double</span></a>.<span class="me1">parseDouble</span><span class="br0">&#40;</span>answer<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>x<span class="sy0"><=</span><span class="nu0"></span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; done <span class="sy0">=</span> <span class="kw2">true</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"Error: only positive inputs are valid.<span class="es0">\n</span>"</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"Enter a guess for the square root: "</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; answer <span class="sy0">=</span> myScanner.<span class="me1">nextLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; guess <span class="sy0">=</span> <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+double"><span class="kw3">Double</span></a>.<span class="me1">parseDouble</span><span class="br0">&#40;</span>answer<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span>done<span class="sy0">==</span><span class="kw2">false</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw4">double</span> newGuess <span class="sy0">=</span> guess<span class="sy0">-</span><span class="br0">&#40;</span>guess<span class="sy0">*</span>guess<span class="sy0">-</span>x<span class="br0">&#41;</span><span class="sy0">/</span><span class="br0">&#40;</span><span class="nu0">2</span><span class="sy0">*</span>guess<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"newGuess = "</span> <span class="sy0">+</span> newGuess <span class="sy0">+</span> <span class="st0">"<span class="es0">\n</span>"</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+math"><span class="kw3">Math</span></a>.<span class="me1">abs</span><span class="br0">&#40;</span>guess<span class="sy0">-</span>newGuess<span class="br0">&#41;</span><span class="sy0"><</span><span class="nu0">0.00001</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"To within .000001, The square root of "</span> <span class="sy0">+</span> x <span class="sy0">+</span> <span class="st0">" is "</span> <span class="sy0">+</span> newGuess<span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"<span class="es0">\n</span>Do another? y/n &nbsp;"</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; answer <span class="sy0">=</span> myScanner.<span class="me1">nextLine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; done<span class="sy0">=</span><span class="kw2">true</span><span class="sy0">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>answer.<span class="me1">equals</span><span class="br0">&#40;</span><span class="st0">"n"</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">out</span>.<span class="me1">print</span><span class="br0">&#40;</span><span class="st0">"Good Bye!!<span class="es0">\n</span>"</span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.google.com/search?hl=en&q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span class="kw3">System</span></a>.<span class="me1">exit</span><span class="br0">&#40;</span><span class="nu0"></span><span class="br0">&#41;</span><span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#123;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; guess <span class="sy0">=</span> newGuess<span class="sy0">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span><br /> &nbsp; &nbsp; <span class="br0">&#125;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+            if (x<=0)
+            {
+                System.out.print("Error: only positive inputs are valid.\n");
+                return;
+            }
+            else
+            {
+                System.out.print("Enter a guess for the square root: ");
+                answer = myScanner.nextLine();
+                guess = Double.parseDouble(answer);
+            }
+
+            while (!done)
+            {
+                double newGuess = guess-(guess*guess-x)/(2*guess);
+                System.out.print("newGuess = " + newGuess + "\n");
+
+                if (Math.abs(guess-newGuess)<0.00001)
+                {
+                    System.out.print("To within .000001, The square root of " + x + " is " + newGuess);
+                    System.out.print("\nDo another? y/n  ");
+                    answer = myScanner.nextLine();
+                    done=true;
+
+                    if(answer.equals("n"))
+                    {
+                        System.out.print("Good Bye!!\n");
+                        System.exit(0);
+                    }
+                }
+                else
+                {
+                    guess = newGuess;
+                }
+            }
+        }
+    }
+}
+{{< /highlight >}}

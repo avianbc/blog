@@ -19,8 +19,76 @@ I wrote an Enum extension method that attempts to grab the name from both of the
 
 Keep in mind, that it is probably best to be consistent and use only DisplayAttribute in future projects, as this basically deprecates the DescriptionAttribute method but this could be useful for legacy projects that have been updated to MVC 5.
 
-<div class="codecolorer-container csharp default">
-  <div class="csharp codecolorer">
-    <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">class</span> ExtensionMethods<br /> <span class="br0">{</span><br />     <span class="co1">/// <summary></span><br />     <span class="co1">/// Returns friendly name for enum as long as enum is decorated with a Display or Description Attribute, otherwise returns Enum.ToString()</span><br />     <span class="co1">/// </summary></span><br />     <span class="co1">/// <param name="value">Enum</param></span><br />     <span class="co1">/// <returns>Friendly name via DescriptionAttribute</returns></span><br />     <span class="kw1">public</span> <span class="kw1">static</span> <span class="kw4">string</span> ToFriendlyName<span class="br0">(</span><span class="kw1">this</span> <span class="kw4">Enum</span> <span class="kw1">value</span><span class="br0">)</span><br />     <span class="br0">{</span><br />         Type type <span class="sy0">=</span> <span class="kw1">value</span><span class="sy0">.</span><span class="me1">GetType</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br /> <br />         <span class="co1">// first, try to get [Display(Name="")] attribute and return it if exists</span><br />         <span class="kw4">string</span> displayName <span class="sy0">=</span> TryGetDisplayAttribute<span class="br0">(</span><span class="kw1">value</span>, type<span class="br0">)</span><span class="sy0">;</span><br />         <span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span><span class="kw4">String</span><span class="sy0">.</span><span class="me1">IsNullOrWhiteSpace</span><span class="br0">(</span>displayName<span class="br0">)</span><span class="br0">)</span> <br />         <span class="br0">{</span><br />             <span class="kw1">return</span> displayName<span class="sy0">;</span><br />         <span class="br0">}</span><br /> <br />         <span class="co1">// next, try to get a [Description("")] attribute</span><br />         <span class="kw4">string</span> description <span class="sy0">=</span> TryGetDescriptionAttribute<span class="br0">(</span><span class="kw1">value</span>, type<span class="br0">)</span><span class="sy0">;</span><br />         <span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span><span class="kw4">String</span><span class="sy0">.</span><span class="me1">IsNullOrWhiteSpace</span><span class="br0">(</span>description<span class="br0">)</span><span class="br0">)</span> <br />         <span class="br0">{</span> <br />             <span class="kw1">return</span> description<span class="sy0">;</span><br />         <span class="br0">}</span><br /> <br />         <span class="co1">// no attributes found, just tostring the enum :(</span><br />         <span class="kw1">return</span> <span class="kw1">value</span><span class="sy0">.</span><span class="me1">ToString</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br />     <span class="br0">}</span><br /> <br />     <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span> TryGetDescriptionAttribute<span class="br0">(</span><span class="kw4">Enum</span> <span class="kw1">value</span>, Type type<span class="br0">)</span><br />     <span class="br0">{</span><br />         <span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span>type<span class="sy0">.</span><span class="me1">IsEnum</span><span class="br0">)</span> <span class="kw1">throw</span> <a href="http://www.google.com/search?q=new+msdn.microsoft.com"><span class="kw3">new</span></a> ArgumentException<span class="br0">(</span><span class="kw4">String</span><span class="sy0">.</span><span class="me1">Format</span><span class="br0">(</span><span class="st0">"Type '{0}' is not Enum"</span>, type<span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span><br /> <br />         <span class="kw4">string</span> name <span class="sy0">=</span> <span class="kw4">Enum</span><span class="sy0">.</span><span class="me1">GetName</span><span class="br0">(</span>type, <span class="kw1">value</span><span class="br0">)</span><span class="sy0">;</span><br />         <span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span><span class="kw4">String</span><span class="sy0">.</span><span class="me1">IsNullOrWhiteSpace</span><span class="br0">(</span>name<span class="br0">)</span><span class="br0">)</span><br />         <span class="br0">{</span><br />             FieldInfo field <span class="sy0">=</span> type<span class="sy0">.</span><span class="me1">GetField</span><span class="br0">(</span>name<span class="br0">)</span><span class="sy0">;</span><br />             <span class="kw1">if</span> <span class="br0">(</span>field <span class="sy0">!=</span> <span class="kw1">null</span><span class="br0">)</span><br />             <span class="br0">{</span><br />                 DescriptionAttribute attr <span class="sy0">=</span> Attribute<span class="sy0">.</span><span class="me1">GetCustomAttribute</span><span class="br0">(</span>field, <a href="http://www.google.com/search?q=typeof+msdn.microsoft.com"><span class="kw3">typeof</span></a><span class="br0">(</span>DescriptionAttribute<span class="br0">)</span><span class="br0">)</span> <span class="kw1">as</span> DescriptionAttribute<span class="sy0">;</span><br />                 <span class="kw1">if</span> <span class="br0">(</span>attr <span class="sy0">!=</span> <span class="kw1">null</span><span class="br0">)</span><br />                 <span class="br0">{</span><br />                     <span class="kw1">return</span> attr<span class="sy0">.</span><span class="me1">Description</span><span class="sy0">;</span><br />                 <span class="br0">}</span><br />             <span class="br0">}</span><br />         <span class="br0">}</span><br /> <br />         <span class="kw1">return</span> <span class="kw1">null</span><span class="sy0">;</span><br />     <span class="br0">}</span><br /> <br />     <span class="kw1">private</span> <span class="kw1">static</span> <span class="kw4">string</span> TryGetDisplayAttribute<span class="br0">(</span><span class="kw4">Enum</span> <span class="kw1">value</span>, Type type<span class="br0">)</span><br />     <span class="br0">{</span><br />         <span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span>type<span class="sy0">.</span><span class="me1">IsEnum</span><span class="br0">)</span> <span class="kw1">throw</span> <a href="http://www.google.com/search?q=new+msdn.microsoft.com"><span class="kw3">new</span></a> ArgumentException<span class="br0">(</span><span class="kw4">String</span><span class="sy0">.</span><span class="me1">Format</span><span class="br0">(</span><span class="st0">"Type '{0}' is not Enum"</span>, type<span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span><br /> <br />         MemberInfo<span class="br0">[</span><span class="br0">]</span> members <span class="sy0">=</span> type<span class="sy0">.</span><span class="me1">GetMember</span><span class="br0">(</span><span class="kw1">value</span><span class="sy0">.</span><span class="me1">ToString</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span><br /> <br />         <span class="kw1">if</span> <span class="br0">(</span>members<span class="sy0">.</span><span class="me1">Length</span> <span class="sy0">></span> <span class="nu0"></span><span class="br0">)</span><br />         <span class="br0">{</span><br />             MemberInfo member <span class="sy0">=</span> members<span class="br0">[</span><span class="nu0"></span><span class="br0">]</span><span class="sy0">;</span><br />             <span class="kw1">var</span> attributes <span class="sy0">=</span> member<span class="sy0">.</span><span class="me1">GetCustomAttributes</span><span class="br0">(</span><a href="http://www.google.com/search?q=typeof+msdn.microsoft.com"><span class="kw3">typeof</span></a><span class="br0">(</span>DisplayAttribute<span class="br0">)</span>, <span class="kw1">false</span><span class="br0">)</span><span class="sy0">;</span><br /> <br />             <span class="kw1">if</span> <span class="br0">(</span>attributes<span class="sy0">.</span><span class="me1">Length</span> <span class="sy0">></span> <span class="nu0"></span><span class="br0">)</span><br />             <span class="br0">{</span><br />                 DisplayAttribute attribute <span class="sy0">=</span> <span class="br0">(</span>DisplayAttribute<span class="br0">)</span>attributes<span class="br0">[</span><span class="nu0"></span><span class="br0">]</span><span class="sy0">;</span><br />                 <span class="kw1">return</span> attribute<span class="sy0">.</span><span class="me1">GetName</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br />             <span class="br0">}</span><br />         <span class="br0">}</span><br /> <br />         <span class="kw1">return</span> <span class="kw1">null</span><span class="sy0">;</span><br />     <span class="br0">}</span><br /> <span class="br0">}</span>
-  </div>
-</div>
+{{< highlight csharp >}}
+public static class ExtensionMethods
+{
+    /// <summary>
+    /// Returns friendly name for enum as long as enum is decorated with a Display or Description Attribute, otherwise returns Enum.ToString()
+    /// </summary>
+    /// <param name="value">Enum</param>
+    /// <returns>Friendly name via DescriptionAttribute</returns>
+    public static string ToFriendlyName(this Enum value)
+    {
+        Type type = value.GetType();
+
+        // first, try to get [Display(Name="")] attribute and return it if exists
+        string displayName = TryGetDisplayAttribute(value, type);
+        if (!String.IsNullOrWhiteSpace(displayName))
+        {
+            return displayName;
+        }
+
+        // next, try to get a [Description("")] attribute
+        string description = TryGetDescriptionAttribute(value, type);
+        if (!String.IsNullOrWhiteSpace(description))
+        {
+            return description;
+        }
+
+        // no attributes found, just tostring the enum :(
+        return value.ToString();
+    }
+
+    private static string TryGetDescriptionAttribute(Enum value, Type type)
+    {
+        if (!type.IsEnum) throw new ArgumentException(String.Format("Type '{0}' is not Enum", type));
+
+        string name = Enum.GetName(type, value);
+        if (!String.IsNullOrWhiteSpace(name))
+        {
+            FieldInfo field = type.GetField(name);
+            if (field != null)
+            {
+                DescriptionAttribute attr = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                if (attr != null)
+                {
+                    return attr.Description;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static string TryGetDisplayAttribute(Enum value, Type type)
+    {
+        if (!type.IsEnum) throw new ArgumentException(String.Format("Type '{0}' is not Enum", type));
+
+        MemberInfo[] members = type.GetMember(value.ToString());
+
+        if (members.Length > 0)
+        {
+            MemberInfo member = members[0];
+            var attributes = member.GetCustomAttributes(typeof(DisplayAttribute), false);
+
+            if (attributes.Length > 0)
+            {
+                DisplayAttribute attribute = (DisplayAttribute)attributes[0];
+                return attribute.GetName();
+            }
+        }
+
+        return null;
+    }
+}
+{{< /highlight >}}

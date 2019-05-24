@@ -17,10 +17,82 @@ This is just a simple 2D rendering of the famous [Sierpinski gasket](http://www.
 
 This was rendered using recursion, simple math, and GL_LINES.
 
-<!--more-->
+{{< highlight cpp >}}
+#include "stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "GL/glut.h"
 
-<div class="codecolorer-container cpp default">
-  <div class="cpp codecolorer">
-    <span class="co2">#include "stdafx.h"</span><br /> <span class="co2">#include <stdio.h></span><br /> <span class="co2">#include <stdlib.h></span><br /> <span class="co2">#include <math.h></span><br /> <span class="co2">#include "GL/glut.h"</span><br /> &nbsp;<br /> <span class="co2">#include<GL/glut.h></span><br /> &nbsp;<br /> <span class="kw4">void</span> sierpinski2d<span class="br0">&#40;</span><span class="kw4">float</span> vertex1<span class="br0">&#91;</span><span class="br0">&#93;</span>, <span class="kw4">float</span> vertex2<span class="br0">&#91;</span><span class="br0">&#93;</span>, <span class="kw4">float</span> vertex3<span class="br0">&#91;</span><span class="br0">&#93;</span>, <span class="kw4">int</span> current_depth<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> next_vertex1<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span>,next_vertex2<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span>,next_vertex3<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//float perimeter = sqrt(vertex1[0]);</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="co1">//if(perimeter > 0.01)</span><br /> &nbsp; &nbsp; <span class="co1">//&nbsp; return;</span><br /> &nbsp;<br /> &nbsp; &nbsp; <span class="kw1">if</span><span class="br0">&#40;</span>current_depth <span class="sy1">>=</span> <span class="nu0">12</span><span class="br0">&#41;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; glBegin<span class="br0">&#40;</span>GL_LINES<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3fv<span class="br0">&#40;</span>vertex1<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3fv<span class="br0">&#40;</span>vertex2<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glVertex3fv<span class="br0">&#40;</span>vertex3<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glEnd<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp;<br /> &nbsp; &nbsp; next_vertex1<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex1<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="sy2">+</span>vertex2<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; next_vertex1<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex1<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy2">+</span>vertex2<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; next_vertex1<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex1<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy2">+</span>vertex2<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; next_vertex3<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex2<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="sy2">+</span>vertex3<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; next_vertex3<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex2<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy2">+</span>vertex3<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; next_vertex3<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex2<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy2">+</span>vertex3<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; next_vertex2<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex1<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="sy2">+</span>vertex3<span class="br0">&#91;</span><span class="nu0"></span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; next_vertex2<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex1<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy2">+</span>vertex3<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp; &nbsp; next_vertex2<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span> <span class="sy1">=</span> <span class="br0">&#40;</span>vertex1<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="sy2">+</span>vertex3<span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy2">/</span><span class="nu0">2</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; sierpinski2d<span class="br0">&#40;</span>next_vertex1,vertex1,next_vertex2,current_depth<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; sierpinski2d<span class="br0">&#40;</span>next_vertex1,vertex2,next_vertex3,current_depth<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; sierpinski2d<span class="br0">&#40;</span>next_vertex3,vertex3,next_vertex2,current_depth<span class="sy2">+</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> myInit<span class="br0">&#40;</span><span class="kw4">void</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp;<br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">void</span> display<span class="br0">&#40;</span><span class="kw4">void</span><span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> vertex1<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span><span class="sy1">=</span><span class="br0">&#123;</span><span class="nu16">5.0</span>,<span class="nu16">0.0</span>,<span class="nu16">0.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> vertex2<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span><span class="sy1">=</span><span class="br0">&#123;</span><span class="sy2">-</span><span class="nu16">5.0</span>,<span class="nu16">0.0</span>,<span class="nu16">0.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; <span class="kw4">float</span> vertex3<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span><span class="sy1">=</span><span class="br0">&#123;</span><span class="nu16">0.0</span>,<span class="nu16">5.0</span>,<span class="nu16">0.0</span><span class="br0">&#125;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; &nbsp; &nbsp; glClearColor<span class="br0">&#40;</span><span class="nu16">0.0</span>,<span class="nu16">0.0</span>,<span class="nu16">0.0</span>,<span class="nu16">1.0</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glClear<span class="br0">&#40;</span>GL_COLOR_BUFFER_BIT<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glColor3f<span class="br0">&#40;</span><span class="nu16">0.0</span>,<span class="nu16">0.8</span>,<span class="nu16">0.0</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glMatrixMode<span class="br0">&#40;</span>GL_PROJECTION<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glLoadIdentity<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; gluOrtho2D<span class="br0">&#40;</span><span class="sy2">-</span><span class="nu16">5.0</span>,<span class="nu16">5.0</span>,<span class="nu16">0.0</span>,<span class="nu16">5.0</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glMatrixMode<span class="br0">&#40;</span>GL_MODELVIEW<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp;<br /> &nbsp; &nbsp; sierpinski2d<span class="br0">&#40;</span>vertex1,vertex2,vertex3,<span class="nu0"></span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glFlush<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span><br /> &nbsp;<br /> <span class="kw4">int</span> main<span class="br0">&#40;</span><span class="kw4">int</span> argc,<span class="kw4">char</span> <span class="sy2">**</span>argv<span class="br0">&#41;</span><br /> <span class="br0">&#123;</span><br /> &nbsp; &nbsp; glutInit<span class="br0">&#40;</span><span class="sy3">&</span>argc,argv<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitDisplayMode<span class="br0">&#40;</span>GLUT_SINGLE <span class="sy3">|</span> GLUT_RGB <span class="sy3">|</span> GLUT_DEPTH <span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitWindowSize<span class="br0">&#40;</span><span class="nu0">800</span>,<span class="nu0">800</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutInitWindowPosition<span class="br0">&#40;</span><span class="nu0">10</span>,<span class="nu0">10</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutCreateWindow<span class="br0">&#40;</span><span class="st0">"Sierpinski 2D"</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; myInit<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span> &nbsp;<br /> &nbsp; &nbsp; glutDisplayFunc<span class="br0">&#40;</span>display<span class="br0">&#41;</span><span class="sy4">;</span><br /> &nbsp; &nbsp; glutMainLoop<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy4">;</span><br /> <span class="br0">&#125;</span>
-  </div>
-</div>
+#include<GL/glut.h>
+
+void sierpinski2d(float vertex1[], float vertex2[], float vertex3[], int current_depth)
+{
+    float next_vertex1[3],next_vertex2[3],next_vertex3[3];
+
+    //float perimeter = sqrt(vertex1[0]);
+
+    //if(perimeter > 0.01)
+    //  return;
+
+    if(current_depth >= 12)
+        return;
+
+    glBegin(GL_LINES);
+        glVertex3fv(vertex1);
+        glVertex3fv(vertex2);
+        glVertex3fv(vertex3);
+    glEnd();
+
+
+    next_vertex1[0] = (vertex1[0]+vertex2[0])/2;
+    next_vertex1[1] = (vertex1[1]+vertex2[1])/2;
+    next_vertex1[2] = (vertex1[2]+vertex2[2])/2;
+
+    next_vertex3[0] = (vertex2[0]+vertex3[0])/2;
+    next_vertex3[1] = (vertex2[1]+vertex3[1])/2;
+    next_vertex3[2] = (vertex2[2]+vertex3[2])/2;
+
+    next_vertex2[0] = (vertex1[0]+vertex3[0])/2;
+    next_vertex2[1] = (vertex1[1]+vertex3[1])/2;
+    next_vertex2[2] = (vertex1[2]+vertex3[2])/2;
+
+    sierpinski2d(next_vertex1,vertex1,next_vertex2,current_depth+1);
+    sierpinski2d(next_vertex1,vertex2,next_vertex3,current_depth+1);
+    sierpinski2d(next_vertex3,vertex3,next_vertex2,current_depth+1);
+}
+
+void myInit(void)
+{
+
+}
+
+void display(void)
+{
+    float vertex1[3]={5.0,0.0,0.0};
+    float vertex2[3]={-5.0,0.0,0.0};
+    float vertex3[3]={0.0,5.0,0.0};
+        glClearColor(0.0,0.0,0.0,1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(0.0,0.8,0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-5.0,5.0,0.0,5.0);
+    glMatrixMode(GL_MODELVIEW);
+
+    sierpinski2d(vertex1,vertex2,vertex3,0);
+    glFlush();
+}
+
+int main(int argc,char **argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH );
+    glutInitWindowSize(800,800);
+    glutInitWindowPosition(10,10);
+    glutCreateWindow("Sierpinski 2D");
+    myInit();
+    glutDisplayFunc(display);
+    glutMainLoop();
+}
+{{< /highlight >}}
