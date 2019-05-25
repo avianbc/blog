@@ -1,11 +1,10 @@
 ---
 id: 609
-title: 'Enum friendly names via DisplayAttribute and DescriptionAttribute – MVC 5 edition'
+title: 'Enum friendly names using attributes'
 date: 2015-08-02T14:58:24-04:00
 author: brad
 layout: post
 guid: http://br4d.net/?p=609
-permalink: /enum-friendly-names-via-displayattribute-and-descriptionattribute-mvc-5-edition/
 categories:
   - CSharp
   - Programming

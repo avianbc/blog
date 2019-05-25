@@ -1,6 +1,6 @@
 ---
 id: 500
-title: 'MSI Web Setup Project Error: Unable to build project output group ‘Content Files from SOMEWEB (Active)’'
+title: 'MSI Web Setup Project: Unable to build project output group'
 date: 2015-02-23T20:18:59-04:00
 author: brad
 layout: post
@@ -9,6 +9,9 @@ permalink: /msi-web-setup-project-unable-to-build-project-output-group-content-f
 categories:
   - Programming
 ---
+
+>MSI Web Setup Project - Unable to build project output group ‘Content Files from SOMEWEB (Active)’
+
 I stumbled onto this error and thanks to [Scott Hanselman’s blog](http://www.hanselman.com/blog/VisualStudioMSIProblemsUnableToBuildProjectOutputGroupContentFilesFromSOMEWEBActive.aspx "Scott Hanselman's blog") I was able to find a solution to it.
 
 The only problem? My project had a TON of files marked as Content (such as multiple versions of angular) and I didn’t want to spend all morning going through the countless folders to figure out which files were missing in order to resolve the conflict. If only Visual Studio has some way to verify this and let you know which files were missing…
