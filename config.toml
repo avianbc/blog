@@ -16,14 +16,14 @@ disqusShortname = "bradleycarey"
 [params]
     author = "Bradley Carey"
     description = "Bradley Carey's personal website"
-    keywords = "blog,developer,personal"
+    keywords = "blog,developer,personal,programming"
     info = "Full Stack Developer"
     avatarurl = "images/avatar.png"
-    footercontent = "My name is Brad and I love learning new things."
+    favicon_32 = "images/favicon.png"
+    favicon_16 = "images/favicon.png"
     dateformat = "Jan 2, 2006"
     hideCredits = true
     hideCopyright = true
-    maxSeeAlsoItems = 5
     custom_css = ["css/custom.css"]
 
 [taxonomies]
