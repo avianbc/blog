@@ -13,8 +13,6 @@ categories:
 ---
 ### Programming Related Podcasts
 
-<img class=" alignright" title="" src="http://thisdeveloperslife.com/images/tdl_logo1.png" alt="" height="60" /> 
-
   * [This Developer’s Life](http://thisdeveloperslife.com/) – Podcast in the style of This American Life dealing with programming related topics. An all time favorite of mine.
   * [Hanselminutes](http://hanselminutes.com/) – Scott Hanselman talks about web development, usually dealing with C#, javascript, ASP.NET, and other MS technologies.
   * [Herding Code](http://herdingcode.com/) – K Scott Allen, John Galloway, and others talk about programming topics.
