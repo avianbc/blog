@@ -47,7 +47,7 @@ While at college, I was accepted into the [WV Governor’s Internship Program](h
 
 Upon the conclusion of my internship, I was contracted to single-handedly develop an online filing web application that tobacco wholesalers have used to collect $107 million in tax dollars in the year 2013 alone.
 
-Once my contract was done, I jumped on board a C2C contracting company and built web, mobile, and desktop apps using all sorts of languages and frameworks.
+Once my contract was done, I jumped on board a [C2C contracting company](http://aspwv.com) and built web, mobile, and desktop apps using all sorts of languages and frameworks.
 
 I am currently working 100% remotely full time with a geographically-sparse team on a SaaS web app that is widely adopted within the insurance industry.
 
@@ -55,6 +55,8 @@ I am currently working 100% remotely full time with a geographically-sparse team
 
 Since I work as a 100% remote developer I use my location independence to my advantage and have been exercising my freedom to travel.
 
-I built a home gym and eat healthy to counteract my many hours of staring at screens. I play and teach guitar.
+I [built a home gym](https://symmetricstrength.com/lifter/avian) and eat healthy to counteract the hours spent staring at screens.
+
+I play and teach guitar. I definitely need to record more of it so I can share it online!
 
 I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge and learn more.
