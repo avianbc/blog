@@ -7,7 +7,7 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-<img class="img-thumbnail alignleft" title="" src="/images/2015/01/recent-pete-150x150.jpg" alt="Brad and Pete" />
+<img class="img-rounded alignleft" src="/images/zipline.jpg" alt="Brad" />
 
 My name is Brad and I love learning new things.
 
