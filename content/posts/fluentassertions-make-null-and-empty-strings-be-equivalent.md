@@ -3,7 +3,7 @@ title: "FluentAssertions – Make null and empty strings be equivalent"
 date: 2017-06-30T00:40:04-05:00
 categories:
   - Programming
-  - SQL
+  - CSharp
 ---
 
 [FluentAssertions](https://fluentassertions.com/strings/) is my assertion library of choice when writing tests in C#. It is very easy to extend and has a ton of nice functionality out of the box.
