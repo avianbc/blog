@@ -60,3 +60,5 @@ I [built a home gym](https://symmetricstrength.com/lifter/avian) and eat healthy
 I play and teach guitar. I definitely need to record more of it so I can share it online!
 
 I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge and learn more.
+
+<a href="https://stackexchange.com/users/319273"><img src="https://stackexchange.com/users/flair/319273.png" width="208" height="58" alt="profile for Brad on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Brad on Stack Exchange, a network of free, community-driven Q&amp;A sites"></a>
