@@ -9,7 +9,7 @@ permalink: /installing-cinnamon-on-ubuntu-12-10-quantal-quetzal/
 categories:
   - Linux
 ---
-So there is now a PPA for [Cinnamon](http://cinnamon.linuxmint.com/ "Cinnamon") which makes it incredibly easy to install on Ubuntu. If you are sick of Gnome 3, Unity, etc and just want your old traditional Gnome 2 style desktop back then you are almost required to try Cinnamon (which is a fork of the older Gnome).
+So there is now a PPA for [Cinnamon](http://linuxmint.com/ "Cinnamon") which makes it incredibly easy to install on Ubuntu. If you are sick of Gnome 3, Unity, etc and just want your old traditional Gnome 2 style desktop back then you are almost required to try Cinnamon (which is a fork of the older Gnome).
 
 To install it, just enter these commands into a terminal:
 

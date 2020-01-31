@@ -17,7 +17,6 @@ categories:
   * [Hanselminutes](http://hanselminutes.com/) – Scott Hanselman talks about web development, usually dealing with C#, javascript, ASP.NET, and other MS technologies.
   * [Herding Code](http://herdingcode.com/) – K Scott Allen, John Galloway, and others talk about programming topics.
   * [Programming Throwdown](http://www.programmingthrowdown.com/) – The hosts pick a random technology and give you a broad overview of it followed by its advantages and disadvantages.
-  * [Floating Point](http://floatingpoint.cc/) – News, tech, programming, random topics are discussed.
   * [Javascript Jabber](http://devchat.tv/js-jabber/) – The JavaScript frameworks that are released approximately 20 minutes are discussed here.
   * [Developer Tea](https://developertea.com/) – Podcast covering a diverse amount of topics relating to being a developer.
   * [Iterate](http://www.imore.com/iterate) – UX, design, and related ideas are discussed in this podcast.
