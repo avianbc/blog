@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>WebGL 3D Wireframe</title>
+<script type="text/javascript" src="glge_math.js"></script> 
+<script type="text/javascript" src="glge.js"></script> 
+<style>
+body{margin:auto; background-color: #fff; padding-top: 50px; font-family:sans; color: #666; font-size: 0.8em}
+#container{ margin:auto; width: 900px; padding: 10px; background-color: #fff; }
+</style>
+</head>
+<body>
+
+<div id="container">
+<canvas id="canvas" width="1000" height="800"></canvas>
+</div>
+
+<script id="glge_document" type="text/xml">
+	<glge>
+		<mesh id="xline">
+			<positions>
+			-100.0,0,0,
+			100.0,0,0
+			</positions>
+		</mesh>
+		<mesh id="yline">
+			<positions>
+			0,-100,0,
+			0,100,0
+			</positions>
+		</mesh>
+		<mesh id="zline">
+			<positions>
+			0,0,-100,
+			0,0,100
+			</positions>
+		</mesh>
+
+		<material id="red" specular="0" color="#f00" emit="1" />
+		<material id="green" specular="0" color="#0f0" emit="1" />
+		<material id="blue" specular="0" color="#00f" emit="1" />
+		<material id="black" specular="0" color="#000" alpha="0.5" emit="1" />
+
+		<animation_vector id="spin" frames="240">
+			<animation_curve channel="RotY">
+				<linear_point x="0.0" y="0.0" />
+				<linear_point x="240.0" y="6.282.0" />
+			</animation_curve>
+		</animation_vector>
+		
+		<scene id="mainscene" camera="#mainCamera">
+
+			<group id="graph" animation="#spin">
+				<object id="xaxis" draw_type="DRAW_LINES" line_width="2" mesh="#xline" material="#red"  />
+				<object id="yaxis" draw_type="DRAW_LINES" line_width="2" mesh="#yline" material="#green"  />
+				<object id="zaxis" draw_type="DRAW_LINES" line_width="2" mesh="#zline" material="#blue"  />
+			</group>
+			<camera id="mainCamera" loc_z="20" loc_y="6"  rot_x="-0.3"  />
+		</scene>
+	</glge>
+</script>
+
+<script>
+var canvas = document.getElementById( 'canvas' )
+var renderer = new GLGE.Renderer( canvas );
+
+var XMLdoc = new GLGE.Document();
+
+XMLdoc.onLoad = function(){
+	var scene = XMLdoc.getElement( "mainscene" );
+	renderer.setScene( scene );
+	renderer.render();
+	
+	var positions=[];
+	
+	var push=function(x,y){
+		positions.push(x);
+		
+		positions.push(4*Math.cos(Math.sqrt(x*x+y*y)));
+		positions.push(y);
+	}
+	
+	for(var y=-7; y<6;y=y+0.2){
+		var x=-7;
+		push(x,y);
+		for(; x<7;x=x+0.1){
+			push(x,y);
+			push(x,y);
+		}
+		push(x,y);
+	}	
+	for(var y=-7; y<6;y=y+0.2){
+		var x=-7;
+		push(y,x);
+		for(; x<7;x=x+0.1){
+			push(y,x);
+			push(y,x);
+		}
+		push(y,x);
+	}
+
+	var black=XMLdoc.getElement( "black" );
+	var graph=XMLdoc.getElement( "graph" );
+	
+	var line=(new GLGE.Object).setDrawType(GLGE.DRAW_LINES);
+	line.setMesh((new GLGE.Mesh).setPositions(positions));
+	line.setMaterial(black);
+	line.setZtransparent(true);
+	graph.addObject(line);
+	
+	setInterval(function(){
+		renderer.render();
+	},15);
+}
+XMLdoc.parseScript("glge_document");
+
+</script>
+
+</body>
+</html>
+
