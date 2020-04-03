@@ -15,7 +15,7 @@ I am an engineer, hacker, and traveler currently working out of the <a href="htt
 
 ## What I Do
 
-I am a **Full Stack Developer** who has both contributed to and led development on a diverse set of software projects in domains such as:
+I am a **Senior Full Stack Developer** who has both contributed to and led development on a diverse set of software projects in domains such as:
 
   * Insurance (Health, Auto, Homeowners, and many more)
   * Healthcare
@@ -25,19 +25,30 @@ I am a **Full Stack Developer** who has both contributed to and led development 
   * Commerce
   * Education
 
+...and for clients such as:
+
+  * [American Academy of Pediatrics](http://ohioaap.org/)
+  * [Ohio Hospital Association](https://www.ohiohospitals.org)
+  * [WV Independent Oil and Gas Association](https://iogawv.com/)
+  * [Benjamin Rose Institute On Aging](http://www.benrose.org)
+  * [The Greenbrier](https://www.greenbrier.com/)
+  * WV Board of Law Examiners
+  * [The City of South Charleston](https://cityofsouthcharleston.com/)
+  * [WV State Tax Department](https://tax.wv.gov/)
+
 ## Favorite Technologies
 
 <img class="alignleft" title="" src="/images/2018/05/csharp_loves_ts-300x128.png" alt="I love C# and TS" srcset="/images/2018/05/csharp_loves_ts-300x128.png 300w, /images/2018/05/csharp_loves_ts-768x328.png 768w, /images/2018/05/csharp_loves_ts-1024x437.png 1024w, /images/2018/05/csharp_loves_ts.png 1132w" sizes="(max-width: 250px) 100vw, 250px" />
 
   * **Back-end / Desktop / Mobile** – C# (.NET core, ASP.NET MVC, Xamarin)
-  * **Front-end** – JavaScript / TypeScript, Angular/AngularJS, React, Vue
+  * **Front-end** – JavaScript / TypeScript, Angular, React, Vue
   * **Databases** – SQL Server, PostgreSQL, MongoDB
-  * **Cloud Computing** – AWS, Azure
-  * **Others** – Python, Powershell, Git
+  * **Cloud / DevOps** – AWS, Azure DevOps
+  * **Leftovers** – Python, Powershell, Git
 
-Being a Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in many other languages and frameworks. Quickly learning and applying new things is my specialty.
+As a Senior Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
 
-I’ve also performed DevOps tasks such as setting up automated build servers, continuous integration / deployment pipelines, and the automation of basically any automatable task to save thousands of man-hours of work.
+I’ve also performed DevOps tasks such as setting up automated build servers, continuous integration / deployment pipelines, and migrated some in-house hosted web apps to the cloud.
 
 ## Background
 
@@ -47,7 +58,7 @@ While at college, I was accepted into the [WV Governor’s Internship Program](h
 
 Upon the conclusion of my internship, I was contracted to single-handedly develop an online filing web application that tobacco wholesalers have used to collect $107 million in tax dollars in the year 2013 alone.
 
-Once my contract was done, I jumped on board a [C2C contracting company](http://aspwv.com) and built web, mobile, and desktop apps using all sorts of languages and frameworks.
+Once my contract with the state was done, I jumped on board a software contracting company and built dozens of web, mobile, and desktop apps using all sorts of languages and frameworks.
 
 I am currently working 100% remotely full time with a geographically-sparse team on a SaaS web app that is widely adopted within the insurance industry.
 
@@ -55,10 +66,12 @@ I am currently working 100% remotely full time with a geographically-sparse team
 
 Since I work as a 100% remote developer I use my location independence to my advantage and have been exercising my freedom to travel.
 
-I [built a home gym](https://symmetricstrength.com/lifter/avian) and eat healthy to counteract the hours spent staring at screens.
+I [powerlift in my home gym](https://symmetricstrength.com/lifter/avian) and eat healthy to counteract the hours spent staring at screens.
 
 I play and teach guitar. I definitely need to record more of it so I can share it online!
 
-I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge and learn more.
+I am an audiophile who listens to [way too much music](https://www.last.fm/user/avianbc). In 2019 alone my total listening time clocked in at 33 days, 14 hours.
+
+I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge while learning more along the way.
 
 <a href="https://stackexchange.com/users/319273"><img src="https://stackexchange.com/users/flair/319273.png" width="208" height="58" alt="profile for Brad on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Brad on Stack Exchange, a network of free, community-driven Q&amp;A sites"></a>
