@@ -17,7 +17,7 @@ disqusShortname = "bradleycarey"
     author = "Bradley Carey"
     description = "Bradley Carey's personal website"
     keywords = "blog,developer,personal,programming"
-    info = "Full Stack Developer"
+    info = "Senior Full Stack Developer"
     avatarurl = "images/avatar.png"
     favicon_32 = "images/favicon.png"
     favicon_16 = "images/favicon.png"
@@ -46,11 +46,6 @@ disqusShortname = "bradleycarey"
     icon = "fab fa-linkedin"
     weight = 3
     url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
-[[params.social]]
-    name = "last.fm"
-    icon = "fab fa-lastfm"
-    weight = 4
-    url = "https://www.last.fm/user/avianbc"
 
 [languages]
     [languages.en]
