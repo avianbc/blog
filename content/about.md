@@ -7,7 +7,7 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-<img class="img-rounded alignleft" src="/images/zipline.jpg" alt="Brad" />
+<a href="https://stackoverflow.com/users/636942/brad-c" class="alignleft img-link"><img src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
 
 My name is Brad and I love learning new things.
 
@@ -27,6 +27,8 @@ I am a **Senior Full Stack Developer** who has both contributed to and led devel
 
 ...and for clients such as:
 
+<img class="alignleft" src="/images/aap.png" alt="JavaScript" />
+
   * [American Academy of Pediatrics](http://ohioaap.org/)
   * [Ohio Hospital Association](https://www.ohiohospitals.org)
   * [WV Independent Oil and Gas Association](https://iogawv.com/)
@@ -38,7 +40,7 @@ I am a **Senior Full Stack Developer** who has both contributed to and led devel
 
 ## Favorite Technologies
 
-<img class="alignleft" title="" src="/images/2018/05/csharp_loves_ts-300x128.png" alt="I love C# and TS" srcset="/images/2018/05/csharp_loves_ts-300x128.png 300w, /images/2018/05/csharp_loves_ts-768x328.png 768w, /images/2018/05/csharp_loves_ts-1024x437.png 1024w, /images/2018/05/csharp_loves_ts.png 1132w" sizes="(max-width: 250px) 100vw, 250px" />
+<img class="alignleft" src="/images/js.png" alt="JavaScript" />
 
   * **Back-end / Desktop / Mobile** – C# (.NET core, ASP.NET MVC, Xamarin)
   * **Front-end** – JavaScript / TypeScript, Angular, React, Vue
@@ -64,6 +66,8 @@ I am currently working 100% remotely full time with a geographically-sparse team
 
 ## Leisure
 
+<img class="img-rounded alignleft" src="/images/zipline.jpg" alt="Brad" />
+
 Since I work as a 100% remote developer I use my location independence to my advantage and have been exercising my freedom to travel.
 
 I [powerlift in my home gym](https://symmetricstrength.com/lifter/avian) and eat healthy to counteract the hours spent staring at screens.
@@ -74,4 +78,3 @@ I am an audiophile who listens to [way too much music](https://www.last.fm/user/
 
 I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge while learning more along the way.
 
-<a href="https://stackexchange.com/users/319273"><img src="https://stackexchange.com/users/flair/319273.png" width="208" height="58" alt="profile for Brad on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Brad on Stack Exchange, a network of free, community-driven Q&amp;A sites"></a>
