@@ -12,6 +12,7 @@ canonifyurls = true
 pygmentsstyle = "vs"
 
 disqusShortname = "bradleycarey"
+googleAnalytics = "UA-163095528-1"
 
 [params]
     author = "Bradley Carey"
