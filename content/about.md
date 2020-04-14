@@ -1,6 +1,6 @@
 ---
 id: 317
-title: About Brad
+title: About
 date: 2015-01-23T18:50:28-04:00
 author: brad
 layout: page
@@ -78,3 +78,14 @@ I am an audiophile who listens to [way too much music](https://www.last.fm/user/
 
 I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge while learning more along the way.
 
+## Contact
+
+If you wish to contact me email me @ **brad at bradleycarey dot com** or feel free to use the form below.
+
+<form action="https://getform.io/f/08250cf3-2d2d-4ede-a843-fbd90ab29322" method="POST">
+  <input type="text" name="name" placeholder="Name (required)" required>
+  <input type="email" name="email" placeholder="Email (required)" required>
+  <input type="tel" name="tel" placeholder="Phone">
+  <textarea name="message" minlength="20" placeholder="Message (required)" required></textarea>
+  <button type="submit">Send</button>
+</form>
