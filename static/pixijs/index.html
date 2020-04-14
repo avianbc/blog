@@ -1,0 +1,104 @@
+<html>
+<head>
+    <title>Chicken Tornado?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.8/pixi.min.js"></script>
+</head>
+<body>
+    <script>
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var renderer = PIXI.autoDetectRenderer(width, height);
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+
+        var renderTexture = new PIXI.RenderTexture(renderer, renderer.width, renderer.height);
+        var renderTexture2 = new PIXI.RenderTexture(renderer, renderer.width, renderer.height);
+        var currentTexture = renderTexture;
+
+        var outputSprite = new PIXI.Sprite(currentTexture);
+        outputSprite.position.x = width / 2;
+        outputSprite.position.y = height / 2;
+        outputSprite.anchor.set(0.5);
+
+        stage.addChild(outputSprite);
+
+        var container = new PIXI.Container();
+        container.position.x = width / 2;
+        container.position.y = height / 2;
+
+        stage.addChild(container);
+
+        var sauce = [
+            'chicken.gif',
+            'chicken2.png',
+            'chicken3.png'
+        ];
+
+        var items = [];
+        var count = 0;
+        var max = 200;
+        var min = 2;
+        var incrementing = true;
+
+        function spawn() {
+            // FACT: THE CHICKEN CAME BEFORE THE EGG
+            var item = PIXI.Sprite.fromImage(sauce[Math.floor(Math.random() * sauce.length)]);
+            item.position.x = Math.random() * width - width / 2;
+            item.position.y = Math.random() * width - width / 2;
+            item.tint = Math.random() * 0xFFFFFF;
+            item.anchor.set(0.5);
+
+            container.addChild(item);
+            items.push(item);
+        }
+
+        var timer = setInterval(tick, 50);
+
+        function tick() {
+            if ((incrementing && items.length > max) || (!incrementing && items.length < min)) {
+                incrementing = !incrementing;
+            }
+
+            if (incrementing) {
+                spawn();
+            } else {
+                // DESTROY THE WORLD... ONE CHICKEN AT A TIME!
+                items.shift();
+                container.removeChildAt(0);
+            }
+        }
+
+        (function animate() {
+            requestAnimationFrame(animate);
+
+            count += 0.01;
+
+            var rot = Math.abs(0.2 + Math.sin(count) * 0.1);
+
+            items.map(function (item) {
+                item.rotation += rot;
+            });
+
+            var temp = renderTexture;
+            renderTexture = renderTexture2;
+            renderTexture2 = temp;
+
+            outputSprite.texture = renderTexture;
+
+            container.rotation = incrementing ? container.rotation -= rot : container.rotation += rot;
+            outputSprite.scale.set(incrementing ? (1 + Math.abs(Math.sin(count) * 0.1)) : (1 + (Math.abs(Math.sin(count) * 0.1) * -1)));
+
+            renderTexture2.render(stage, null, false);
+            renderer.render(stage);
+        })();
+    </script>
+</body>
+
+</html>
