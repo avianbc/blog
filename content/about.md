@@ -90,10 +90,12 @@ If you wish to contact me email me @ **brad at bradleycarey dot com** or feel fr
   <button type="submit">Send</button>
 </form>
 
-## About the site
+## About The Site
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status)](https://app.netlify.com/sites/bradleycarey/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status class="alignleft img-link")](https://app.netlify.com/sites/bradleycarey/deploys)
 
-CI/CD pipeline provided by Netlify. The site itself is built using [Hugo](https://gohugo.io/) static HTML and CSS website generator. Many of the old blog posts were exported from an ancient wordpress site.
+CI/CD pipeline provided by Netlify.
+
+The site itself is built using [Hugo](https://gohugo.io/) static HTML and CSS website generator. Many of the old blog posts were exported from an ancient wordpress site.
 
 The code for this site can be viewed on [Github](https://github.com/avianbc/blog). See a typo? Submit a PR and I will be your friend forever.
