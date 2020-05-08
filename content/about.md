@@ -92,9 +92,7 @@ If you wish to contact me email me @ **brad at bradleycarey dot com** or feel fr
 
 ## About The Site
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status class="alignleft img-link")](https://app.netlify.com/sites/bradleycarey/deploys)
-
-CI/CD pipeline provided by Netlify.
+CI/CD pipeline provided by Netlify: [![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status)](https://app.netlify.com/sites/bradleycarey/deploys)
 
 The site itself is built using [Hugo](https://gohugo.io/) static HTML and CSS website generator. Many of the old blog posts were exported from an ancient wordpress site.
 
