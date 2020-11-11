@@ -15,7 +15,7 @@ I am an engineer, hacker, and traveler currently working out of the <a href="htt
 
 ## What I Do
 
-I am a **Senior Full Stack Developer** who has both contributed to and led development on a diverse set of software projects in domains such as:
+I am a **Lead Full Stack Developer** who has both contributed to and led development on a diverse set of software projects in domains such as:
 
   * Insurance (Health, Auto, Homeowners, and many more)
   * Healthcare
@@ -48,7 +48,7 @@ I am a **Senior Full Stack Developer** who has both contributed to and led devel
   * **Cloud / DevOps** – AWS, Azure DevOps
   * **Leftovers** – Python, Powershell, Git
 
-As a Senior Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
+As a Lead Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
 
 I’ve also performed DevOps tasks such as setting up automated build servers, continuous integration / deployment pipelines, and migrated some in-house hosted web apps to the cloud.
 
