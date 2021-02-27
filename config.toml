@@ -42,11 +42,11 @@ googleAnalytics = "UA-163095528-1"
     icon = "fab fa-stack-overflow"
     weight = 2
     url = "https://stackoverflow.com/users/636942/br4d"
-[[params.social]]
-    name = "LinkedIn"
-    icon = "fab fa-linkedin"
-    weight = 3
-    url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
+# [[params.social]]
+#     name = "LinkedIn"
+#     icon = "fab fa-linkedin"
+#     weight = 3
+#     url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
 
 [languages]
     [languages.en]
