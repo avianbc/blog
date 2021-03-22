@@ -42,10 +42,10 @@ I am a **Lead Full Stack Developer** who has both contributed to and led develop
 
 <img class="alignleft" src="/images/js.png" alt="JavaScript" />
 
-  * **Back-end / Desktop / Mobile** – C# (.NET core, ASP.NET MVC, Xamarin)
-  * **Front-end** – JavaScript / TypeScript, Angular, React, Vue
+  * **Back-end / Desktop / Mobile** – C#
+  * **Front-end** – JavaScript / TypeScript, Angular, React
   * **Databases** – SQL Server, PostgreSQL, MongoDB
-  * **Cloud / DevOps** – AWS, Azure DevOps
+  * **Cloud / DevOps** – AWS, Azure
   * **Leftovers** – Python, Powershell, Git
 
 As a Lead Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
