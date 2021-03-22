@@ -74,7 +74,7 @@ I [powerlift in my home gym](https://symmetricstrength.com/lifter/avian) and eat
 
 I play and teach guitar. I definitely need to record more of it so I can share it online!
 
-I am an audiophile who listens to [way too much music](https://www.last.fm/user/avianbc). In 2019 alone my total listening time clocked in at 33 days, 14 hours.
+I am an audiophile who listens to way too much music. In the year 2020 alone my total listening time clocked in at 41 days, 7 hours.
 
 I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge while learning more along the way.
 
