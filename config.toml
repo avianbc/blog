@@ -14,6 +14,11 @@ pygmentsstyle = "vs"
 disqusShortname = "bradleycarey"
 googleAnalytics = "UA-163095528-1"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
 [params]
     author = "Bradley Carey"
     description = "Bradley Carey's personal website"
