@@ -17,36 +17,36 @@ I am an engineer, hacker, and traveler currently working out of the <a href="htt
 
 I am a **Lead Full Stack Developer** who has both contributed to and led development on a diverse set of software projects in domains such as:
 
-  * Insurance (Health, Auto, Homeowners, and many more)
-  * Healthcare
-  * Human Resources
-  * Law
-  * Public Utilities
-  * Commerce
-  * Education
+* Insurance (Health, Auto, Homeowners, and many more)
+* Healthcare
+* Human Resources
+* Law
+* Public Utilities
+* Commerce
+* Education
 
 ...and for clients such as:
 
 <img class="alignleft" src="/images/aap.png" alt="JavaScript" />
 
-  * [American Academy of Pediatrics](http://ohioaap.org/)
-  * [Ohio Hospital Association](https://www.ohiohospitals.org)
-  * [WV Independent Oil and Gas Association](https://iogawv.com/)
-  * [Benjamin Rose Institute On Aging](http://www.benrose.org)
-  * [The Greenbrier](https://www.greenbrier.com/)
-  * WV Board of Law Examiners
-  * [The City of South Charleston](https://cityofsouthcharleston.com/)
-  * [WV State Tax Department](https://tax.wv.gov/)
+* [American Academy of Pediatrics](http://ohioaap.org/)
+* [Ohio Hospital Association](https://www.ohiohospitals.org)
+* [WV Independent Oil and Gas Association](https://iogawv.com/)
+* [Benjamin Rose Institute On Aging](http://www.benrose.org)
+* [The Greenbrier](https://www.greenbrier.com/)
+* WV Board of Law Examiners
+* [The City of South Charleston](https://cityofsouthcharleston.com/)
+* [WV State Tax Department](https://tax.wv.gov/)
 
 ## Favorite Technologies
 
 <img class="alignleft" src="/images/js.png" alt="JavaScript" />
 
-  * **Back-end / Desktop / Mobile** – C#
-  * **Front-end** – JavaScript / TypeScript, Angular, React
-  * **Databases** – SQL Server, PostgreSQL, MongoDB
-  * **Cloud / DevOps** – AWS, Azure
-  * **Leftovers** – Python, Powershell, Git
+* **Back-end / Desktop / Mobile** – C#, Python
+* **Front-end** – JavaScript / TypeScript, Angular, React
+* **Databases** – SQL Server, PostgreSQL, MongoDB
+* **Cloud / DevOps** – AWS, Azure, Docker, Kubernetes
+* **Leftovers** – Powershell, Git
 
 As a Lead Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
 
