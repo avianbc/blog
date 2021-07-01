@@ -1,6 +1,6 @@
 +++
 date = 2021-03-30T22:13:08-04:00
-title = "How I went about specializing as a developer."
+title = "How I chose my specialization as a developer"
 categories = ['Programming']
 +++
 
