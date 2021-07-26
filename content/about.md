@@ -48,7 +48,7 @@ I am a **Principal Software Engineer - Tech Lead** who has both contributed to a
 * **Cloud / DevOps** – AWS, Azure, Docker, Kubernetes
 * **Leftovers** – Powershell, Git
 
-As a Full Stack Developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
+As a full stack developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
 
 I’ve also performed DevOps tasks such as setting up automated build servers, continuous integration / deployment pipelines, and migrated some in-house hosted web apps to the cloud.
 
