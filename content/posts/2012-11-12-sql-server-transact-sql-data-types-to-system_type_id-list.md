@@ -1,7 +1,7 @@
 ---
 id: 277
-title: SQL Server (Transact-SQL) Data Types to system_type_id list
-date: 2012-11-12T10:33:59-04:00
+title: SQL Server (T-SQL) Data Types to system_type_id list (2022 update)
+date: 2022-04-05T10:33:59-04:00
 author: brad
 layout: post
 guid: http://avian.netne.net/blog/?p=277
@@ -9,131 +9,47 @@ permalink: /sql-server-transact-sql-data-types-to-system_type_id-list/
 categories:
   - SQL
 ---
-I received metadata for a SQL Server 2008 R2 database which contained the system\_type\_id but not the data type itself. I ran a bunch of queries and logged the results to obtain a list of system\_type\_ids and the corresponding datatypes.
+I received metadata for a SQL Server database which contained the system\_type\_id but not what I needed: the data types of each column. Google did not seem to have a list of these so I ran the queries and posted them here as reference. I hope you find it useful.
 
-I looked on MSDN and was unable to find a list so I compiled one for usage for you google-ninjas who may find it handy.
+| system_type_id | datatype |
+| -------------- | -------- |
+| 34 | image |
+| 35 | text |
+| 36 | uniqueidentifier |
+| 40 | date |
+| 41 | time |
+| 42 | datetime2 |
+| 43 | datetimeoffset |
+| 48 | tinyint |
+| 52 | smallint |
+| 56 | int |
+| 58 | smalldatetime |
+| 59 | real |
+| 60 | money |
+| 61 | datetime |
+| 62 | float |
+| 98 | sql_variant |
+| 99 | ntext |
+| 104 | bit |
+| 106 | decimal |
+| 108 | numeric |
+| 122 | smallmoney |
+| 127 | bigint |
+| 165 | varbinary |
+| 167 | varchar |
+| 173 | binary |
+| 175 | char |
+| 189 | timestamp |
+| 231 | nvarchar |
+| 239 | nchar |
+| 241 | xml |
 
-<table>
-<tbody>
-<tr>
-<th>system_type_id</th>
-<th>datatype</th>
-</tr>
-<tr>
-<td>34</td>
-<td>image</td>
-</tr>
-<tr>
-<td>35</td>
-<td>text</td>
-</tr>
-<tr>
-<td>36</td>
-<td>uniqueidentifier</td>
-</tr>
-<tr>
-<td>40</td>
-<td>date</td>
-</tr>
-<tr>
-<td>41</td>
-<td>time</td>
-</tr>
-<tr>
-<td>42</td>
-<td>datetime2</td>
-</tr>
-<tr>
-<td>48</td>
-<td>tinyint</td>
-</tr>
-<tr>
-<td>52</td>
-<td>smallint</td>
-</tr>
-<tr>
-<td>56</td>
-<td>int</td>
-</tr>
-<tr>
-<td>58</td>
-<td>smalldatetime</td>
-</tr>
-<tr>
-<td>59</td>
-<td>real</td>
-</tr>
-<tr>
-<td>60</td>
-<td>money</td>
-</tr>
-<tr>
-<td>61</td>
-<td>datetime</td>
-</tr>
-<tr>
-<td>62</td>
-<td>float</td>
-</tr>
-<tr>
-<td>98</td>
-<td>sql_variant</td>
-</tr>
-<tr>
-<td>99</td>
-<td>ntext</td>
-</tr>
-<tr>
-<td>104</td>
-<td>bit</td>
-</tr>
-<tr>
-<td>106</td>
-<td>decimal</td>
-</tr>
-<tr>
-<td>108</td>
-<td>numeric</td>
-</tr>
-<tr>
-<td>122</td>
-<td>smallmoney</td>
-</tr>
-<tr>
-<td>127</td>
-<td>bigint</td>
-</tr>
-<tr>
-<td>165</td>
-<td>varbinary</td>
-</tr>
-<tr>
-<td>167</td>
-<td>varchar</td>
-</tr>
-<tr>
-<td>173</td>
-<td>binary</td>
-</tr>
-<tr>
-<td>175</td>
-<td>char</td>
-</tr>
-<tr>
-<td>189</td>
-<td>timestamp</td>
-</tr>
-<tr>
-<td>231</td>
-<td>nvarchar</td>
-</tr>
-<tr>
-<td>239</td>
-<td>nchar</td>
-</tr>
-<tr>
-<td>241</td>
-<td>xml</td>
-</tr>
-</tbody>
-</table>
+Here is the SQL query I used to get the above data:
+
+{{< highlight sql >}}
+SELECT system_type_id, name as datatype
+FROM sys.types
+WHERE system_type_id = user_type_id
+{{< /highlight >}}
+
+*Editor's Note: This post was originally published in November 2012 and has been updated to include new datatypes that have been added since.*
