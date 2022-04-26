@@ -1,6 +1,6 @@
 +++
 date = 2022-04-25T20:19:44-04:00
-title = "Customizing my CLI using: Windows Terminal, Oh My Posh, VS Code, and more"
+title = "Customizing my CLI using Oh My Posh"
 categories = ['Programming']
 +++
 
