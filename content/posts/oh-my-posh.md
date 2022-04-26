@@ -30,23 +30,21 @@ Oh My Posh is portable and actually works on any shell but I will concentrate on
 
 1. Install required powershell modules [PowerShell Gallery](https://github.com/dahlbyk/posh-git#installing-posh-git-via-powershellget-on-linux-macos-and-windows) by running this command in Windows Terminal
 
-{{< highlight powershell >}}
-Install-Module posh-git -Scope CurrentUser
-Install-Module oh-my-posh -Scope CurrentUser
-{{< /highlight >}}
+    {{< highlight powershell >}}
+    Install-Module posh-git -Scope CurrentUser
+    Install-Module oh-my-posh -Scope CurrentUser{{< /highlight >}}
 
-1. Download and install the [Caskaydia Code Nerd Font](https://www.nerdfonts.com/font-downloads). Set the font as your default in your terminal:
+2. Download and install the [Caskaydia Code Nerd Font](https://www.nerdfonts.com/font-downloads). Set the font as your default in your terminal:
 
     In VS Code go to settings and set your terminal font family `"terminal.integrated.fontFamily": "CaskaydiaCove NF"`
 
     In Windows Terminal go to Settings > Profiles > Powershell > Additional settings > Appearance > Font face.
 
-2. Update your PowerShell Profiles. Open your profile using the command `code $PROFILE`. My profile looks like this:
+3. Update your PowerShell Profiles. Open your profile using the command `code $PROFILE`. My profile looks like this:
 
-{{< highlight powershell >}}
-Import-Module oh-my-posh
-Import-Module posh-git
-Set-PoshPrompt -Theme paradox
-{{< /highlight >}}
+    {{< highlight powershell >}}
+    Import-Module oh-my-posh
+    Import-Module posh-git
+    Set-PoshPrompt -Theme paradox{{< /highlight >}}
 
 Make sure to restart VS Code/Windows Terminal/Powershell after installing the fonts and updating your profiles.
