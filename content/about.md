@@ -13,10 +13,14 @@ My name is Brad and I love learning new things.
 
 I am an engineer, hacker, and traveler currently working out of the <a href="https://en.wikipedia.org/wiki/Huntington%E2%80%93Ashland_metropolitan_area">OH-WV-KY metro area</a>.
 
+My specialization is modernizing legacy enterprise web applications using modern technologies.
+
 ## What I Do
 
 I am a **Principal Software Engineer - Tech Lead** who has both contributed to and led development on a diverse set of software projects in domains such as:
 
+* Customer Relationship Management (CRM)
+* Architecture, Engineering, and Construction (AEC)
 * Insurance (Health, Auto, Homeowners, and many more)
 * Healthcare
 * Human Resources
@@ -29,6 +33,10 @@ I am a **Principal Software Engineer - Tech Lead** who has both contributed to a
 
 <img class="alignleft" src="/images/aap.png" alt="JavaScript" />
 
+* Progressive Insurance
+* Alliance Insurance
+* Nationwide Insurance
+* Farmers Insurance
 * [American Academy of Pediatrics](http://ohioaap.org/)
 * [Ohio Hospital Association](https://www.ohiohospitals.org)
 * [WV Independent Oil and Gas Association](https://iogawv.com/)
@@ -60,9 +68,9 @@ While at college, I was accepted into the [WV Governor’s Internship Program](h
 
 Upon the conclusion of my internship, I was contracted to single-handedly develop an online filing web application that tobacco wholesalers have used to collect $107 million in tax dollars in the year 2013 alone.
 
-Once my contract with the state was done, I jumped on board a software contracting company and built dozens of web, mobile, and desktop apps using all sorts of languages and frameworks.
+Once my contract with the state was done, I jumped on board a software contracting company and built dozens of web, mobile, and desktop apps using a diverset set of languages and frameworks.
 
-I am currently working 100% remotely full time with a geographically-sparse team on a SaaS web app that is widely adopted within the insurance industry.
+Since 2014, I have been working fully remote on various CRM SaaS web apps and along the way my job title has progressed from "Software Engineer Intern" > "Full Stack Developer / Contractor" > "Senior Software Engineer" > "Tech Lead, Principal Software Engineer".
 
 ## Leisure
 
@@ -70,7 +78,7 @@ I am currently working 100% remotely full time with a geographically-sparse team
 
 Since I work as a 100% remote developer I use my location independence to my advantage and have been exercising my freedom to travel.
 
-I [powerlift in my home gym](https://symmetricstrength.com/lifter/avian) and eat healthy to counteract the hours spent staring at screens.
+I [powerlift competitively](https://symmetricstrength.com/lifter/avian) and eat (mostly) healthy to counteract the hours spent staring at screens. I value continuous improvement: My #1 goal in all aspects of my life (physical and mental) is to be better than I was yesterday.
 
 I play and teach guitar. I definitely need to record more of it so I can share it online!
 
