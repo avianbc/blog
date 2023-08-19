@@ -9,99 +9,88 @@ guid: http://br4d.net/?page_id=317
 
 <a href="https://stackoverflow.com/users/636942/brad-c" class="alignleft img-link"><img src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
 
-My name is Brad and I love learning new things.
-
-I am an engineer, hacker, and traveler currently working out of the <a href="https://en.wikipedia.org/wiki/Huntington%E2%80%93Ashland_metropolitan_area">OH-WV-KY metro area</a>.
-
-My specialization is modernizing legacy enterprise web applications using modern technologies.
+Hey there! I'm Brad, a lifelong learner, engineer, hacker, and traveler based in the OH-WV-KY metro area.
 
 ## What I Do
 
-I am a **Principal Software Engineer - Tech Lead** who has both contributed to and led development on a diverse set of software projects in domains such as:
+I am a **Principal Software Engineer - Tech Lead**, specializing in revitalizing legacy enterprise web applications with modern technologies.
 
-* Customer Relationship Management (CRM)
-* Architecture, Engineering, and Construction (AEC)
-* Insurance (Health, Auto, Homeowners, and many more)
-* Healthcare
-* Human Resources
-* Law
-* Public Utilities
-* Commerce
-* Education
+My contributions and leadership span diverse software projects in domains including:
 
-...and for clients such as:
+- Customer Relationship Management (CRM)
+- Architecture, Engineering, and Construction (AEC)
+- Insurance (Health, Auto, Homeowners, and more)
+- Healthcare, Human Resources, Law, Public Utilities, Commerce, Education
+
+Here are a few notable clients I've had the privilege to work with:
 
 <img class="alignleft" src="/images/aap.png" alt="JavaScript" />
 
-* Progressive Insurance
-* Alliance Insurance
-* Nationwide Insurance
-* Farmers Insurance
-* [American Academy of Pediatrics](http://ohioaap.org/)
-* [Ohio Hospital Association](https://www.ohiohospitals.org)
-* [WV Independent Oil and Gas Association](https://iogawv.com/)
-* [Benjamin Rose Institute On Aging](http://www.benrose.org)
-* [The Greenbrier](https://www.greenbrier.com/)
-* WV Board of Law Examiners
-* [The City of South Charleston](https://cityofsouthcharleston.com/)
-* [WV State Tax Department](https://tax.wv.gov/)
+- [Progressive Casualty Insurance Company](https://www.progressive.com/)
+- [Nationwide Mutual Insurance Company](https://www.nationwide.com/)
+- [American Academy of Pediatrics](https://ohioaap.org/)
+- [Ohio Hospital Association](https://www.ohiohospitals.org)
+- [WV Independent Oil and Gas Association](https://iogawv.com/)
+- [Benjamin Rose Institute On Aging](https://www.benrose.org)
+- [The Greenbrier](https://www.greenbrier.com/)
+- WV Board of Law Examiners
+- [The City of South Charleston](https://cityofsouthcharleston.com/)
+- [WV State Tax Department](https://tax.wv.gov/)
 
 ## Favorite Technologies
 
 <img class="alignleft" src="/images/js.png" alt="JavaScript" />
 
-* **Back-end / Desktop / Mobile** – C#, Python
-* **Front-end** – JavaScript / TypeScript, Angular, React
-* **Databases** – SQL Server, PostgreSQL, MongoDB
-* **Cloud / DevOps** – AWS, Azure, Docker, Kubernetes
-* **Leftovers** – Powershell, Git
+- **Back-end / Desktop / Mobile**: C#, Python
+- **Front-end**: JavaScript / TypeScript, Angular, React
+- **Databases**: SQL Server, PostgreSQL, MongoDB
+- **Cloud / DevOps**: AWS, Azure, Docker, Kubernetes
+- **Leftovers**: Powershell, Git
 
-As a full stack developer I have often had to step outside of my typical comfort zone and completed or contributed to projects in _many_ other languages and frameworks. Quickly learning and applying new things is my specialty.
-
-I’ve also performed DevOps tasks such as setting up automated build servers, continuous integration / deployment pipelines, and migrated some in-house hosted web apps to the cloud.
+Adapting to new languages and frameworks is my forte. I excel at learning and applying new concepts quickly.
 
 ## Background
 
-<img class="alignleft" src="/images/2015/01/Marshallo-Logo-Transparent.jpg" alt="Marshall University" /> I graduated from [Marshall University](http://marshall.edu) with a **B.S. in Computer Science** and a minor in **Mathematics** as well as a 4.0 in-major GPA.
+<img class="alignleft" src="/images/2015/01/Marshallo-Logo-Transparent.jpg" alt="Marshall University" />
 
-While at college, I was accepted into the [WV Governor’s Internship Program](http://www.wv.gov/gip) to work with the developers at the WV State Tax Department.
+I graduated from [Marshall University](http://marshall.edu) with a **B.S. in Computer Science**, minor in **Mathematics**, and a 4.0 in-major GPA.
 
-Upon the conclusion of my internship, I was contracted to single-handedly develop an online filing web application that tobacco wholesalers have used to collect $107 million in tax dollars in the year 2013 alone.
+During college, I participated in the [WV Governor’s Internship Program](http://www.wv.gov/gip) at the WV State Tax Department. Subsequently, I developed an online filing web app that generated $107 million in tax revenue in 2013.
 
-Once my contract with the state was done, I jumped on board a software contracting company and built dozens of web, mobile, and desktop apps using a diverset set of languages and frameworks.
+Post-internship, I joined a B2B software contracting company, building numerous web, mobile, and desktop apps across different languages and frameworks.
 
-Since 2014, I have been working fully remote on various CRM SaaS web apps and along the way my job title has progressed from "Software Engineer Intern" > "Full Stack Developer / Contractor" > "Senior Software Engineer" > "Tech Lead, Principal Software Engineer".
+Since 2014, I have been working 100% remote modernizing legacy (ColdFusion, MS SilverLight, ASP.NET WebForms) enterprise SaaS web applications with a specialization in Angular, JavaScript, C#, .NET, and SQL.
 
 ## Leisure
 
 <img class="img-rounded alignleft" src="/images/zipline.jpg" alt="Brad" />
 
-Since I work as a 100% remote developer I use my location independence to my advantage and have been exercising my freedom to travel.
+Balancing my remote work life, I embrace freedom through travel. I'm also a competitive [powerlifter](https://symmetricstrength.com/lifter/avian) and a proponent of healthy habits to counter screen time.
 
-I [powerlift competitively](https://symmetricstrength.com/lifter/avian) and eat (mostly) healthy to counteract the hours spent staring at screens. I value continuous improvement: My #1 goal in all aspects of my life (physical and mental) is to be better than I was yesterday.
+I'm a guitar enthusiast, passionate about playing and teaching. Sharing more of my music online is on my list!
 
-I play and teach guitar. I definitely need to record more of it so I can share it online!
+Being an audiophile, I racked up 41 days and 7 hours of music listening in 2020 alone.
 
-I am an audiophile who listens to way too much music. In the year 2020 alone my total listening time clocked in at 41 days, 7 hours.
-
-I hang out on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming) to share my knowledge while learning more along the way.
+I'm an active contributor on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming), sharing knowledge and learning in return.
 
 ## Contact
 
-If you wish to contact me email me @ **brad at bradleycarey dot com** or feel free to use the form below.
+Feel free to reach out via email: **brad[at]bradleycarey[dot]com**, or use the form below:
 
 <form action="https://getform.io/f/08250cf3-2d2d-4ede-a843-fbd90ab29322" method="POST">
   <input type="text" name="name" placeholder="Name (required)" required>
   <input type="email" name="email" placeholder="Email (required)" required>
   <input type="tel" name="tel" placeholder="Phone">
-  <textarea name="message" minlength="20" placeholder="Message (required)" required></textarea>
+  <textarea name="message" minlength="50" placeholder="Message (required)" required></textarea>
   <button type="submit">Send</button>
 </form>
 
 ## About The Site
 
-CI/CD pipeline provided by Netlify: [![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status)](https://app.netlify.com/sites/bradleycarey/deploys)
+CI/CD pipeline by Netlify: [![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status)](https://app.netlify.com/sites/bradleycarey/deploys)
 
-The site itself is built using [Hugo](https://gohugo.io/) static HTML and CSS website generator. Many of the old blog posts were exported from an ancient wordpress site.
+The site is built with [Hugo](https://gohugo.io/) static HTML and CSS generator. Old blog posts were migrated from an ancient WordPress site.
+
+Check out the [Github repository](https://github.com/avianbc/blog) for this site
 
 The code for this site can be viewed on [Github](https://github.com/avianbc/blog). See a typo? Submit a PR and I will be your friend forever.
