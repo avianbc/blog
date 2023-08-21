@@ -16,8 +16,6 @@
     background-color: #ffffff;
     border: 1px solid #dddddd;
     border-radius: 3px;
-    -webkit-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
     display: inline-block;
     width: 100% \9;
@@ -44,91 +42,3 @@
 .textright {
     text-align: left;
 }
-
-.clear {
-    clear: both;
-}
-
-input[type=text],
-input[type=email],
-input[type=tel],
-select,
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 9px;
-    resize: vertical
-}
-
-input[type=submit],
-button {
-    background-color: #b90000;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 9px;
-    width: 100%;
-}
-
-input[type=submit]:hover,
-button:hover {
-    background-color: #212121;
-}
-
-.centered .about ul li a {
-    color: #212121;
-    background: 0 0;
-}
-
-.list ul li .title:hover,
-.list ul li .title:focus,
-.navigation a:hover,
-.navigation a:focus,
-.centered .about ul li a:hover {
-    color: #b90000;
-    background: 0 0;
-}
-
-.content a {
-    color: #212121;
-    background: linear-gradient(#fff, #fff),
-        linear-gradient(#fff, #fff),
-        linear-gradient(#b90000, #b90000);
-    background-size: .05em 1px,
-        .05em 1px,
-        1px 1px;
-    background-repeat: no-repeat, no-repeat, repeat-x;
-    text-shadow: .03em 0 #fff,
-        -.03em 0 #fff,
-        0 .03em #fff,
-        0 -.03em #fff,
-        .06em 0 #fff,
-        -.06em 0 #fff,
-        .09em 0 #fff,
-        -.09em 0 #fff,
-        .12em 0 #fff,
-        -.12em 0 #fff,
-        .15em 0 #fff,
-        -.15em 0 #fff;
-    background-position: 0 95%,
-        100% 95%,
-        0 95%;
-    text-decoration: none;
-    transition: color .15s;
-}
-
-.content a:hover {
-    color: #b90000;
-    background: 0 0;
-}
-
-.content .img-link {
-    color: #b90000;
-    background: 0 0;
-}
-
