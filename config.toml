@@ -1,23 +1,13 @@
 baseurl = "https://bradleycarey.com"
 title = "bradleycarey.com"
-
 theme = "hugo-coder"
-
 languagecode = "en"
 defaultcontentlanguage = "en"
-
 paginate = 20
 canonifyurls = true
-
 pygmentsstyle = "vs"
-
 disqusShortname = "bradleycarey"
 googleAnalytics = "UA-163095528-1"
-
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
 
 [params]
     author = "Bradley Carey"
@@ -28,9 +18,8 @@ googleAnalytics = "UA-163095528-1"
     favicon_32 = "images/favicon.png"
     favicon_16 = "images/favicon.png"
     dateformat = "Jan 2, 2006"
-    hideCredits = true
-    hideCopyright = true
     customCSS = ["css/custom.css"]
+    since = "2012"
 
 [taxonomies]
     category = "categories"
@@ -39,17 +28,17 @@ googleAnalytics = "UA-163095528-1"
 
 [[params.social]]
     name = "Github"
-    icon = "fab fa-github"
+    icon = "fa fa-github"
     weight = 1
     url = "https://github.com/avianbc/"
 [[params.social]]
     name = "Stack Overflow"
-    icon = "fab fa-stack-overflow"
+    icon = "fa fa-stack-overflow"
     weight = 2
     url = "https://stackoverflow.com/users/636942/br4d"
 [[params.social]]
     name = "LinkedIn"
-    icon = "fab fa-linkedin"
+    icon = "fa fa-linkedin"
     weight = 3
     url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
 
