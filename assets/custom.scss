@@ -6,7 +6,7 @@ $dark-foreground: #dadada;
 
 @import "syntax-light";
 @media screen and (prefers-color-scheme: dark) {
-    @import "syntax-dark256";
+    @import "syntax-dark";
 }
 
 body.colorscheme-light {

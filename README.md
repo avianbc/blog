@@ -26,7 +26,7 @@ Code syntax highlighting is now light vs dark theme aware using the [prefers-col
     ```scss
     @import "syntax-light";
     @media screen and (prefers-color-scheme: dark) {
-        @import "syntax-dark256";
+        @import "syntax-dark";
     }
     ```
 
