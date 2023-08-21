@@ -30,7 +30,7 @@ googleAnalytics = "UA-163095528-1"
     dateformat = "Jan 2, 2006"
     hideCredits = true
     hideCopyright = true
-    custom_css = ["css/custom.css"]
+    customCSS = ["css/custom.css"]
 
 [taxonomies]
     category = "categories"
