@@ -41,6 +41,13 @@ name = "LinkedIn"
 icon = "fa fa-linkedin"
 weight = 3
 url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
+[[params.social]]
+name = "RSS"
+icon = "fa fa-rss"
+weight = 4
+url = "https://bradleycarey.com/index.xml"
+rel = "alternate"
+type = "application/rss+xml"
 
 [[menu.main]]
 name = "Blog"
