@@ -9,59 +9,59 @@ If the `HttpClient` is being used within a dependency outside of your control (s
 ### 1. Add DisableInterceptorHandler + token (disable-interceptor.handler.ts)
 
 {{< highlight typescript >}}
-    import { HttpContextToken, HttpHandler, HttpRequest } from '@angular/common/http';
-    import { Injectable } from '@angular/core';
+import { HttpContextToken, HttpHandler, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-    export const DISABLE_INTERCEPTORS = new HttpContextToken<boolean>(() => false);
+export const DISABLE_INTERCEPTORS = new HttpContextToken<boolean>(() => false);
 
-    @Injectable()
-    export class DisableInterceptorHandler extends HttpHandler {
-      constructor(private httpHandler: HttpHandler) {
-        super();
-      }
+@Injectable()
+export class DisableInterceptorHandler extends HttpHandler {
+  constructor(private httpHandler: HttpHandler) {
+    super();
+  }
 
-      handle(req: HttpRequest<unknown>) {
-        return this.httpHandler.handle(
-          req.clone({
-            context: req.context.set(DISABLE_INTERCEPTORS, true),
-          }),
-        );
-      }
-    }
+  handle(req: HttpRequest<unknown>) {
+    return this.httpHandler.handle(
+      req.clone({
+        context: req.context.set(DISABLE_INTERCEPTORS, true),
+      }),
+    );
+  }
+}
 {{< /highlight >}}
 
 ### 2. Provide the handler in either your `component`/`module`/`service`/whatever `providers` array
 
 {{< highlight typescript >}}
-    providers: [
-      DisableInterceptorHandler,
-      {
-        provide: HttpClient,
-        useFactory: (handler: DisableInterceptorHandler) => new HttpClient(handler),
-        deps: [DisableInterceptorHandler],
-      },
-    ],
+  providers: [
+    DisableInterceptorHandler,
+    {
+      provide: HttpClient,
+      useFactory: (handler: DisableInterceptorHandler) => new HttpClient(handler),
+      deps: [DisableInterceptorHandler],
+    },
+  ],
 {{< /highlight >}}
 
 ### 3. Enforce the HttpContextToken in your interceptor
 
 {{< highlight typescript >}}
-    import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-    import { Injectable } from '@angular/core';
-    import { Observable, throwError } from 'rxjs';
-    import { catchError } from 'rxjs/operators';
-    import { DISABLE_INTERCEPTORS } from './disable-interceptor.handler';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { DISABLE_INTERCEPTORS } from './disable-interceptor.handler';
 
-    @Injectable()
-    export class AuthenticationInterceptor implements HttpInterceptor {
-      intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        if (request.context.get(DISABLE_INTERCEPTORS) === true) {
-          return next.handle(request);
-        }
-
-        return next.handle(request).pipe(
-          // add your typical interceptor logic
-        );
-      }
+@Injectable()
+export class AuthenticationInterceptor implements HttpInterceptor {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    if (request.context.get(DISABLE_INTERCEPTORS) === true) {
+      return next.handle(request);
     }
+
+    return next.handle(request).pipe(
+      // add your typical interceptor logic
+    );
+  }
+}
 {{< /highlight >}}

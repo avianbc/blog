@@ -4,8 +4,6 @@ theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
 paginate = 20
-canonifyurls = true
-pygmentsstyle = "vs"
 disqusShortname = "bradleycarey"
 googleAnalytics = "UA-163095528-1"
 
@@ -18,10 +16,10 @@ avatarurl = "images/avatar.png"
 favicon_32 = "images/favicon.png"
 favicon_16 = "images/favicon.png"
 dateformat = "Jan 2, 2006"
+hideCredits = true
+hideCopyright = true
 customSCSS = ["custom.scss"]
 since = "2012"
-# Specify light/dark colorscheme
-# Supported values:
 # "auto" (use preference set by browser)
 # "dark" (dark background, light foreground)
 # "light" (light background, dark foreground) (default)
@@ -41,7 +39,7 @@ url = "https://github.com/avianbc/"
 name = "Stack Overflow"
 icon = "fa fa-stack-overflow"
 weight = 2
-url = "https://stackoverflow.com/users/636942/br4d"
+url = "https://stackoverflow.com/users/636942"
 [[params.social]]
 name = "LinkedIn"
 icon = "fa fa-linkedin"
@@ -63,6 +61,22 @@ url  = "posts/"
 name = "About"
 weight = 2
 url = "about/"
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    hl_inline = false
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true
+    noHl = false
+    style = 'monokai'
+    tabWidth = 2
 
 [markup.goldmark.renderer]
 unsafe = true # Allow HTML in md files
