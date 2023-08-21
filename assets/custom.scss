@@ -4,12 +4,25 @@ $light-foreground: #212121;
 $dark-background: #212121;
 $dark-foreground: #dadada;
 
-.content article p {
-    text-align: initial !important;
+@import "syntax-light";
+@media screen and (prefers-color-scheme: dark) {
+    @import "syntax-dark256";
 }
 
-.list ul li .title a {
-    color: $link-color;
+body.colorscheme-light {
+    --background-color: $light-background;
+    --foreground-color: $light-foreground;
+    --link-color: $link-color;
+}
+
+body.colorscheme-dark {
+    --background-color: $dark-background;
+    --foreground-color: $dark-foreground;
+    --link-color: $link-color;
+}
+
+.content article p {
+    text-align: initial !important;
 }
 
 .list ul li .date {
@@ -30,17 +43,13 @@ img {
         margin: 20px;
         padding: 4px;
         line-height: 1.625;
-        border: 1px solid $light-foreground;
+        border: 1px solid $dark-foreground;
         border-radius: 3px;
         transition: all 0.2s ease-in-out;
         display: inline-block;
         width: 100% \9;
         max-width: 100%;
         height: auto;
-
-        @media (prefers-color-scheme: dark) {
-            border: 1px solid $dark-foreground;
-        }
     }
 
     &.img-circle {
@@ -76,13 +85,7 @@ textarea {
     resize: vertical;
     background-color: $light-background;
     color: $light-foreground;
-    border: 1px solid $light-foreground;
-
-    @media (prefers-color-scheme: dark) {
-        background-color: $dark-background;
-        color: $dark-foreground;
-        border: 1px solid $dark-foreground;
-    }
+    border: 1px solid $dark-foreground;
 }
 
 input[type=submit],
