@@ -18,7 +18,7 @@ googleAnalytics = "UA-163095528-1"
     favicon_32 = "images/favicon.png"
     favicon_16 = "images/favicon.png"
     dateformat = "Jan 2, 2006"
-    customCSS = ["css/custom.css"]
+    customSCSS = ["custom.scss"]
     since = "2012"
 
 [taxonomies]
