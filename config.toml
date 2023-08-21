@@ -63,3 +63,6 @@ url  = "posts/"
 name = "About"
 weight = 2
 url = "about/"
+
+[markup.goldmark.renderer]
+unsafe = true # Allow HTML in md files
