@@ -10,48 +10,43 @@ disqusShortname = "bradleycarey"
 googleAnalytics = "UA-163095528-1"
 
 [params]
-    author = "Bradley Carey"
-    description = "Bradley Carey's personal website"
-    keywords = "blog,developer,personal,programming"
-    info = "Principal Software Engineer, Tech Lead"
-    avatarurl = "images/avatar.png"
-    favicon_32 = "images/favicon.png"
-    favicon_16 = "images/favicon.png"
-    dateformat = "Jan 2, 2006"
-    customSCSS = ["custom.scss"]
-    since = "2012"
+author = "Bradley Carey"
+description = "Bradley Carey's personal website"
+keywords = "blog,developer,personal,programming"
+info = "Principal Software Engineer, Tech Lead"
+avatarurl = "images/avatar.png"
+favicon_32 = "images/favicon.png"
+favicon_16 = "images/favicon.png"
+dateformat = "Jan 2, 2006"
+customSCSS = ["custom.scss"]
+since = "2012"
 
 [taxonomies]
-    category = "categories"
-    series = "series"
-    tag = "tags"
+category = "categories"
+series = "series"
+tag = "tags"
 
 [[params.social]]
-    name = "Github"
-    icon = "fa fa-github"
-    weight = 1
-    url = "https://github.com/avianbc/"
+name = "Github"
+icon = "fa fa-github"
+weight = 1
+url = "https://github.com/avianbc/"
 [[params.social]]
-    name = "Stack Overflow"
-    icon = "fa fa-stack-overflow"
-    weight = 2
-    url = "https://stackoverflow.com/users/636942/br4d"
+name = "Stack Overflow"
+icon = "fa fa-stack-overflow"
+weight = 2
+url = "https://stackoverflow.com/users/636942/br4d"
 [[params.social]]
-    name = "LinkedIn"
-    icon = "fa fa-linkedin"
-    weight = 3
-    url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
+name = "LinkedIn"
+icon = "fa fa-linkedin"
+weight = 3
+url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
 
-[languages]
-    [languages.en]
-        languagename = "English"
-
-        [[languages.en.menu.main]]
-        name = "About"
-        weight = 1
-        url = "/about/"
-
-        [[languages.en.menu.main]]
-        name = "Blog"
-        weight = 2
-        url = "/posts/"
+[[menu.main]]
+name = "Blog"
+weight = 1
+url  = "posts/"
+[[menu.main]]
+name = "About"
+weight = 2
+url = "about/"
