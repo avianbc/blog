@@ -1,10 +1,10 @@
 +++
-date = 2023-08-20T23:26:07-04:00
-title = "Theme-aware syntax highlighting for Hugo"
+date = 2023-08-23T17:59:17.716Z
+title = "Theme-aware syntax highlighting for Hugo using SCSS + Chroma"
 categories = ['Programming']
 +++
 
-[Hugo static site generator](https://gohugo.io/) has built in [syntax highlighting](https://gohugo.io/content-management/syntax-highlighting/) for code blocks. The newer CLI, known as [hugo-extended](https://gohugo.io/installation/windows/#editions), finally supports SASS transpilation.
+[Hugo static site generator](https://gohugo.io/) has built in [syntax highlighting](https://gohugo.io/content-management/syntax-highlighting/) for code blocks that uses [Chroma](https://github.com/alecthomas/chroma) udner the hood. The newer CLI, known as [hugo-extended](https://gohugo.io/installation/windows/#editions), finally supports SASS transpilation.
 
 Using the power of SASS [@import](https://sass-lang.com/documentation/at-rules/import/) statements + [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) `media` queries or CSS `class` name toggles, we can apply separate themes for light vs dark modes. **Tailwind CSS** refers to these strategies as [media](https://tailwindcss.com/docs/dark-mode#basic-usage) vs [class](https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually).
 
