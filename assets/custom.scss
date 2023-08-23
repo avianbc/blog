@@ -23,6 +23,12 @@ $dark-foreground: #dadada;
     border-radius: 0 !important;
 }
 
+table {
+    th,
+    td {
+        padding: 0.3rem 1.6rem;
+    }
+}
 
 img {
     &.img-rounded {
