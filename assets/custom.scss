@@ -4,21 +4,11 @@ $light-foreground: #212121;
 $dark-background: #212121;
 $dark-foreground: #dadada;
 
-@import "syntax-light";
-@media screen and (prefers-color-scheme: dark) {
+.colorscheme-light {
+    @import "syntax-light";
+}
+.colorscheme-dark {
     @import "syntax-dark";
-}
-
-body.colorscheme-light {
-    --background-color: $light-background;
-    --foreground-color: $light-foreground;
-    --link-color: $link-color;
-}
-
-body.colorscheme-dark {
-    --background-color: $dark-background;
-    --foreground-color: $dark-foreground;
-    --link-color: $link-color;
 }
 
 .content article p {
