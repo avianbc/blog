@@ -3,8 +3,10 @@
 $link-color: #1565c0;
 $light-background: #fafafa;
 $light-foreground: #212121;
+$light-border: #e0e0e0;
 $dark-background: #212121;
 $dark-foreground: #dadada;
+$dark-border: #424242;
 
 .colorscheme-light {
     @import "syntax-light";
@@ -48,10 +50,10 @@ table {
     height: auto;
 }
 .colorscheme-light .img-thumbnail {
-    border: 1px solid $light-foreground;
+    border: 1px solid $light-border;
 }
 .colorscheme-dark .img-thumbnail {
-    border: 1px solid $dark-foreground;
+    border: 1px solid $dark-border;
 }
 
 .img-circle {
