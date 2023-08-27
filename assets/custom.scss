@@ -32,27 +32,30 @@ table {
     }
 }
 
-img {
-    &.img-rounded {
-        border-radius: 4px;
-    }
+.img-rounded {
+    border-radius: 4px;
+}
 
-    &.img-thumbnail {
-        margin: 20px;
-        padding: 4px;
-        line-height: 1.625;
-        border: 1px solid $dark-foreground;
-        border-radius: 3px;
-        transition: all 0.2s ease-in-out;
-        display: inline-block;
-        width: 100% \9;
-        max-width: 100%;
-        height: auto;
-    }
+.img-thumbnail {
+    margin: 20px;
+    padding: 4px;
+    line-height: 1.625;
+    border-radius: 3px;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+    width: 100% \9;
+    max-width: 100%;
+    height: auto;
+}
+.colorscheme-light .img-thumbnail {
+    border: 1px solid $light-foreground;
+}
+.colorscheme-dark .img-thumbnail {
+    border: 1px solid $dark-foreground;
+}
 
-    &.img-circle {
-        border-radius: 50%;
-    }
+.img-circle {
+    border-radius: 50%;
 }
 
 input[type=text],
