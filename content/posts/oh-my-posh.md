@@ -1,14 +1,18 @@
 +++
 date = 2022-04-25T20:19:44-04:00
-title = "Customizing my CLI using Oh My Posh"
+title = "Customizing my CLI using Oh My Posh (Old PS modules version)"
 categories = ['Programming']
 +++
 
-![My Customized VS Code](/images/2022/vscode.png)
+## Update
+
+[Oh My Posh](https://ohmyposh.dev/docs/migrating) has since migrated from PowerShell modules to an executable. See the updated version of this article [here](/posts/customizing-my-cli-using-oh-my-posh/).
 
 ## Why Customize?
 
 For years I have used [Cmder](https://cmder.net/) terminal emulator for a fancy CLI while developing in Windows. Now that Microsoft has finally released a modern terminal it is finally time to put Cmder to rest. In this article I am documenting my opinionated manner of customizing my CLI.
+
+![My Customized VS Code](/images/2022/vscode.png)
 
 The terminals I will be customizing are:
 
