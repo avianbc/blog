@@ -9,20 +9,14 @@ For years, I relied on [Cmder](https://cmder.net/) as my terminal emulator of ch
 
 ## Prerequisites
 
-I recommend installing as much as you can using MS Store that way auto updates are enabled. I will provide links to the various ways to install each package:
+I recommend installing as much as you can using Microsoft Store so that auto updates are enabled. You can also use package managers such as winget or choclatey.
 
-- [Oh My Posh](https://ohmyposh.dev/) is a theme engine that will be used to make it look good
-  - `winget install XP8K0HKJFRXGCK`
-  - <ms-windows-store://pdp/?productid=XP8K0HKJFRXGCK>
-  - <https://www.microsoft.com/store/apps/XP8K0HKJFRXGCK>
-- [Windows Terminal](ms-windows-store://pdp/?productid=9N0DX20HK701) is my new terminal emulator of choice
-  - Winget: `winget install 9N0DX20HK701`
-  - Uri: <ms-windows-store://pdp/?productid=9N0DX20HK701>
-  - Url: <https://www.microsoft.com/store/apps/9N0DX20HK701>
-- [PowerShell](ms-windows-store://pdp/?productid=9MZ1SNWT0N5D) the rebuilt, cross-platform version of Powershell
-  - Winget: `winget install 9MZ1SNWT0N5D`
-  - Uri: <ms-windows-store://pdp/?productid=9MZ1SNWT0N5D>
-  - Url: <https://www.microsoft.com/store/apps/9MZ1SNWT0N5D>
+- [Oh My Posh](https://ohmyposh.dev/docs/installation/windows) is a theme engine that will be used to make it look good
+  - `winget install XP8K0HKJFRXGCK` or [via the Microsoft Store](https://apps.microsoft.com/store/detail/ohmyposh/XP8K0HKJFRXGCK)
+- [Windows Terminal](https://github.com/microsoft/terminal#installing-and-running-windows-terminal) is my new terminal emulator of choice
+  - `winget install 9N0DX20HK701` or [via the Microsoft Store](https://www.microsoft.com/store/apps/9N0DX20HK701)
+- [PowerShell](https://github.com/PowerShell/PowerShell#get-powershell) the rebuilt, cross-platform version of Powershell
+  - Winget: `winget install 9MZ1SNWT0N5D` or [via the Microsoft Store](https://www.microsoft.com/store/apps/9MZ1SNWT0N5D)
 
 ## Installation
 
