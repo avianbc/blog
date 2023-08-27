@@ -7,11 +7,9 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-<div class="row justify-center">
-  <img class="img-circle" src="/images/profile.png" style="width:20rem; margin: 4rem;" />
-</div>
+<a href="https://stackoverflow.com/users/636942/brad-c" class="float-right"><img class=" img-thumbnail" src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
 
-Hey there! I'm **Brad**, a lifelong learner, engineer, hacker, and traveler.
+Hey there! I'm Brad, a lifelong learner, engineer, hacker, and traveler.
 
 ## What I Do
 
@@ -57,15 +55,13 @@ Since 2014, I've been working remotely, specializing in modernizing legacy enter
 
 ## Leisure
 
-I actively contribute on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming), sharing knowledge while continuously learning.
-
-<a href="https://stackoverflow.com/users/636942/brad-c"><img src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
-
 As a [competitive powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to counter screen time.
 
 Balancing my remote work life, I embrace freedom through travel.
 
-Being an audiophile, I racked up 41 days and 7 hours of music listening in 2020 alone. I'm also a guitar enthusiast, passionate about playing and teaching.
+I'm a guitar enthusiast, passionate about all things music related. Being an audiophile, I racked up 41 days and 7 hours of music listening in 2020 alone.
+
+I actively contribute on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming), sharing knowledge while continuously learning.
 
 ## Contact
 
