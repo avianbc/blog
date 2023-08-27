@@ -2,11 +2,10 @@
 date = 2023-08-19T17:31:54-04:00
 title = "Customizing my PowerShell CLI using Oh My Posh"
 categories = ['Programming']
+featuredImage = "/images/2023/windowsterminal.png"
 +++
 
 For years, I relied on [Cmder](https://cmder.net/) as my terminal emulator of choise. With the release of Microsoft's modern terminal, it's time to transition away from Cmder. In this article, I'll outline my approach to customizing my CLI for improved productivity:
-
-![Windows Terminal](/images/2023/windowsterminal.png)
 
 ## Prerequisites
 
