@@ -63,18 +63,6 @@ I'm a guitar enthusiast, passionate about all things music related. Being an aud
 
 I actively contribute on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming), sharing knowledge while continuously learning.
 
-## Contact
-
-Feel free to reach out via email at **brad[at]bradleycarey[dot]com** or use the form below:
-
-<form action="https://getform.io/f/08250cf3-2d2d-4ede-a843-fbd90ab29322" method="POST">
-  <input type="text" name="name" placeholder="Name (required)" required>
-  <input type="email" name="email" placeholder="Email (required)" required>
-  <input type="tel" name="tel" placeholder="Phone">
-  <textarea name="message" minlength="50" placeholder="Message (required)" required></textarea>
-  <button type="submit">Send</button>
-</form>
-
 ## About The Site
 
 CI/CD pipeline by Netlify [![Netlify Status](https://api.netlify.com/api/v1/badges/bde75bf8-d2a2-4f5a-8bfe-4e3513b5cea8/deploy-status)](https://app.netlify.com/sites/bradleycarey/deploys)
