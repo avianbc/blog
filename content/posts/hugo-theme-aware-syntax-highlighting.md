@@ -14,14 +14,14 @@ I am using [solarized-dark256](https://xyproto.github.io/splash/docs/solarized-d
 
 2. To generate the required classes, run these commands:
 
-    ```shell
+    ```text
     hugo gen chromastyles --style=solarized-dark256 > .\assets\syntax-dark.scss
     hugo gen chromastyles --style=solarized-light > .\assets\syntax-light.scss
     ```
 
 3. Create a file `assets\custom.scss` and `@import` the generated CSS files:
 
-    If you are using the `prefers-color-scheme` CSS `media`` query to toggle light/dark modes:
+    If you are using the `prefers-color-scheme` CSS `media` query to toggle light/dark modes:
 
     ```scss
     @import "syntax-light";
