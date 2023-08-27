@@ -7,9 +7,11 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-<a href="https://stackoverflow.com/users/636942/brad-c" class="alignleft"><img class=" img-thumbnail" src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
+<div class="row justify-center">
+  <img class="img-circle" src="/images/profile.png" style="width:20rem; margin: 4rem;" />
+</div>
 
-Hey there! I'm Brad, a lifelong learner, engineer, hacker, and traveler based in the OH-WV-KY metro area.
+Hey there! I'm **Brad**, a lifelong learner, engineer, hacker, and traveler.
 
 ## What I Do
 
@@ -37,8 +39,6 @@ I've had the privilege to collaborate with notable clients like:
 
 ## Favorite Technologies
 
-<img class="img-thumbnail float-right" src="/images/js.png" alt="JavaScript" />
-
 - **Back-end / Desktop / Mobile**: C#, Ionic, Python
 - **Front-end**: JavaScript / TypeScript, Angular, React
 - **Databases**: SQL Server, PostgreSQL, MongoDB
@@ -47,11 +47,9 @@ I've had the privilege to collaborate with notable clients like:
 
 ## Background
 
-<img class="img-thumbnail alignleft" src="/images/2015/01/Marshallo-Logo-Transparent.jpg" alt="Marshall University" />
-
 I hold a **B.S. in Computer Science** from [Marshall University](http://marshall.edu), alongside a minor in **Mathematics** and a 4.0 in-major GPA.
 
-During college, I was selected for the [WV Governor’s Internship Program](http://www.wv.gov/gip), collaborating with WV State Tax Department developers. I later developed an online filing web app that generated $107 million in tax revenue in a single year.
+During college, I was selected for the [WV Governor’s Internship Program](http://www.wv.gov/gip), collaborating with WV State Tax Department developers. I later modernized an online filing web app that generated $107 million in tax revenue in a single year.
 
 Post-internship, I joined a B2B software contracting company, crafting numerous web, mobile, and desktop apps across diverse languages and frameworks.
 
@@ -59,15 +57,15 @@ Since 2014, I've been working remotely, specializing in modernizing legacy enter
 
 ## Leisure
 
-<img class="img-thumbnail alignleft" src="/images/zipline.jpg" alt="Brad" />
-
-Balancing my remote work life, I embrace freedom through travel. As a competitive [powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to counter screen time.
-
-I'm a guitar enthusiast, passionate about playing and teaching. Sharing more of my music online is on my list!
-
-Being an audiophile, I racked up 41 days and 7 hours of music listening in 2020 alone.
-
 I actively contribute on Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming), sharing knowledge while continuously learning.
+
+<a href="https://stackoverflow.com/users/636942/brad-c"><img src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
+
+As a [competitive powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to counter screen time.
+
+Balancing my remote work life, I embrace freedom through travel.
+
+Being an audiophile, I racked up 41 days and 7 hours of music listening in 2020 alone. I'm also a guitar enthusiast, passionate about playing and teaching.
 
 ## Contact
 
