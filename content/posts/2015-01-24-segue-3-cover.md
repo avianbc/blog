@@ -1,6 +1,6 @@
 ---
 id: 411
-title: Segue 3 Cover
+title: Segue 3 Classical Guitar Cover
 date: 2015-01-24T00:46:06-04:00
 author: brad
 layout: post

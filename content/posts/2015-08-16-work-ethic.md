@@ -1,6 +1,6 @@
 ---
 id: 602
-title: Work Ethic
+title: Uncle Bob quote on Work Ethic
 date: 2015-08-16T04:18:52-04:00
 author: brad
 layout: post

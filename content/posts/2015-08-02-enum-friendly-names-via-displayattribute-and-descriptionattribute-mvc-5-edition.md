@@ -1,6 +1,6 @@
 ---
 id: 609
-title: 'Enum friendly names using attributes'
+title: 'Enum friendly names using attributes in C# ASP.NET MVC'
 date: 2015-08-02T14:58:24-04:00
 author: brad
 layout: post

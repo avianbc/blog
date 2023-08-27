@@ -1,6 +1,6 @@
 +++
 date = 2023-08-19T17:31:54-04:00
-title = "Customizing my CLI using Oh My Posh (2023)"
+title = "Customizing my PowerShell CLI using Oh My Posh"
 categories = ['Programming']
 +++
 
