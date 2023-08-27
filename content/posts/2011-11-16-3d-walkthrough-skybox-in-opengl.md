@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img src="/images/2015/01/walkthrough-292x300.png" alt="walkthrough" width="292" height="300" class="alignleft size-medium wp-image-397" srcset="/images/2015/01/walkthrough-292x300.png 292w, /images/2015/01/walkthrough.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/walkthrough.png)
+[<img src="/images/2015/01/walkthrough-292x300.png" alt="walkthrough" width="292" height="300" class="float-right size-medium wp-image-397" srcset="/images/2015/01/walkthrough-292x300.png 292w, /images/2015/01/walkthrough.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/walkthrough.png)
 
 This is a walkthrough with a bunch of random items. Included are: a giant pyramid (hide it by pressing the p key!), a snowman, a bird, a torus, a rotating texture, and a golden spiral of teapots in the background.
 

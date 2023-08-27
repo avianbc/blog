@@ -37,9 +37,9 @@ I've had the privilege to collaborate with notable clients like:
 
 ## Favorite Technologies
 
-<img class="img-thumbnail alignleft" src="/images/js.png" alt="JavaScript" />
+<img class="img-thumbnail float-right" src="/images/js.png" alt="JavaScript" />
 
-- **Back-end / Desktop / Mobile**: C#, Python
+- **Back-end / Desktop / Mobile**: C#, Ionic, Python
 - **Front-end**: JavaScript / TypeScript, Angular, React
 - **Databases**: SQL Server, PostgreSQL, MongoDB
 - **Cloud / DevOps**: AWS, Azure, Docker, Kubernetes

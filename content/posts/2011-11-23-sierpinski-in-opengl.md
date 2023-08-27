@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img src="/images/2015/01/sierpinski-292x300.png" alt="sierpinski" width="292" height="300" class="alignleft size-medium wp-image-394" srcset="/images/2015/01/sierpinski-292x300.png 292w, /images/2015/01/sierpinski.png 489w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/sierpinski.png)
+[<img src="/images/2015/01/sierpinski-292x300.png" alt="sierpinski" width="292" height="300" class="float-right size-medium wp-image-394" srcset="/images/2015/01/sierpinski-292x300.png 292w, /images/2015/01/sierpinski.png 489w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/sierpinski.png)
 
 This is just a simple 2D rendering of the famous [Sierpinski gasket](http://www.wolframalpha.com/input/?i=sierpinski+gasket&a=*C.sierpinski+gasket-_*Formula.dflt-&f2=11&f=SierpinskiGasket.n_11&x=10&y=7).
 

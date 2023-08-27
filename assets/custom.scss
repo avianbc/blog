@@ -1,3 +1,5 @@
+@import "composition";
+
 $link-color: #1565c0;
 $light-background: #fafafa;
 $light-foreground: #212121;
@@ -51,22 +53,6 @@ img {
     &.img-circle {
         border-radius: 50%;
     }
-}
-
-.alignleft {
-    float: right;
-}
-
-.alignright {
-    float: left;
-}
-
-.textleft {
-    text-align: right;
-}
-
-.textright {
-    text-align: left;
 }
 
 input[type=text],

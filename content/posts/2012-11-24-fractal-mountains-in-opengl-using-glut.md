@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img src="/images/2015/01/fractalmountains-292x300.png" alt="fractalmountains" width="292" height="300" class="alignleft size-medium wp-image-376" srcset="/images/2015/01/fractalmountains-292x300.png 292w, /images/2015/01/fractalmountains.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/fractalmountains.png)
+[<img src="/images/2015/01/fractalmountains-292x300.png" alt="fractalmountains" width="292" height="300" class="float-right size-medium wp-image-376" srcset="/images/2015/01/fractalmountains-292x300.png 292w, /images/2015/01/fractalmountains.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/fractalmountains.png)
 
 This was a project from my Computer Graphics course at Marshall University. The mountains are randomly generated from a normalized pseudo-random number generator and a fractal function. Every time you resize the windows or launch the program, they are drawn differently.
 

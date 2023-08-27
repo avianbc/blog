@@ -10,7 +10,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-<img src="/images/2015/01/webgl-300x193.png" alt="webgl" width="300" height="193" class="alignleft size-medium wp-image-400" srcset="/images/2015/01/webgl-300x193.png 300w, /images/2015/01/webgl.png 475w" sizes="(max-width: 300px) 100vw, 300px" />
+<img src="/images/2015/01/webgl-300x193.png" alt="webgl" width="300" height="193" class="float-right size-medium wp-image-400" srcset="/images/2015/01/webgl-300x193.png 300w, /images/2015/01/webgl.png 475w" sizes="(max-width: 300px) 100vw, 300px" />
 
 This is the same as the 3D wireframe example which was done in OpenGL, only ported to the new technology known as WebGL. [WebGL](http://www.khronos.org/webgl/) is still a new technology that uses GPU acceleration to render 3D graphics in a web browser and it has shown vast potential to modernize the web.
 

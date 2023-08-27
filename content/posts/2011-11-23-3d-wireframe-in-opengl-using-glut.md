@@ -11,7 +11,7 @@ categories:
   - OpenGL / WebGL
   - Programming
 ---
-[<img class="alignleft size-medium wp-image-387" src="/images/2015/01/3dwireframe-292x300.png" alt="3dwireframe" width="292" height="300" srcset="/images/2015/01/3dwireframe-292x300.png 292w, /images/2015/01/3dwireframe.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/3dwireframe.png)
+[<img class="float-right size-medium wp-image-387" src="/images/2015/01/3dwireframe-292x300.png" alt="3dwireframe" width="292" height="300" srcset="/images/2015/01/3dwireframe-292x300.png 292w, /images/2015/01/3dwireframe.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/3dwireframe.png)
 
 The wireframe you see here is nothing more than the 3d plot of the function [f(x,z) = 4\*cos(sqrt(x\*x+z*z))](http://www.wolframalpha.com/input/?i=plot+4*cos%28sqrt%28x*x%2Bz*z%29%29+from+-6+to+6) rendered using GL\_LINE\_LOOP and a little math. As of now, is is still untextured and without lighting. Though in 3D Wireframe Solids, I added that functionality as well.
 

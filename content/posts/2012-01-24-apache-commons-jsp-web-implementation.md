@@ -10,15 +10,15 @@ categories:
   - Java
   - Programming
 ---
-[<img class="alignleft size-medium wp-image-403" title="" src="/images/2015/01/acwi-300x163.png" alt="acwi" width="300" height="163" srcset="/images/2015/01/acwi-300x163.png 300w, /images/2015/01/acwi.png 581w" sizes="(max-width: 300px) 100vw, 300px" />](/images/2015/01/acwi.png)
+[<img class="float-right size-medium wp-image-403" title="" src="/images/2015/01/acwi-300x163.png" alt="acwi" width="300" height="163" srcset="/images/2015/01/acwi-300x163.png 300w, /images/2015/01/acwi.png 581w" sizes="(max-width: 300px) 100vw, 300px" />](/images/2015/01/acwi.png)
 
 If you are a Java developer then you are very familiar with The Apache Commons. This web app is just basically a web implementation of the commons’ Math library. Here is an excerpt from the Commons’ website about Commons Math:
 
 Commons Math is a library of lightweight, self-contained mathematics and statistics components addressing the most common problems not available in the Java programming language or Commons Lang.
 
 <div class="well">
-  Guiding principles:</p> 
-  
+  Guiding principles:</p>
+
   <ol>
     <li>
       Real-world application use cases determine development priority.
