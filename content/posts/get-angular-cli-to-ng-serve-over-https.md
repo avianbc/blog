@@ -1,20 +1,20 @@
 +++
-draft = true
 date = 2023-08-24T10:49:47-04:00
-title = "Get angular CLI to serve over HTTPS much easier than you think"
+title = "Serving an Angular CLI App over HTTPS Made Easy"
 categories = ['Programming', 'Angular']
 +++
 
-I found a much easier way than any of the methods listed in [this stackoverflow post](https://stackoverflow.com/questions/39210467/get-angular-cli-to-ng-serve-over-https) to serve an angular CLI app over HTTPS using [office-addin-dev-certs](https://www.npmjs.com/package/office-addin-dev-certs):
+I've discovered a simpler method than those discussed in [this Stack Overflow post](https://stackoverflow.com/questions/39210467/get-angular-cli-to-ng-serve-over-https) for serving an Angular CLI app over HTTPS using [office-addin-dev-certs](https://www.npmjs.com/package/office-addin-dev-certs):
 
-1. Run this command to generate the certs and click "Yes" to trust them when it prompts you:
+1. Generate the certificates by running the following command and click "Yes" to trust them when prompted:
    - `npx office-addin-dev-certs install --days 365`
-2. The generated certs (`localhost.crt` and `localhost.key`) will be in your home folder `~\.office-addin-dev-certs`
+2. You'll find the generated certificates (`localhost.crt` and `localhost.key`) in your home folder `~\.office-addin-dev-certs`
    - Copy them to your angular project: `cp ~\.office-addin-dev-certs\localhost.* .`
-   - You probably want to add them to your `.gitignore` as well
-3. Feed the certs to angular:
+   - Don't forget to add them to your `.gitignore`
+3. Use these certificates with Angular by running:
    - Run `ng serve --ssl --ssl-key localhost.key --ssl-cert localhost.crt`
-   - Or add them to your `angular.json` so you can run `ng serve` as normal:
+
+Alternatively, add them to your `angular.json` so you can run `ng serve` as usual:
 
 ```json
 "serve": {
@@ -31,9 +31,9 @@ I found a much easier way than any of the methods listed in [this stackoverflow 
 },
 ```
 
-## Automate it with powershell
+## Automate it
 
-I actually ended up writing a powershell script that I stuffed into my nx `tools` folder that allowed team members to just clone the repo and run `.\tools\install-certs.ps1` to get https immediately working.
+I've even created a PowerShell script that will install the certificates and copy them to your project. Adding this to my repo enabled team members to just clone it and run `.\tools\install-certs.ps1` to get https immediately working:
 
 ```powershell
 if (-Not (Get-Command npx -ErrorAction SilentlyContinue)) {
@@ -47,7 +47,6 @@ $keyPath = "$HOME\.office-addin-dev-certs\localhost.key"
 
 Write-Host "Installing cert for current user..."
 npx office-addin-dev-certs install --days $certExpirationDays
-
-Copy-Item $certPath,$keyPath $PSScriptRoot -Force -Verbose # copy generated cert to tools folder
+Copy-Item $certPath,$keyPath $PSScriptRoot -Force -Verbose
 npx office-addin-dev-certs verify
 ```
