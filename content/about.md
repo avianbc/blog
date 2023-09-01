@@ -70,5 +70,3 @@ CI/CD pipeline by Netlify [![Netlify Status](https://api.netlify.com/api/v1/badg
 The site is built with [Hugo](https://gohugo.io/) static HTML and CSS generator. Old blog posts were migrated from an ancient WordPress site.
 
 Check out the [Github repository](https://github.com/avianbc/blog) for this site.
-
-<a href="https://www.buymeacoffee.com/avian" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
