@@ -1,4 +1,4 @@
-<section class="container centered column">
+<section class="container centered column justify-between">
   <div class="about">
     {{ if and (isset .Site.Params "avatarurl") (not (isset .Site.Params "gravatar")) }}
       {{ with .Site.Params.avatarURL }}
@@ -41,6 +41,10 @@
         <a class="title" href="{{ .Params.ExternalLink | default .RelPermalink }}">{{ .Title }}</a>
       </li>
     {{- end -}}
+      <li>
+        <span class="date">&nbsp;</span>
+        <a class="title" href="posts/">More posts...</a>
+      </li>
     </ul>
   </div>
   {{ end }}

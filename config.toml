@@ -24,7 +24,7 @@ since = "2012"
 # "dark" (dark background, light foreground)
 # "light" (light background, dark foreground) (default)
 colorScheme = "auto"
-recentPostCount = "5"
+recentPostCount = "4"
 
 [taxonomies]
 category = "categories"
