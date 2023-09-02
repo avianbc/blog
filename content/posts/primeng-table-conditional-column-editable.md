@@ -1,6 +1,6 @@
 +++
 date = 2022-05-10T16:11:00-04:00
-title = "Make dynamic PrimeNG table columns condtionally editable"
+title = "Make dynamic PrimeNG table columns conditionally editable"
 categories = ['Programming', 'TypeScript', 'Angular', 'PrimeNG']
 +++
 
