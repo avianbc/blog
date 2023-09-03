@@ -6,11 +6,12 @@ defaultcontentlanguage = "en"
 paginate = 20
 disqusShortname = "bradleycarey"
 googleAnalytics = "UA-163095528-1"
+enableRobotsTXT = true
 
 [params]
 author = "Bradley Carey"
-description = "Bradley Carey's personal website"
-keywords = "blog,developer,personal,programming"
+description = "Bradley Carey's personal website, featuring articles and resources on software engineering, web development, and more."
+keywords = "blog,programming,software engineering,web development,technology,productivity,consulting"
 info = "Principal Software Engineer, Tech Lead"
 avatarurl = "images/profile.png"
 favicon_32 = "images/favicon.png"
