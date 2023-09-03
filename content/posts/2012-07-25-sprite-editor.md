@@ -7,8 +7,13 @@ layout: post
 guid: http://br4d.net/?p=354
 permalink: /sprite-editor/
 categories:
-  - CSharp
   - Sprite Editor
+tags:
+  - C#
+  - .NET
+  - Windows Forms
+  - Sprites
+
 ---
 <div class="pull-right">
   <a href="/images/2015/01/spriteeditor.jpg"><img src="/images/2015/01/spriteeditor-300x157.jpg" alt="spriteeditor" width="300" height="157" class="alignnone size-medium wp-image-355" srcset="/images/2015/01/spriteeditor-300x157.jpg 300w, /images/2015/01/spriteeditor.jpg 646w" sizes="(max-width: 300px) 100vw, 300px" /></a>

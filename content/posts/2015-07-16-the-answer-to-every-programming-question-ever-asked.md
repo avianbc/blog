@@ -8,6 +8,7 @@ guid: http://br4d.net/?p=596
 permalink: /the-answer-to-every-programming-question-ever-asked/
 categories:
   - Programming
+  - Quotes
   - Random
 ---
 What is the proper answer to every programming question ever asked? Easy:

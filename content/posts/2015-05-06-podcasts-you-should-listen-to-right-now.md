@@ -7,9 +7,10 @@ layout: post
 guid: http://br4d.net/?p=536
 permalink: /podcasts-you-should-listen-to-right-now/
 categories:
-  - Podcasts
   - Programming
   - Random
+tags:
+  - Podcasts
 ---
 ### Programming Related Podcasts
 

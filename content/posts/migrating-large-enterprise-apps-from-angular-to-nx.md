@@ -2,7 +2,8 @@
 draft = true
 date = 2023-08-24T10:49:47-04:00
 title = "Lessons Learned: Migrating large enterprise apps from Angular CLI to Nx"
-categories = ['Programming', 'TypeScript', 'Angular']
+categories = ['Programming']
+tags = ['JavaScript', 'TypeScript', 'Angular', 'Nx']
 +++
 
 Migrating a standalone Angular app to [Nx](https://nx.dev/getting-started/intro) is as easy as running a command: `npx nx@latest init`. Migrating many angular repos to an integrated Nx monorepo turned out to be much more involved than just running `npx nx@latest init --integrated`. This post outlines some of the challenges and lessons learned from migrating many large enterprise applications and libraries from an Angular CLI to Nx.

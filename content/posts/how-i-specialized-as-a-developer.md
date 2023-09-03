@@ -2,6 +2,7 @@
 date = 2021-03-30T22:13:08-04:00
 title = "How I chose my specialization as a developer"
 categories = ['Programming']
+tags = ['Career']
 +++
 
 Early on in my development career, one of the toughest choices was what to specialize in. Programming is such a broad subject that learning it all is basically impossible! How was I to know what to concentrate on?
@@ -11,8 +12,8 @@ Early on in my development career, one of the toughest choices was what to speci
 [A non-exhaustive list of specializations from a random post on the internet:](https://byteschool.io/post/should-new-developers-specialize/)
 
 > * Frontend – help shape the user interface and experience
-> * Backend – create database optimisations and business logic
-> * Embeded Systems – work on hardware specific software
+> * Backend – create database optimizations and business logic
+> * Embedded Systems – work on hardware specific software
 > * Data Pipelines – produce effective data flows for machine learning and storage
 > * Consulting – communicate how software can help a client’s needs (or discover their needs for them)
 > * Project Management – delegate work effectively between members of a team

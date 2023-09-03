@@ -7,9 +7,13 @@ layout: post
 guid: http://br4d.net/?p=393
 permalink: /sierpinski-in-opengl/
 categories:
-  - C / C++
-  - OpenGL / WebGL
   - Programming
+  - Math
+tags:
+  - C
+  - C++
+  - OpenGL
+  - WebGL
 ---
 [<img src="/images/2015/01/sierpinski-292x300.png" alt="sierpinski" width="292" height="300" class="float-right size-medium wp-image-394" srcset="/images/2015/01/sierpinski-292x300.png 292w, /images/2015/01/sierpinski.png 489w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/sierpinski.png)
 

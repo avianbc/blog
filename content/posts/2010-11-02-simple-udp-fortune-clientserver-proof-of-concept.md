@@ -7,8 +7,10 @@ layout: post
 guid: http://br4d.net/?p=362
 permalink: /simple-udp-fortune-clientserver-proof-of-concept/
 categories:
-  - Java
   - Programming
+tags:
+  - Java
+  - UDP
 ---
 This program is a simple client/server UDP/Datagram network program. The client sends a random number which is then used to display a random fortune on the client’s screen.
 

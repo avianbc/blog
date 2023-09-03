@@ -7,8 +7,9 @@ layout: post
 guid: http://br4d.net/?p=360
 permalink: /simple-java-websocket-currency-exchanger-proof-of-concept/
 categories:
-  - Java
   - Programming
+tags:
+  - Java
 ---
 This program is a simple client/server websocket program. The client sends a currency amount, type, and type to convert it to and the server responds with the correct conversion. Conversion factors are way out of date since this program was written in 2009.
 

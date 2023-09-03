@@ -8,34 +8,37 @@ guid: http://avian.netne.net/blog/?p=131
 permalink: /tutorial-how-to-create-your-own-sprite/
 categories:
   - Sprite Editor
+tags:
   - JSON
+  - Sprites
+
 ---
 While there is some documentation for the *.spr file format, it can be underwhelming and full of technical jargon. This post aims to provide an easy to follow tutorial for the creation your own sprites so together we can populate the sprite network with an even larger amount and variety of random sprites.
 
 ## Table Of Contents
 
-  1. [What is a sprite?](#what)
-  2. [The anatomy of a sprite](#anatomy)
-  3. [States](#states)
-      * [List of possible states](#statetable)
-  4. [Parameters](#params)
-      * [List of possible parameters](#paramtable)
-  5. [X and Y values](#xyvalues)
-  6. [Cropping and Displaying a Frame](#cropping)
-  7. [State Chains](#chains)
-  8. [Inheritance](#inheritance)
-  9. [Sprite MetaData](#metadata)
-      * [actions](#actions)
-      * [flags](#flags)
-      * [credits](#credits)
-      * [version](#version)
-      * [spawn](#spawn)
- 10. [Death Animations](#death)
- 11. [Using flipX](#flipx)
- 12. [Transparency](#transparency)
- 13. [Offsets](#offsets)
- 14. [Fixtures](#fixtures)
- 15. [Sprite Validation](#validation)
+- [Table Of Contents](#table-of-contents)
+- [What is a sprite?](#what-is-a-sprite)
+- [The anatomy of a sprite.](#the-anatomy-of-a-sprite)
+- [States](#states)
+- [Parameters and Values](#parameters-and-values)
+- [X and Y values](#x-and-y-values)
+- [Cropping and Displaying a Frame](#cropping-and-displaying-a-frame)
+- [State Chains](#state-chains)
+- [Animated GIFs](#animated-gifs)
+- [Inheritance](#inheritance)
+- [SPRITE\_META\_DATA](#sprite_meta_data)
+- [actions specify to the sprite engine what the sprite is capable of doing.](#actions-specify-to-the-sprite-engine-what-the-sprite-is-capable-of-doing)
+- [flags turn on special behaviors for the sprite.](#flags-turn-on-special-behaviors-for-the-sprite)
+- [credits provides the sprite engine with details of the person who created that sprite.](#credits-provides-the-sprite-engine-with-details-of-the-person-who-created-that-sprite)
+- [version](#version)
+- [spawn is used to spawn other sprites upon death.](#spawn-is-used-to-spawn-other-sprites-upon-death)
+- [Sprite Death Animations](#sprite-death-animations)
+- [Using flipX for easy Left and Right states](#using-flipx-for-easy-left-and-right-states)
+- [Transparency](#transparency)
+- [Offsets](#offsets)
+- [Fixtures](#fixtures)
+- [Sprite Validation](#sprite-validation)
 
 
 ## <strong id="what">What is a sprite?</strong>

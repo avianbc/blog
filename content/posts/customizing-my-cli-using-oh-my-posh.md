@@ -2,6 +2,7 @@
 date = 2023-08-19T17:31:54-04:00
 title = "Customizing my PowerShell CLI using Oh My Posh"
 categories = ['Programming']
+tags = ['PowerShell', 'Windows Terminal', 'Oh My Posh']
 featuredImage = "/images/2023/windowsterminal.png"
 +++
 

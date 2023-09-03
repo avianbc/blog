@@ -9,7 +9,10 @@ permalink: /maze-solving-algorithms-wall-follower/
 categories:
   - Programming
   - Algorithms
-  - CSharp
+tags:
+  - C#
+  - .NET
+  - Maze Solving
 ---
 
 Maze solving algorithms are a well known area of research. Of these, one of the most well known solving strategies for simply connected mazes is the [wall follower](http://en.wikipedia.org/wiki/Maze_solving_algorithm#Wall_follower) algorithm. This post will delve into the coding and implementation of such an algorithm (in C#, of course).

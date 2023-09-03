@@ -7,8 +7,10 @@ layout: post
 guid: http://br4d.net/?p=399
 permalink: /webgl-3d-wireframe-using-glge/
 categories:
-  - OpenGL / WebGL
   - Programming
+tags:
+  - OpenGL
+  - WebGL
 ---
 <img src="/images/2015/01/webgl-300x193.png" alt="webgl" width="300" height="193" class="float-right size-medium wp-image-400" srcset="/images/2015/01/webgl-300x193.png 300w, /images/2015/01/webgl.png 475w" sizes="(max-width: 300px) 100vw, 300px" />
 

@@ -7,9 +7,12 @@ layout: post
 guid: http://br4d.net/?p=405
 permalink: /sas-data-file-to-postgresql-friendly-csv-using-perl/
 categories:
-  - Perl
   - Programming
+  - Databases
+tags:
   - SQL
+  - Perl
+  - SEER
 ---
 In my database course at Marshall University, I helped my professor with a side project involving Cancer research data that has been collected since 1973 by the National Cancer Institute. My first job was to take the [SEER](http://seer.cancer.gov/about/) data and load it into a postgreSQL database.
 

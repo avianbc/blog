@@ -7,6 +7,9 @@ layout: post
 guid: http://br4d.net/?p=492
 permalink: /savarez-cristal-corum-high-tension-500cj-string-review/
 categories:
+  - Music
+  - Reviews
+tags:
   - Guitar
 ---
 I recently bought a brand new Cordoba classical guitar. I am extremely happy with my purchase and would recommend this guitar a thousand times over. My only problem with it is the Savarez Cristal Corum High Tension 500CJ strings that came stock on the guitar.

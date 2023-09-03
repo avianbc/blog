@@ -7,9 +7,11 @@ layout: post
 guid: http://br4d.net/?p=370
 permalink: /simple-nix-pipes-proof-of-concept/
 categories:
-  - C / C++
   - Linux
   - Programming
+tags:
+  - C / C++
+  - Minix
 ---
 This program is a simple program that uses pipes to relay information. In this case, the information is a string which the case is inverted and then displayed. This program was written on [Minix](http://www.minix3.org/) using the elvis text editor and compiled in gcc.
 

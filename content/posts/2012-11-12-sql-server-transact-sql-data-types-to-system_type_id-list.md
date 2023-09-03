@@ -7,7 +7,10 @@ layout: post
 guid: http://avian.netne.net/blog/?p=277
 permalink: /sql-server-transact-sql-data-types-to-system_type_id-list/
 categories:
-  - SQL
+  - Databases
+tags:
+  - SQL Server
+  - T-SQL
 ---
 I received metadata for a SQL Server database which contained the system\_type\_id but not what I needed: the data types of each column. Google did not seem to have a list of these so I ran the queries and posted them here as reference. I hope you find it useful.
 

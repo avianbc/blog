@@ -7,9 +7,13 @@ layout: post
 guid: http://br4d.net/?p=375
 permalink: /fractal-mountains-in-opengl-using-glut/
 categories:
-  - C / C++
-  - OpenGL / WebGL
   - Programming
+  - Algorithms
+tags:
+  - C
+  - C++
+  - OpenGL
+  - WebGL
 ---
 [<img src="/images/2015/01/fractalmountains-292x300.png" alt="fractalmountains" width="292" height="300" class="float-right size-medium wp-image-376" srcset="/images/2015/01/fractalmountains-292x300.png 292w, /images/2015/01/fractalmountains.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/fractalmountains.png)
 

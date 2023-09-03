@@ -7,16 +7,19 @@ layout: post
 guid: http://br4d.net/?p=372
 permalink: /pseudocode-interpreter/
 categories:
-  - C / C++
   - Programming
+tags:
+  - C
+  - C++
+  - Pseudocode
 ---
 This program was an assignment for my Programming Languages course. The idea is to implement a simple pseudocode interpreter which has very basic functionality as well as a contiguous memory store. Here is how it works:
 
-  1. You feed the program a CRLF seperated list of valid syntax. In this case, the file “pseudocode.txt” which should be in the same directory as the program (no file picker implemented).
+  1. You feed the program a CRLF separated list of valid syntax. In this case, the file “pseudocode.txt” which should be in the same directory as the program (no file picker implemented).
   2. The program reads, parses, and executes the given instructions
   3. Any errors that are found are reported, else the program runs until STOP instruction or EOF.
 
-The instruction set is very limited. There are a total of about 18 operations which can have 2 operands. If something is contained in [brackets] then that is referring to one of the 1000 availiable memory locations ([0] to [999]). You will find the instruction format in the source code, but here is a better explanation:
+The instruction set is very limited. There are a total of about 18 operations which can have 2 operands. If something is contained in [brackets] then that is referring to one of the 1000 available memory locations ([0] to [999]). You will find the instruction format in the source code, but here is a better explanation:
 
 ### Instruction format:
 

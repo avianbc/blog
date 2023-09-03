@@ -7,9 +7,12 @@ layout: post
 guid: http://br4d.net/?p=383
 permalink: /dynamic-lighting-in-opengl-using-glut/
 categories:
-  - C / C++
-  - OpenGL / WebGL
   - Programming
+tags:
+  - C
+  - C++
+  - OpenGL
+  - WebGL
 ---
 <div class="pull-left" style="padding:`0px;">
   <a href="/images/2015/01/dynamiclighting.png"><img src="/images/2015/01/dynamiclighting.png" alt="dynamiclighting" width="218" height="183" class="alignnone size-full wp-image-384" /></a>

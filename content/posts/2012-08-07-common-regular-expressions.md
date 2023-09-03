@@ -8,6 +8,7 @@ guid: http://avian.netne.net/blog/?p=40
 permalink: /common-regular-expressions/
 categories:
   - Programming
+tags:
   - RegEx
 ---
 Any programmer worth their salt should have a few tricks up their sleeve. Among these should be [regular expressions](http://en.wikipedia.org/wiki/Regular_expression). The syntax for RegEx is unusual and hard to get used to, but only with a little practice (or even a [cheat sheet](http://www.cheatography.com/davechild/cheat-sheets/regular-expressions/)) you can realize the full potential when it comes to text processing and string handling.

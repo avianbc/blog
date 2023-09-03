@@ -7,8 +7,11 @@ layout: post
 guid: http://br4d.net/?p=368
 permalink: /finding-square-roots-using-newtons-method-proof-of-concept/
 categories:
-  - Java
   - Programming
+  - Algorithms
+tags:
+  - Java
+  - Math
 ---
 This program uses the famous method by Isaac Newton to iteratively find the square root of a number. It relies upon an inital guess which is then improved until the answer is accurate within 0.000001.
 

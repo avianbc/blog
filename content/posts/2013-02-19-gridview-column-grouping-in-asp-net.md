@@ -7,10 +7,11 @@ layout: post
 guid: http://avian.netne.net/blog/?p=295
 permalink: /gridview-column-grouping-in-asp-net/
 categories:
-  - ASP.NET
   - Programming
+tags:
+  - ASP.NET
   - VB
-  - Web Design
+  - WebForms
 ---
 If you are writing code to show a large amount of records in an ASP.NET GridView control, you should do your best to make them easily readable since it can be overwhelming. I’ve ran across a few different hacks using JQuery to enhance the presentation of GridView records, but this seems to lag the user’s browser when a large number of rows is encountered. I have wrote a small function that performs this action server-side and rids the user of the content-rendering JQuery lag spike.
 

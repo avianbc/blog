@@ -7,9 +7,12 @@ layout: post
 guid: http://br4d.net/?p=386
 permalink: /3d-wireframe-in-opengl-using-glut/
 categories:
-  - C / C++
-  - OpenGL / WebGL
   - Programming
+tags:
+  - C
+  - C++
+  - OpenGL
+  - WebGL
 ---
 [<img class="float-right size-medium wp-image-387" src="/images/2015/01/3dwireframe-292x300.png" alt="3dwireframe" width="292" height="300" srcset="/images/2015/01/3dwireframe-292x300.png 292w, /images/2015/01/3dwireframe.png 490w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/3dwireframe.png)
 

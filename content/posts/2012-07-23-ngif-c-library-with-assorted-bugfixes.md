@@ -7,9 +7,14 @@ layout: post
 guid: http://br4d.net/?p=357
 permalink: /ngif-c-library-with-assorted-bugfixes/
 categories:
-  - CSharp
   - Programming
   - Sprite Editor
+tags:
+  - C#
+  - .NET
+  - Gif
+  - Sprites
+
 ---
 NGif is a C# .NET library to handle encoding and decoding of animated GIFs. I found a use for it, but it had a few bugs. The very last two pixels were being rendered incorrectly as red and the transparency was not functioning properly. I have fixed these bugs, made a few minor improvements, and included writing to a Stream instead of to a File.
 

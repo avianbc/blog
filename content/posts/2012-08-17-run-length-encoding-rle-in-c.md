@@ -8,8 +8,12 @@ guid: http://avian.netne.net/blog/?p=120
 permalink: /run-length-encoding-rle-in-c/
 categories:
   - Algorithms
-  - CSharp
   - Programming
+tags:
+  - C#
+  - .NET
+  - Compression
+  - RLE
 ---
 I recently came across a file format that required usage of [Run Length Encoding](http://en.wikipedia.org/wiki/Run-length_encoding) to handle. This involved writing methods for both decoding and encoding. Here are my results:
 

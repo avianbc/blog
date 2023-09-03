@@ -7,9 +7,14 @@ layout: post
 guid: http://br4d.net/?p=574
 permalink: /using-sql-server-reporting-services-ssrs-in-an-asp-net-mvc-project/
 categories:
-  - CSharp
   - Programming
+  - Databases
+tags:
+  - C#
+  - .NET
   - SQL
+  - SSRS
+  - ASP.NET MVC
 ---
 There are a handful of examples out on the internet on how to use SSRS from an ASP.NET website but all of the ones I came across seemed like hacks. They range from throwing an ASPX page with a ReportViewer control to complex JavaScript hacks. The following method is the one I have used for many years that adheres to the true MVC manner. This method connects to SSRS through the web service using Microsoft.Reporting.WebForms assembly.
 

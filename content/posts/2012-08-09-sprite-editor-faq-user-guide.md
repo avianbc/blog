@@ -8,6 +8,8 @@ guid: http://avian.netne.net/blog/?p=64
 permalink: /sprite-editor-faq-user-guide/
 categories:
   - Sprite Editor
+tags:
+  - Sprites
 ---
 Sprite Editor Frequently Asked Questions and User Guide » Here you will find a list of common questions and concerns regarding [sprite editor](http://avian.netne.net/index.php?p=programming&pid=7 "Sprite Editor").
 

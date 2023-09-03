@@ -1,8 +1,10 @@
-+++
-date = 2021-01-21T22:13:08-04:00
-title = "Building a PC (during a global chip shortage)"
-categories = ['Random']
-+++
+---
+date: 2021-01-22T02:13:08.000Z
+title: Building a PC (during a global chip shortage)
+categories:
+  - Technology
+  - Hardware
+---
 
 The global chip shortage was such a big deal it has its own [wikipedia article](https://en.wikipedia.org/wiki/2020%E2%80%932021_global_chip_shortage). Me (and apparently the entire world) wanted to have the latest tech to use while being locked up at home.
 

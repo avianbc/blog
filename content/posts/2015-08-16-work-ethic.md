@@ -7,6 +7,9 @@ layout: post
 guid: http://br4d.net/?p=602
 permalink: /work-ethic/
 categories:
+  - Books
+  - Programming
+  - Quotes
   - Random
 ---
 > You should plan on working 60 hours per week. The first 40 are for your employer. The remaining 20 are for you. During this remaining 20 hours you should be reading, practicing, learning, and otherwise enhancing your career.<footer>Robert Martin in

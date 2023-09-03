@@ -2,6 +2,7 @@
 date = 2023-08-23T17:59:17.716Z
 title = "Theme-aware syntax highlighting for Hugo using SCSS + Chroma"
 categories = ['Programming']
+tags = ['Hugo', 'SCSS', 'Tailwind CSS', 'CSS', 'SASS']
 +++
 
 [Hugo static site generator](https://gohugo.io/) has built in [syntax highlighting](https://gohugo.io/content-management/syntax-highlighting/) for code blocks that uses [Chroma](https://github.com/alecthomas/chroma) udner the hood. The newer CLI, known as [hugo-extended](https://gohugo.io/installation/windows/#editions), finally supports SASS transpilation.

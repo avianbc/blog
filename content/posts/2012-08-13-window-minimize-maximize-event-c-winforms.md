@@ -7,9 +7,14 @@ layout: post
 permalink: /window-minimize-maximize-event-c-winforms/
 categories:
   - Programming
-  - CSharp
+tags:
+  - C#
+  - .NET
+  - Windows Forms
+  - Win32 API
+  - P/Invoke
 ---
-If you are working in C# winforms and need to respond to window minimize and maximize events, it seems that winforms does not provide native event handlers. Sucha feat is still very much possible through hooking into the Windows API.
+If you are working in C# winforms and need to respond to window minimize and maximize events, it seems that winforms does not provide native event handlers. Such a feat is still very much possible through hooking into the Windows API.
 
 The exact message you need to catch is [WM_SYSCOMMAND](http://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx) and look for the SC_* messages:
 

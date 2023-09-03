@@ -1,7 +1,8 @@
 +++
 date = 2020-09-17
 title = "System.Text.Json.Serialization - Read Numbers from JSON strings"
-categories = ['Programming', 'CSharp']
+categories = ['Programming']
+tags = ['C#', '.NET', 'Json']
 +++
 
 Lets say you are POSTing a json that looks like this:

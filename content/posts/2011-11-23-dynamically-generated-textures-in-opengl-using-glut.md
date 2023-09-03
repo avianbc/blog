@@ -7,9 +7,13 @@ layout: post
 guid: http://br4d.net/?p=380
 permalink: /dynamically-generated-textures-in-opengl-using-glut/
 categories:
-  - C / C++
-  - OpenGL / WebGL
   - Programming
+tags:
+  - C
+  - C++
+  - OpenGL
+  - Procedural Generation
+  - WebGL
 ---
 <div class="pull-left" style="padding:10px;">
   <a href="/images/2015/01/dynamictextures.png"><img src="/images/2015/01/dynamictextures-290x300.png" alt="dynamictextures" width="290" height="300" class="alignnone size-medium wp-image-381" srcset="/images/2015/01/dynamictextures-290x300.png 290w, /images/2015/01/dynamictextures.png 351w" sizes="(max-width: 290px) 100vw, 290px" /></a>

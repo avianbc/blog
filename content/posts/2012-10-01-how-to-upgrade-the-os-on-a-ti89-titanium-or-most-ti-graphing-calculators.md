@@ -7,7 +7,9 @@ layout: post
 guid: http://avian.netne.net/blog/?p=272
 permalink: /how-to-upgrade-the-os-on-a-ti89-titanium-or-most-ti-graphing-calculators/
 categories:
-  - Random
+  - Hardware
+tags:
+  - TI89
 ---
 The option to upgrade or reinstall the OS on these calculators is hidden deep within the UI nightmare known as TI Connect.
 

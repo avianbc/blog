@@ -7,9 +7,12 @@ layout: post
 guid: http://br4d.net/?p=390
 permalink: /3d-wireframe-solids-in-opengl-using-glut/
 categories:
-  - C / C++
-  - OpenGL / WebGL
   - Programming
+tags:
+  - C
+  - C++
+  - OpenGL
+  - WebGL
 ---
 [<img src="/images/2015/01/3dwireframesolids-292x300.png" alt="3dwireframesolids" width="292" height="300" class="float-right size-medium wp-image-391" srcset="/images/2015/01/3dwireframesolids-292x300.png 292w, /images/2015/01/3dwireframesolids.png 489w" sizes="(max-width: 292px) 100vw, 292px" />](/images/2015/01/3dwireframesolids.png)
 

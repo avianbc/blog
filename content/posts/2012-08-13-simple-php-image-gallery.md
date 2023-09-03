@@ -7,10 +7,12 @@ layout: post
 guid: http://br4d.net/?p=329
 permalink: /simple-php-image-gallery/
 categories:
-  - PHP
   - Programming
+tags:
+  - PHP
+  - CSS
 ---
-This script is a very simplified version of the imagery section of my old website. To use it on your own site, follow these steps:
+This script is a very simplified version of the imagery section of my old wordpress website. To use it on your own site, follow these steps:
 
   1. You need to create a folder containing only the images that you want to display. You need to set the path to the this folder on line #2.
   2. The thumbnails should be stored in a separate folder, which you must specify the path to on line #6. In the code, the tumbnails are stored in a subfolder called “thumbs” and the filename of each thumbnail is “thumb_originalFileName.jpg”.

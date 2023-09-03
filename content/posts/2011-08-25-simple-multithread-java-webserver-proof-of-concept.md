@@ -7,8 +7,10 @@ layout: post
 guid: http://br4d.net/?p=338
 permalink: /simple-multithread-java-webserver-proof-of-concept/
 categories:
-  - Java
   - Programming
+tags:
+  - Java
+  - Multithreading
 ---
 This project was nothing more than a proof-of-concept and should not be put into usage (get apache instead). It is a simple webserver written in Java that can take simultaneous requests via multithreading, parse the request, and properly respond. This program served as my forray into multithreading as well as the gritty details to what happens behind the scenes in a webserver.
 

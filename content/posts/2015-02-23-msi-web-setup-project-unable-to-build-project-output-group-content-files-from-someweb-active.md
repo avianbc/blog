@@ -8,6 +8,8 @@ guid: http://br4d.net/?p=500
 permalink: /msi-web-setup-project-unable-to-build-project-output-group-content-files-from-someweb-active/
 categories:
   - Programming
+tags:
+  - Visual Studio
 ---
 
 >MSI Web Setup Project - Unable to build project output group ‘Content Files from SOMEWEB (Active)’

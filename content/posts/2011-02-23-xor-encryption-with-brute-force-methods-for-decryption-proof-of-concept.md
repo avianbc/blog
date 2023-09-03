@@ -7,8 +7,11 @@ layout: post
 guid: http://br4d.net/?p=340
 permalink: /xor-encryption-with-brute-force-methods-for-decryption-proof-of-concept/
 categories:
-  - Java
   - Programming
+tags:
+  - Java
+  - Encryption
+  - Brute Force
 ---
 This project evolved from my time in the Cyber Security class at Marshall University. The goal was to create an implementation of a simple encryption scheme as well as brute force methods for decrypting the ciphertext without the original key. To use it:
 

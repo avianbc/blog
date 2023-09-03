@@ -8,6 +8,8 @@ guid: http://br4d.net/?p=411
 permalink: /segue-3-cover/
 categories:
   - Music
+tags:
+  - Guitar
 ---
 Played using my Cordoba classical guitar. This was recorded mainly as a test for my new Zoom H4N portable digital recorder.
 

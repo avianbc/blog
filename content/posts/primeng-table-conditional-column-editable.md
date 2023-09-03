@@ -1,7 +1,8 @@
 +++
 date = 2022-05-10T16:11:00-04:00
 title = "Make dynamic PrimeNG table columns conditionally editable"
-categories = ['Programming', 'TypeScript', 'Angular', 'PrimeNG']
+categories = ['Programming']
+tags = ['JavaScript', 'TypeScript', 'Angular', 'PrimeNG']
 +++
 
 The [PrimeNG table](https://primeng.org/table) component is a powerful data visualization tool and is a great free alternative to [AG Grid](https://www.ag-grid.com/).

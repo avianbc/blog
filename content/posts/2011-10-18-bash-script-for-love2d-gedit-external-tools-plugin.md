@@ -8,7 +8,11 @@ guid: http://br4d.net/?p=336
 permalink: /bash-script-for-love2d-gedit-external-tools-plugin/
 categories:
   - Programming
+  - Gedit
+tags:
   - Bash
+  - LÖVE
+  - Lua
 ---
 Due to a severe lack of good IDEs for Lua, I have resorted to using [gedit](http://projects.gnome.org/gedit/ "gEdit"). The External Tools plug-in greatly extends the functionality of gedit by giving the user the ability to run scripts from the press a keyboard shortcut. Go to Tools > External Tools and add a new shortcut. Make sure to set the hotkey of your choice and then enter this script into the edit box on the top right:
 

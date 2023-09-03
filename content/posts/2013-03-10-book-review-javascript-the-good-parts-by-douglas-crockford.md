@@ -7,7 +7,12 @@ layout: post
 guid: http://br4d.net/?p=498
 permalink: /book-review-javascript-the-good-parts-by-douglas-crockford/
 categories:
+  - Programming
   - Books
+  - Reviews
+tags:
+  - JavaScript
+  - Book Review
 ---
 JavaScript, which was originally thrown together over a span of 10 days, has its share of bad parts. Of course, many of these have been remedied over the years thanks to ECMA standards process and the creation of high performance JS engines such as Google’s V8. Enter the highly divisive and opinionated book from the original JS guru, Douglas Crockford.
 

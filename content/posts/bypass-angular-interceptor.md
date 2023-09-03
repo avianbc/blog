@@ -1,8 +1,13 @@
-+++
-date = 2023-08-14T20:37:53-04:00
-title = "Bypass Angular interceptors using HttpContext factory + HttpContextTokens"
-categories = ['Programming', 'TypeScript', 'Angular']
-+++
+---
+date: 2023-08-15T00:37:53.000Z
+title: Bypass Angular interceptors using HttpContext factory + HttpContextTokens
+categories:
+  - Programming
+tags:
+  - TypeScript
+  - JavaScript
+  - Angular
+---
 
 If the `HttpClient` is being used within a dependency outside of your control (such as a 3rd party lib) you can still use the `HttpContextTokens` that were [added in Angular v12](https://angular.io/api/common/http/HttpContext#usage-notes) by using a `HttpClient` factory provider. You can scope this to individual modules or components using the `providers` array:
 

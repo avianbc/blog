@@ -7,8 +7,12 @@ layout: post
 guid: http://br4d.net/?p=402
 permalink: /apache-commons-jsp-web-implementation/
 categories:
-  - Java
   - Programming
+  - Math
+tags:
+  - Java
+  - JSP
+  - Apache
 ---
 [<img class="float-right size-medium wp-image-403" title="" src="/images/2015/01/acwi-300x163.png" alt="acwi" width="300" height="163" srcset="/images/2015/01/acwi-300x163.png 300w, /images/2015/01/acwi.png 581w" sizes="(max-width: 300px) 100vw, 300px" />](/images/2015/01/acwi.png)
 

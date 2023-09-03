@@ -1,7 +1,8 @@
 +++
 date = 2020-09-18
 title = "NgBootstrap Datepicker - US Date Formatter - Improved edition"
-categories = ['Programming', 'TypeScript', 'Angular']
+categories = ['Programming']
+tags = ['JavaScript', 'TypeScript', 'Angular', 'ng-bootstrap', 'lodash']
 +++
 
 In a [previous post](https://bradleycarey.com/posts/ng-bootstrap-us-date-formatter/), I outlined my strategy of using the [ng-bootstrap](https://ng-bootstrap.github.io/) datepicker with a formatter for US dates (mm/dd/yyyy).
@@ -126,7 +127,7 @@ describe('DateParserFormatter', () => {
       expect(parser.format({ year: 1934, month: 1, day: 2 })).toBe('01/02/1934');
     });
   });
-  describe('When a falsey value is formatted', () => {
+  describe('When a falsy value is formatted', () => {
     it('it returns an empty string.', () => {
       expect(parser.format(undefined)).toBe('');
     });

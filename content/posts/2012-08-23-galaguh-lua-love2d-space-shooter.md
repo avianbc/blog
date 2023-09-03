@@ -7,8 +7,11 @@ layout: post
 guid: http://br4d.net/?p=345
 permalink: /galaguh-lua-love2d-space-shooter/
 categories:
-  - Lua
   - Programming
+  - Games
+tags:
+  - Lua
+  - LÖVE
 ---
 <div class="pull-left" style="padding: 10px;">
   <a title="" href="/images/2015/01/galaguh.jpg"><img class="alignnone size-medium wp-image-346" title="" src="/images/2015/01/galaguh-219x300.jpg" alt="galaguh" width="219" height="300" srcset="/images/2015/01/galaguh-219x300.jpg 219w, /images/2015/01/galaguh.jpg 490w" sizes="(max-width: 219px) 100vw, 219px" /></a>

@@ -2,8 +2,13 @@
 title: "SSMS – Selecting rows as json truncates long json strings"
 date: 2018-11-18T00:40:04-05:00
 categories:
-  - Programming
-  - SQL
+  - Databases
+tags:
+  - T-SQL
+  - SQL Server
+  - SSMS
+  - JSON
+  - Azure Data Studio
 ---
 
 In the newer versions of Microsoft SQL Server, it is now super easy to [return selected rows as json data](https://docs.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server).

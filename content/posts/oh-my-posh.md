@@ -2,6 +2,7 @@
 date = 2022-04-25T20:19:44-04:00
 title = "Customizing my CLI using Oh My Posh (Old PS modules version)"
 categories = ['Programming']
+tags = ['PowerShell', 'CLI', 'Windows Terminal', 'VS Code', 'Oh My Posh']
 +++
 
 ## Update

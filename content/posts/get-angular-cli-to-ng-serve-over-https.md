@@ -1,7 +1,8 @@
 +++
 date = 2023-08-24T10:49:47-04:00
 title = "Serving an Angular CLI App over HTTPS Made Easy"
-categories = ['Programming', 'Angular']
+categories = ['Programming']
+tags = ['JavaScript', 'Angular', 'PowerShell']
 +++
 
 I've discovered a simpler method than those discussed in [this Stack Overflow post](https://stackoverflow.com/questions/39210467/get-angular-cli-to-ng-serve-over-https) for serving an Angular CLI app over HTTPS using [office-addin-dev-certs](https://www.npmjs.com/package/office-addin-dev-certs):

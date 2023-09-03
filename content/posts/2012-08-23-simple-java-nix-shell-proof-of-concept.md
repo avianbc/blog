@@ -7,8 +7,10 @@ layout: post
 guid: http://br4d.net/?p=343
 permalink: /simple-java-nix-shell-proof-of-concept/
 categories:
-  - Java
   - Programming
+tags:
+  - Java
+  - Shell
 ---
 This is a very simple shell interface with a built-in history feature for use in your favorite *nix environment. This small project comes from a project in my Operating Systems class at Marshall University in which we were studying message passing models in modern OSs.
 
