@@ -10,7 +10,8 @@ categories:
   - Linux
   - Programming
 tags:
-  - C / C++
+  - C
+  - C++
   - Minix
 ---
 This program is a simple program that uses pipes to relay information. In this case, the information is a string which the case is inverted and then displayed. This program was written on [Minix](http://www.minix3.org/) using the elvis text editor and compiled in gcc.
