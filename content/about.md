@@ -7,8 +7,6 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-<a href="https://stackoverflow.com/users/636942/brad-c" class="float-right"><img class=" img-thumbnail" src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
-
 Hey there! I'm Brad, a lifelong learner, engineer, hacker, and traveler.
 
 ## What I Do
@@ -37,6 +35,8 @@ I've had the privilege to collaborate with notable clients like:
 
 ## Favorite Technologies
 
+<a href="https://stackoverflow.com/users/636942/brad-c"><img class="float-right img-thumbnail" src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
+
 - **Back-end / Desktop / Mobile**: C#, Ionic, Python
 - **Front-end**: JavaScript / TypeScript, Angular, React
 - **Databases**: SQL Server, PostgreSQL, MongoDB
@@ -55,9 +55,9 @@ Since 2014, I've been working remotely, specializing in modernizing legacy enter
 
 ## Leisure
 
-As a [competitive powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to counter screen time.
-
 Balancing my remote work life, I embrace freedom through travel.
+
+As a [competitive powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to counter screen time.
 
 I'm a guitar enthusiast, passionate about all things music related. Being an audiophile, I racked up 41 days and 7 hours of music listening in 2020 alone.
 

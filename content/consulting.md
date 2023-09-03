@@ -11,9 +11,9 @@ With a wealth of experience accumulated over decades of diving into legacy code,
 
 Here are some topics I frequently consult on:
 
-- [Angular](/categories/angular/)
+- Angular
 - Modernizing legacy web applications
-- [C# / .NET](/categories/csharp/), ASP.NET MVC, Migrating to .NET Core
+- C# / .NET, ASP.NET MVC, Migrating to .NET Core
 - Mobile app development with Ionic
 - Design systems: StencilJS, Web Components
 - SQL Server, PostgreSQL
