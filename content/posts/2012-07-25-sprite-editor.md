@@ -9,7 +9,7 @@ permalink: /sprite-editor/
 categories:
   - Sprite Editor
 tags:
-  - C#
+  - C Sharp
   - .NET
   - Windows Forms
   - Sprites

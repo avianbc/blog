@@ -10,7 +10,7 @@ categories:
   - Programming
   - Sprite Editor
 tags:
-  - C#
+  - C Sharp
   - .NET
   - Gif
   - Sprites

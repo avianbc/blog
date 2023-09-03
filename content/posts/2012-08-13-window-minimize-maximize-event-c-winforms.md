@@ -8,7 +8,7 @@ permalink: /window-minimize-maximize-event-c-winforms/
 categories:
   - Programming
 tags:
-  - C#
+  - C Sharp
   - .NET
   - Windows Forms
   - Win32 API

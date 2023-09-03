@@ -10,7 +10,7 @@ categories:
   - Algorithms
   - Programming
 tags:
-  - C#
+  - C Sharp
   - .NET
   - Compression
   - RLE

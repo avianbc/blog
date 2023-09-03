@@ -4,7 +4,7 @@ date: 2017-06-30T00:40:04-05:00
 categories:
   - Programming
 tags:
-  - C#
+  - C Sharp
   - .NET
   - FluentAssertions
   - Unit Testing

@@ -8,7 +8,7 @@ guid: http://br4d.net/?p=609
 categories:
   - Programming
 tags:
-  - C#
+  - C Sharp
   - .NET
   - ASP.NET MVC
 ---

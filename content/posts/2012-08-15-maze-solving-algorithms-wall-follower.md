@@ -10,7 +10,7 @@ categories:
   - Programming
   - Algorithms
 tags:
-  - C#
+  - C Sharp
   - .NET
   - Maze Solving
 ---

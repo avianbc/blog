@@ -9,7 +9,7 @@ permalink: /json-resources-in-net/
 categories:
   - Programming
 tags:
-  - C#
+  - C Sharp
   - .NET
   - JSON
 ---

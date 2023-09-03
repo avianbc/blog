@@ -10,7 +10,7 @@ categories:
   - Programming
   - Databases
 tags:
-  - C#
+  - C Sharp
   - .NET
   - SQL
   - SSRS
