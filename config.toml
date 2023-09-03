@@ -58,6 +58,13 @@ weight = 5
 url = "https://bradleycarey.com/index.xml"
 rel = "alternate"
 type = "application/rss+xml"
+[[params.social]]
+name = "Sitemap"
+icon = "fa fa-sitemap"
+weight = 6
+url = "https://bradleycarey.com/sitemap.xml"
+rel = "alternate"
+type = "application/rss+xml"
 
 [[menu.main]]
 name = "Consulting"
