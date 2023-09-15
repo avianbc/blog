@@ -5,7 +5,7 @@ The site is built using [Hugo](https://gohugo.io/) static HTML and CSS website g
 ## Getting Started
 
 1. [Install Hugo](https://gohugo.io/installation/): `choco install hugo-extended -confirm`
-1. Run the site locally: `hugo server`
+1. Run the site locally: `hugo server -D`
 1. Create a new post: `hugo new posts/post-title.md`
 
 Posts are actually Markdown files. A `*.md` reference can be found at [markdownguide.org](https://www.markdownguide.org/tools/hugo/).
