@@ -7,9 +7,9 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-Hey there! I'm Brad, a lifelong learner, engineer, hacker, and traveler.
+<div class="avatar centered"><img src="/images/profile.png" alt="avatar" class="avatar centered"></div>
 
-## What I Do
+Hey there! I'm Brad, a lifelong learner, engineer, hacker, and traveler.
 
 I am a **Principal Software Engineer - Tech Lead**, specializing in revitalizing legacy enterprise web applications using modern technologies.
 
