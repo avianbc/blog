@@ -11,7 +11,7 @@ categories:
   - Programming
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - Compression
   - RLE
 ---

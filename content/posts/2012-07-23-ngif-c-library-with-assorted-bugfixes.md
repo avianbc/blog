@@ -11,7 +11,7 @@ categories:
   - Sprite Editor
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - Gif
   - Sprites
 

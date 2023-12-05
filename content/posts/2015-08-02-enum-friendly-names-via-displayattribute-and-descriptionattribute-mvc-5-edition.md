@@ -9,7 +9,7 @@ categories:
   - Programming
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - ASP.NET MVC
 ---
 Are you using enums in dropdowns or radiobuttons or something similar? Instead of hard coding display names, a way of reusing these names was coined in the MVC 3 days that involved decorating the enum with the [DescriptionAttribute](https://msdn.microsoft.com/en-us/library/system.componentmodel.descriptionattribute%28v=vs.110%29.aspx). Judging from posts on stack overflow, this was a very popular method.

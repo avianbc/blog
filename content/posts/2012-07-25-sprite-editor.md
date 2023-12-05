@@ -10,7 +10,7 @@ categories:
   - Sprite Editor
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - Windows Forms
   - Sprites
 

@@ -5,7 +5,7 @@ categories:
   - Programming
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - FluentAssertions
   - Unit Testing
 ---

@@ -11,7 +11,7 @@ categories:
   - Algorithms
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - Maze Solving
 ---
 

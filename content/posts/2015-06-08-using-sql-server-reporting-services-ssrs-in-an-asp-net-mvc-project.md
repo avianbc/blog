@@ -11,7 +11,7 @@ categories:
   - Databases
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - SQL
   - SSRS
   - ASP.NET MVC

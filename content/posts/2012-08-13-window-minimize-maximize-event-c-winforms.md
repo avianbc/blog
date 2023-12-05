@@ -9,7 +9,7 @@ categories:
   - Programming
 tags:
   - C Sharp
-  - .NET
+  - dotnet
   - Windows Forms
   - Win32 API
   - P/Invoke
