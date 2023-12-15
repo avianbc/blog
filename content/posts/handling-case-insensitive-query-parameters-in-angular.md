@@ -19,7 +19,8 @@ import { CaseInsensitiveParamMap } from '../case-insensitive-param-map';
 constructor(private activatedRoute: ActivatedRoute) {}
 
 ngOnInit(): void {
-  this.activatedRoute.queryParams
+  // subscribe to query params changes:
+  this.activatedRoute.queryParams.snapshot.paramMap
     .subscribe((params) => this.handleQueryParamsChanged(new CaseInsensitiveParamMap(params)));
 }
 
@@ -28,6 +29,14 @@ private handleQueryParamsChanged(paramMap: CaseInsensitiveParamMap): void {
   // Returns the value of the first query param named 'returnUrl' case-insensitively
   // See the test suite below for more examples
 }
+```
+
+Or if you don't want to subscribe to changes, you can use the snapshot:
+
+```typescript
+  // or use the params from the route snapshot:
+  const paramMap = new CaseInsensitiveParamMap(this.activatedRoute.snapshot.queryParams);
+  const returnUrl = paramMap.get('returnUrl');
 ```
 
 # case-insensitive-param-map.ts
