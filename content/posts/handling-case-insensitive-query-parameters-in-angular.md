@@ -1,13 +1,14 @@
 +++
 date = 2023-12-15T13:42:39-05:00
-title = "Case insensitive query params in Angular"
+title = "Handling Case-Insensitive Query Parameters in Angular"
 tags = ['TypeScript', 'JavaScript', 'Angular']
 categories = ['Programming']
 +++
 
-After searching through google and stackoverflow and finding nothing, I decided to write my own solution. This is a simple class that wraps the built-in `Params` object and provides case-insensitive access to query string parameters. It works similarly to the [built-in ParamsAsMap class](https://github.com/angular/angular/blob/16.2.x/packages/router/src/shared.ts#L76) except accesses the query params case insensitively.
 
-Also note that I added a `getNumber` helper method that makes it much easier to parse integer query params. It returns `null` if the value is not a number or is not present.
+After searching through Google and StackOverflow and finding nothing, I decided to write my own reusable class to handle case-insensitive query parameters in Angular. I hope this helps someone else!
+
+# How to Use It
 
 Using it is as easy as:
 
@@ -23,12 +24,16 @@ ngOnInit(): void {
 }
 
 private handleQueryParamsChanged(paramMap: CaseInsensitiveParamMap): void {
-  // same as paramMap.get('returnurl') or paramMap.get('RETURNURL')
   const returnUrl = paramMap.get('returnUrl');
+  // Returns the value of the first query param named 'returnUrl' case-insensitively
+  // See the test suite below for more examples
 }
 ```
 
 # case-insensitive-param-map.ts
+
+This is a simple class that wraps the built-in `Params` object and provides case-insensitive access to query string parameters. It works similarly to the [built-in ParamsAsMap class](https://github.com/angular/angular/blob/16.2.x/packages/router/src/shared.ts#L76) except accesses the query params case insensitively.
+
 ```typescript
 import { ParamMap, Params } from '@angular/router';
 
@@ -80,6 +85,8 @@ export class CaseInsensitiveParamMap implements ParamMap {
   }
 }
 ```
+
+Also note that I added a `getNumber` helper method that makes it much easier to parse integer query params. It returns `null` if the value is not a number or is not present.
 
 # case-insensitive-param-map.spec.ts
 ```typescript
@@ -157,3 +164,7 @@ describe('CaseInsensitiveParamMap', () => {
   });
 });
 ```
+
+# Conclusion
+
+With this solution, you can easily handle case-insensitive query parameters in Angular. Happy coding!
