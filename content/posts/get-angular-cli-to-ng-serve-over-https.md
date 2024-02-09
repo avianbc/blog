@@ -5,7 +5,7 @@ categories = ['Programming']
 tags = ['JavaScript', 'Angular', 'PowerShell']
 +++
 
-I've discovered a simpler method than those discussed in [this Stack Overflow post](https://stackoverflow.com/questions/39210467/get-angular-cli-to-ng-serve-over-https) for serving an Angular CLI app over HTTPS using [office-addin-dev-certs](https://www.npmjs.com/package/office-addin-dev-certs):
+I've discovered a simpler method than those discussed in [this Stack Overflow post](https://stackoverflow.com/questions/39210467/get-angular-cli-to-ng-serve-over-https) for serving an Angular CLI app over HTTPS using [office-addin-dev-certs](https://www.npmjs.com/package/office-addin-dev-certs). Don't be fooled by the name, these certs work for any local development!
 
 1. Generate the certificates by running the following command and click "Yes" to trust them when prompted:
    - `npx office-addin-dev-certs install --days 365`
