@@ -39,6 +39,8 @@ I've also had the privilege to collaborate with some notable clients, including:
 - [The City of South Charleston](https://cityofsouthcharleston.com/)
 - [WV State Tax Department](https://tax.wv.gov/)
 
+If you are interested in working with me, [feel free to reach out](/consulting/).
+
 ## Favorite Technologies
 
 <a href="https://stackoverflow.com/users/636942/brad-c"><img class="float-right img-thumbnail" src="https://stackoverflow.com/users/flair/636942.png" width="208" height="58" alt="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Brad C at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
@@ -66,9 +68,9 @@ Here's a brief overview of my career journey:
 When I'm not working, I enjoy:
 
 - **Traveling**: Working remotely gives me the freedom to travel and explore new places.
-- **Powerlifting**: As a [competitive powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to balance out the time I spend in front of a screen.
+- **Fitness**: As a [competitive powerlifter](https://symmetricstrength.com/lifter/avian), I prioritize healthy habits to balance out the time I spend in front of a screen. I've recently also dipped my toes into olympic weightlifting and long distance running.
 - **Playing guitar**: I'm passionate about all things music-related and own 7 guitars. In 2023 alone, I spent over 1,110 hours (46 days and 6 hours) listening to music!
-- **Contributing**: I actively share my knowledge and continue to learn on platforms like Stack Overflow and [/r/learnprogramming](http://reddit.com/r/learnprogramming).
+- **Contributing**: I actively share my knowledge and continue to learn on platforms like [Stack Overflow](https://stackoverflow.com/users/636942/brad-c) and [/r/learnprogramming](http://reddit.com/r/learnprogramming).
 
 ## About The Site
 
