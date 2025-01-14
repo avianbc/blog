@@ -78,4 +78,4 @@ CI/CD pipeline by Netlify [![Netlify Status](https://api.netlify.com/api/v1/badg
 
 The site is built with [Hugo](https://gohugo.io/) static site generator. Old blog posts were migrated from an ancient WordPress site.
 
-Check out the [Github repository](https://github.com/avianbc/blog) for this site.
+Check out the [Github repository](https://github.com/avianbc/blog) for this site. 
