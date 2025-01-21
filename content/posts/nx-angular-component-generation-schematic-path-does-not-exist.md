@@ -1,5 +1,4 @@
 +++
-draft = true
 date = 2024-10-06T15:48:48-05:00
 title = "Nx Angular Component Generation Schematic: Path Does Not Exist"
 tags = ['TypeScript', 'JavaScript', 'Angular', 'Nx']
@@ -12,13 +11,13 @@ Nx provides many schematics to generate code and migrate existing code. One of t
 
 Here's the error message I encountered:
 
-```shell
+{{< highlight bash >}}
  *  Executing task: npx nx generate @nx/angular:component --name=foo --project=bar --no-interactive --dry-run
 
 >  NX  Generating @nx/angular:component
 
  >  NX   The path provided (../../../../..) does not exist under the project root (libs/bar). Please make sure to provide a path that exists under the project root.
-```
+{{< /highlight >}}
 
 While migrating projects from Angular version 16 to 17, I found the solution: upgrade the `typescript` package from version `^4` to `^5`.
 
