@@ -30,9 +30,13 @@ With a proven track record of transforming legacy applications, I bring a wealth
 
 ## Rates
 
-My consulting services are priced at approximately $150 per hour, with a minimum engagement of 1 hour.
+I believe in providing exceptional value for every engagement. Rates vary depending on:
 
-If you have inquiries or larger projects in mind, don't hesitate to get in touch.
+- Project complexity and scope
+- Timeline requirements
+- Ongoing vs. one-time consultation
+
+Contact me for a personalized quote that fits your budget and objectives.
 
 ## Let's Connect
 
