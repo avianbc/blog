@@ -44,7 +44,8 @@ I'm eager to learn about your projects and explore how I can contribute to your 
 
 Feel free to reach out via email at **brad[at]bradleycarey[dot]com** or use the form below:
 
-<form action="https://getform.io/f/08250cf3-2d2d-4ede-a843-fbd90ab29322" method="POST">
+<form action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="079e5c51-4bd0-430b-a2bb-dbf2650911f6">
   <input type="text" name="name" placeholder="Name (required)" required>
   <input type="email" name="email" placeholder="Email (required)" required>
   <input type="tel" name="tel" placeholder="Phone">
