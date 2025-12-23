@@ -17,6 +17,7 @@ description = "Bradley Carey's personal website, featuring articles and resource
 keywords = "blog,programming,software engineering,web development,technology,productivity,consulting"
 info = "Principal Software Engineer, Tech Lead"
 avatarurl = "images/bird.png"
+faviconSVG = "images/bird.svg"
 favicon_32 = "images/favicon.png"
 favicon_16 = "images/favicon.png"
 dateformat = "Jan 2, 2006"
@@ -29,6 +30,7 @@ since = "2012"
 # "light" (light background, dark foreground) (default)
 colorScheme = "auto"
 recentPostCount = "5"
+commit = "https://github.com/avianbc/blog/tree"
 
 [taxonomies]
 category = "categories"
@@ -66,17 +68,17 @@ rel = "alternate"
 type = "application/rss+xml"
 
 [[menu.main]]
-name = "About"
-weight = 1
-url = "about/"
-[[menu.main]]
 name = "Blog"
-weight = 2
+weight = 1
 url  = "posts/"
 [[menu.main]]
 name = "Consulting"
-weight = 3
+weight = 2
 url = "consulting/"
+[[menu.main]]
+name = "About"
+weight = 3
+url = "about/"
 
 [markup]
 [markup.highlight]
