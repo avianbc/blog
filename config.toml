@@ -3,10 +3,13 @@ title = "bradleycarey.com"
 theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
-paginate = 20
-disqusShortname = "bradleycarey"
+pagination.pagerSize = 20
 googleAnalytics = "UA-163095528-1"
 enableRobotsTXT = true
+
+[services]
+  [services.disqus]
+    shortname = 'bradleycarey'
 
 [params]
 author = "Bradley Carey"
@@ -25,7 +28,7 @@ since = "2012"
 # "dark" (dark background, light foreground)
 # "light" (light background, dark foreground) (default)
 colorScheme = "auto"
-recentPostCount = "4"
+recentPostCount = "5"
 
 [taxonomies]
 category = "categories"
@@ -48,21 +51,16 @@ icon = "fa fa-linkedin"
 weight = 3
 url = "https://www.linkedin.com/in/bradley-carey-83ba3554/"
 [[params.social]]
-name = "Buy Me a Coffee"
-icon = "fa fa-buymeacoffee"
-weight = 4
-url = "https://www.buymeacoffee.com/avian"
-[[params.social]]
 name = "RSS"
 icon = "fa fa-rss"
-weight = 5
+weight = 4
 url = "https://bradleycarey.com/index.xml"
 rel = "alternate"
 type = "application/rss+xml"
 [[params.social]]
 name = "Sitemap"
 icon = "fa fa-sitemap"
-weight = 6
+weight = 5
 url = "https://bradleycarey.com/sitemap.xml"
 rel = "alternate"
 type = "application/rss+xml"
@@ -79,14 +77,6 @@ url  = "posts/"
 name = "Consulting"
 weight = 3
 url = "consulting/"
-[[menu.main]]
-name = "Categories"
-weight = 4
-url  = "categories/"
-[[menu.main]]
-name = "Tags"
-weight = 5
-url  = "tags/"
 
 [markup]
 [markup.highlight]
