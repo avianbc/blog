@@ -23,11 +23,9 @@ $dark-border: #424242;
     flex: 0.5;
 }
 
-table {
-    th,
-    td {
-        padding: 0.3rem 1.6rem;
-    }
+body[class^="colorscheme-"] table th,
+body[class^="colorscheme-"] table td {
+    padding: 0.3rem 1.6rem;
 }
 
 .about .avatar img {
