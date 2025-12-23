@@ -6,6 +6,7 @@ defaultcontentlanguage = "en"
 pagination.pagerSize = 20
 googleAnalytics = "G-EPD3KTTXVQ"
 enableRobotsTXT = true
+enableGitInfo = true
 
 [params]
 author = "Bradley Carey"
