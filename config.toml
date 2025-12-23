@@ -7,14 +7,10 @@ pagination.pagerSize = 20
 googleAnalytics = "UA-163095528-1"
 enableRobotsTXT = true
 
-[services]
-  [services.disqus]
-    shortname = 'bradleycarey'
-
 [params]
 author = "Bradley Carey"
 description = "Bradley Carey's personal website, featuring articles and resources on software engineering, web development, and more."
-keywords = "blog,programming,software engineering,web development,technology,productivity,consulting"
+keywords = "blog,programming,software engineering,web development,technology,productivity,consulting,angular"
 info = "Principal Software Engineer, Tech Lead"
 avatarurl = "images/bird.png"
 faviconSVG = "images/bird.svg"
@@ -30,7 +26,22 @@ since = "2012"
 # "light" (light background, dark foreground) (default)
 colorScheme = "auto"
 recentPostCount = "5"
-commit = "https://github.com/avianbc/blog/tree"
+commit = "https://github.com/avianbc/blog/tree/master"
+
+[params.giscus] # https://giscus.app
+repo = "avianbc/blog"
+repoID = "MDEwOlJlcG9zaXRvcnkxODc5Mjk5MTc="
+category = "Announcements"
+categoryID = "DIC_kwDOCzOVPc4C0LX"
+mapping = "pathname"
+term = ""
+strict = "0"
+reactionsEnabled = "1"
+emitMetadata = "0"
+inputPosition = "bottom"
+theme = "light"
+lang = "en"
+loading = ""
 
 [taxonomies]
 category = "categories"
