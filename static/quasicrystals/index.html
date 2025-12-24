@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Quasicrystal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        .control-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        .preset-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .preset-buttons button {
+            flex: 1;
+            padding: 3px;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .preset-buttons button:hover {
+            background: #666;
+        }
+        .credit {
+            font-size: 10px;
+            margin-top: 15px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="glCanvas"></canvas>
+    <div class="controls">
+        <div class="control-group">
+            <label for="presetSelect">Preset:</label>
+            <select id="presetSelect">
+                <option value="default">Default</option>
+                <option value="fivefold">Fivefold Symmetry</option>
+                <option value="sevenfold">Sevenfold Symmetry</option>
+                <option value="twelvefold">Twelvefold Symmetry</option>
+                <option value="highcontrast">High Contrast</option>
+                <option value="logpolar">Log-Polar Spiral</option>
+                <option value="custom">Custom...</option>
+            </select>
+            <div class="preset-buttons">
+                <button id="savePresetBtn">Save</button>
+                <button id="deletePresetBtn">Delete</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="scaleSlider">Scale:</label>
+            <input type="range" id="scaleSlider" min="1" max="256" value="32" step="1">
+            <span id="scaleValue">32</span>
+        </div>
+        <div class="control-group">
+            <label for="anglesSlider">Angles:</label>
+            <input type="range" id="anglesSlider" min="1" max="24" value="7" step="1">
+            <span id="anglesValue">7</span>
+        </div>
+        <div class="control-group">
+            <label for="speedSlider">Speed:</label>
+            <input type="range" id="speedSlider" min="0.1" max="10" value="1" step="0.1">
+            <span id="speedValue">1</span>
+        </div>
+        <div class="control-group">
+            <label for="contrastSlider">Contrast:</label>
+            <input type="range" id="contrastSlider" min="-1" max="1" value="0" step="0.1">
+            <span id="contrastValue">0</span>
+        </div>
+        <div class="control-group">
+            <input type="checkbox" id="logPolarCheck">
+            <label for="logPolarCheck">Log-Polar</label>
+        </div>
+        <div class="control-group">
+            <label for="colorSelect">Colormap:</label>
+            <select id="colorSelect">
+                <option value="grayscale">Grayscale</option>
+                <option value="jet">Jet</option>
+                <option value="hot">Hot</option>
+                <option value="cool">Cool</option>
+                <option value="viridis">Viridis</option>
+                <option value="plasma">Plasma</option>
+                <option value="magma">Magma</option>
+                <option value="inferno">Inferno</option>
+                <option value="rainbow">Rainbow</option>
+                <option value="copper">Copper</option>
+                <option value="bone">Bone</option>
+                <option value="inverted">Inverted</option>
+            </select>
+        </div>
+    </div>
+    <script src="quasicrystal.js"></script>
+</body>
+</html>
