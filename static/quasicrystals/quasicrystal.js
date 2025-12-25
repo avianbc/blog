@@ -474,8 +474,7 @@ class QuasicrystalApp {
         document.getElementById('logPolarCheck').checked = preset.logPolar;
 
         const colorSelect = document.getElementById('colorSelect');
-        const colormapNames = ['grayscale', 'jet', 'hot', 'cool', 'viridis', 'plasma',
-                              'magma', 'inferno', 'rainbow', 'copper', 'bone', 'inverted'];
+        const colormapNames = ['grayscale', 'jet', 'hot', 'cool', 'viridis', 'plasma', 'magma', 'inferno', 'rainbow', 'copper', 'bone', 'inverted'];
         if (preset.colormap < colormapNames.length) {
             colorSelect.value = colormapNames[preset.colormap];
         }
@@ -489,44 +488,36 @@ class QuasicrystalApp {
     }
 
     randomizeParameters() {
-        // Randomize scale (1-256)
         const scale = Math.floor(Math.random() * 255) + 1;
         document.getElementById('scaleSlider').value = scale;
         document.getElementById('scaleValue').textContent = scale;
         this.params.scale = scale;
 
-        // Randomize angles (1-24)
         const angles = Math.floor(Math.random() * 24) + 1;
         document.getElementById('anglesSlider').value = angles;
         document.getElementById('anglesValue').textContent = angles;
         this.params.angles = angles;
 
-        // Randomize speed (0.1-10)
         const speed = (Math.random() * 9.9 + 0.1).toFixed(1);
         document.getElementById('speedSlider').value = speed;
         document.getElementById('speedValue').textContent = speed;
         this.params.speed = parseFloat(speed);
 
-        // Randomize contrast (-1 to 1)
         const contrast = (Math.random() * 2 - 1).toFixed(1);
         document.getElementById('contrastSlider').value = contrast;
         document.getElementById('contrastValue').textContent = contrast;
         this.params.contrast = parseFloat(contrast);
 
-        // Randomize log-polar (50% chance)
         const logPolar = Math.random() > 0.5;
         document.getElementById('logPolarCheck').checked = logPolar;
         this.params.logPolar = logPolar;
 
-        // Randomize colormap (0-11)
         const colormap = Math.floor(Math.random() * 12);
-        const colormapNames = ['grayscale', 'jet', 'hot', 'cool', 'viridis', 'plasma',
-                              'magma', 'inferno', 'rainbow', 'copper', 'bone', 'inverted'];
+        const colormapNames = ['grayscale', 'jet', 'hot', 'cool', 'viridis', 'plasma', 'magma', 'inferno', 'rainbow', 'copper', 'bone', 'inverted'];
         const colorSelect = document.getElementById('colorSelect');
         colorSelect.value = colormapNames[colormap];
         this.params.colormap = colormap;
 
-        // Set preset selector to custom
         document.getElementById('presetSelect').value = 'custom';
     }
 
@@ -645,11 +636,11 @@ class QuasicrystalApp {
 
         const positions = [
             -1.0, -1.0,
-             1.0, -1.0,
-             1.0,  1.0,
+            1.0, -1.0,
+            1.0, 1.0,
             -1.0, -1.0,
-             1.0,  1.0,
-            -1.0,  1.0,
+            1.0, 1.0,
+            -1.0, 1.0,
         ];
 
         this.gl.bufferData(

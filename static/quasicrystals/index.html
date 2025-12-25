@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,35 +12,52 @@
             overflow: hidden;
             background-color: #000;
         }
+
         canvas {
             display: block;
             width: 100vw;
             height: 100vh;
         }
+
         .controls {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.25);
             color: white;
+            text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
             padding: 10px;
             border-radius: 5px;
             font-family: Arial, sans-serif;
             max-height: 95vh;
             overflow-y: auto;
         }
-        .control-group {
+
+        .controls:hover {
+            background: rgba(0, 0, 0, 0.75);
+        }
+
+        .control-group:not(:last-child) {
+            display: flex;
+            align-items: center;
+        }
+
+        .control-group:not(:last-child) {
             margin-bottom: 10px;
         }
+
         label {
             display: inline-block;
-            width: 100px;
+            width: 80px;
         }
+
         .preset-buttons {
             display: flex;
             gap: 5px;
             margin-top: 5px;
+            margin-bottom: 10px;
         }
+
         .preset-buttons button {
             flex: 1;
             padding: 3px;
@@ -49,9 +67,11 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
         .preset-buttons button:hover {
             background: #666;
         }
+
         .credit {
             font-size: 10px;
             margin-top: 15px;
@@ -59,6 +79,7 @@
         }
     </style>
 </head>
+
 <body>
     <canvas id="glCanvas"></canvas>
     <div class="controls">
@@ -73,11 +94,11 @@
                 <option value="logpolar">Log-Polar Spiral</option>
                 <option value="custom" selected>Custom...</option>
             </select>
-            <div class="preset-buttons">
-                <button id="randomBtn">Random</button>
-                <button id="savePresetBtn">Save</button>
-                <button id="deletePresetBtn">Delete</button>
-            </div>
+        </div>
+        <div class="preset-buttons">
+            <button id="randomBtn">Random</button>
+            <button id="savePresetBtn">Save</button>
+            <button id="deletePresetBtn">Delete</button>
         </div>
         <div class="control-group">
             <label for="scaleSlider">Scale:</label>
@@ -100,10 +121,6 @@
             <span id="contrastValue">0</span>
         </div>
         <div class="control-group">
-            <input type="checkbox" id="logPolarCheck">
-            <label for="logPolarCheck">Log-Polar</label>
-        </div>
-        <div class="control-group">
             <label for="colorSelect">Colormap:</label>
             <select id="colorSelect">
                 <option value="grayscale">Grayscale</option>
@@ -120,7 +137,12 @@
                 <option value="inverted">Inverted</option>
             </select>
         </div>
+        <div class="control-group">
+            <label for="logPolarCheck">Log-Polar:</label>
+            <input type="checkbox" id="logPolarCheck">
+        </div>
     </div>
     <script src="quasicrystal.js"></script>
 </body>
+
 </html>
