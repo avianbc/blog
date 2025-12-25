@@ -265,6 +265,7 @@ class QuasicrystalApp {
             colormap: 0 // 0: grayscale, 1: jet, 2: hot, 3: cool
         };
         this.initControls();
+        this.randomizeParameters(); // Start with random values
         this.initShaderProgram();
         this.initBuffers();
         this.resizeCanvas();
@@ -336,7 +337,7 @@ class QuasicrystalApp {
 
     initPresets() {
         this.presets = {
-            default: {
+            classic: {
                 scale: 32,
                 angles: 7,
                 speed: 1,
@@ -389,8 +390,11 @@ class QuasicrystalApp {
         this.loadCustomPresets();
 
         const presetSelect = document.getElementById('presetSelect');
+        const randomBtn = document.getElementById('randomBtn');
         const savePresetBtn = document.getElementById('savePresetBtn');
         const deletePresetBtn = document.getElementById('deletePresetBtn');
+
+        randomBtn.addEventListener('click', () => this.randomizeParameters());
 
         presetSelect.addEventListener('change', () => {
             const selected = presetSelect.value;
@@ -407,7 +411,7 @@ class QuasicrystalApp {
         savePresetBtn.addEventListener('click', () => this.saveCurrentAsPreset());
         deletePresetBtn.addEventListener('click', () => {
             const selected = presetSelect.value;
-            if (selected !== 'default' && selected !== 'fivefold' && selected !== 'sevenfold' && selected !== 'twelvefold' && selected !== 'highcontrast' && selected !== 'logpolar' && selected !== 'custom') {
+            if (selected !== 'classic' && selected !== 'fivefold' && selected !== 'sevenfold' && selected !== 'twelvefold' && selected !== 'highcontrast' && selected !== 'logpolar' && selected !== 'custom') {
                 this.deletePreset(selected);
             }
         });
@@ -430,7 +434,7 @@ class QuasicrystalApp {
         const presetSelect = document.getElementById('presetSelect');
 
         // Clear existing custom options (keep the built-ins and custom option)
-        const optionsToKeep = ['default', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
+        const optionsToKeep = ['classic', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
         Array.from(presetSelect.options).forEach(option => {
             if (!optionsToKeep.includes(option.value)) {
                 presetSelect.removeChild(option);
@@ -484,13 +488,55 @@ class QuasicrystalApp {
         this.params.colormap = preset.colormap;
     }
 
+    randomizeParameters() {
+        // Randomize scale (1-256)
+        const scale = Math.floor(Math.random() * 255) + 1;
+        document.getElementById('scaleSlider').value = scale;
+        document.getElementById('scaleValue').textContent = scale;
+        this.params.scale = scale;
+
+        // Randomize angles (1-24)
+        const angles = Math.floor(Math.random() * 24) + 1;
+        document.getElementById('anglesSlider').value = angles;
+        document.getElementById('anglesValue').textContent = angles;
+        this.params.angles = angles;
+
+        // Randomize speed (0.1-10)
+        const speed = (Math.random() * 9.9 + 0.1).toFixed(1);
+        document.getElementById('speedSlider').value = speed;
+        document.getElementById('speedValue').textContent = speed;
+        this.params.speed = parseFloat(speed);
+
+        // Randomize contrast (-1 to 1)
+        const contrast = (Math.random() * 2 - 1).toFixed(1);
+        document.getElementById('contrastSlider').value = contrast;
+        document.getElementById('contrastValue').textContent = contrast;
+        this.params.contrast = parseFloat(contrast);
+
+        // Randomize log-polar (50% chance)
+        const logPolar = Math.random() > 0.5;
+        document.getElementById('logPolarCheck').checked = logPolar;
+        this.params.logPolar = logPolar;
+
+        // Randomize colormap (0-11)
+        const colormap = Math.floor(Math.random() * 12);
+        const colormapNames = ['grayscale', 'jet', 'hot', 'cool', 'viridis', 'plasma',
+                              'magma', 'inferno', 'rainbow', 'copper', 'bone', 'inverted'];
+        const colorSelect = document.getElementById('colorSelect');
+        colorSelect.value = colormapNames[colormap];
+        this.params.colormap = colormap;
+
+        // Set preset selector to custom
+        document.getElementById('presetSelect').value = 'custom';
+    }
+
     saveCurrentAsPreset() {
         const presetName = prompt('Enter a name for this preset:', '');
         if (!presetName || presetName.trim() === '') return;
 
         const presetNameClean = presetName.trim();
 
-        const builtInPresets = ['default', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
+        const builtInPresets = ['classic', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
         if (builtInPresets.includes(presetNameClean)) {
             alert('Cannot overwrite built-in presets. Please choose a different name.');
             return;
@@ -517,7 +563,7 @@ class QuasicrystalApp {
             return;
         }
 
-        const builtInPresets = ['default', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
+        const builtInPresets = ['classic', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
         if (builtInPresets.includes(presetName)) {
             alert('Cannot delete built-in presets.');
             return;
@@ -527,13 +573,13 @@ class QuasicrystalApp {
         this.savePresetsToLocalStorage();
         this.updatePresetOptions();
 
-        document.getElementById('presetSelect').value = 'default';
-        this.applyPreset('default');
+        document.getElementById('presetSelect').value = 'classic';
+        this.applyPreset('classic');
     }
 
     savePresetsToLocalStorage() {
         try {
-            const builtInPresets = ['default', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
+            const builtInPresets = ['classic', 'fivefold', 'sevenfold', 'twelvefold', 'highcontrast', 'logpolar', 'custom'];
             const customPresets = {};
             Object.keys(this.presets).forEach(key => {
                 if (!builtInPresets.includes(key)) {
