@@ -1,6 +1,11 @@
 [build]
-command = "hugo"
+command = "cd dashboard && pnpm install --frozen-lockfile && pnpm run build && cd .. && hugo"
 publish = "public"
 
 [build.environment]
 HUGO_VERSION = "0.153.1"
+
+[[redirects]]
+from = "/dashboard/*"
+to = "/dashboard/index.html"
+status = 200

@@ -1,6 +1,7 @@
 [submodule "themes/hugo-coder"]
 	path = themes/hugo-coder
 	url = https://github.com/luizdepra/hugo-coder.git
-[submodule "static/dashboard"]
-	path = static/dashboard
+[submodule "dashboard"]
+	path = dashboard
 	url = https://github.com/avianbc/dashboard.git
+	branch = next-svelte

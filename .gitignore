@@ -10,3 +10,6 @@ hugo.linux
 
 # Temporary lock file while building
 /.hugo_build.lock
+
+# Svelte build output
+static/dashboard/
