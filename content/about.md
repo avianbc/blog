@@ -7,7 +7,7 @@ layout: page
 guid: http://br4d.net/?page_id=317
 ---
 
-<div class="avatar centered"><img src="/images/profile.png" alt="avatar" class="avatar centered"></div>
+<div class="avatar centered"><img src="/images/brad.png" alt="avatar" class="avatar centered"></div>
 
 Hey there! I'm Brad, a passionate engineer, hacker, and traveler.
 
@@ -78,4 +78,4 @@ CI/CD pipeline by Netlify [![Netlify Status](https://api.netlify.com/api/v1/badg
 
 The site is built with [Hugo](https://gohugo.io/) static site generator. Old blog posts were migrated from an ancient WordPress site.
 
-Check out the [Github repository](https://github.com/avianbc/blog) for this site. 
+Check out the [Github repository](https://github.com/avianbc/blog) for this site.
