@@ -81,7 +81,7 @@ url  = "posts/"
 [[menu.main]]
 name = "Experiments"
 weight = 2
-url = "tags/experiments/"
+url = "series/experiments/"
 [[menu.main]]
 name = "Workouts"
 weight = 3
