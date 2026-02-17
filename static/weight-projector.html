@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Projector</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 40px;
+        }
+
+        /* Typography & Header */
+        h1 { margin: 0; font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); margin: 20px 0 10px 0; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        
+        /* Form Elements */
+        .input-group { margin-bottom: 15px; position: relative; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+        .unit-label { font-size: 0.75rem; color: var(--text-light); font-weight: normal; margin-left: 4px; }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+            background: #fff;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--primary); ring: 2px solid rgba(37,99,235,0.1); }
+
+        /* Toggle Switch */
+        .unit-toggle {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .toggle-btn {
+            flex: 1;
+            text-align: center;
+            padding: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+        .toggle-btn.active { background: white; color: var(--primary); shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* Stats Grid */
+        .results {
+            /* THE FIX: Prevents the grid from blowing out infinitely */
+            min-width: 0; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .stat-val { display: block; font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .stat-label { font-size: 0.75rem; color: var(--text-light); font-weight: 600; text-transform: uppercase; }
+
+        /* Chart Area */
+        .chart-wrapper { position: relative; height: 450px; width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 15px; background: white; box-sizing: border-box; }
+
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; padding: 20px; }
+            .chart-wrapper { height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="controls">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>📉 Weight Projector</h1>
+            
+        </div>
+        
+        <div class="unit-toggle">
+            <div class="toggle-btn active" id="btn-imperial" onclick="setUnits('imperial')">Imperial (lbs/in)</div>
+            <div class="toggle-btn" id="btn-metric" onclick="setUnits('metric')">Metric (kg/cm)</div>
+        </div>
+
+        <h2>Profile</h2>
+        <div class="input-group">
+            <label>Gender</label>
+            <select id="gender" onchange="update()">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Current Weight <span class="unit-label" id="lbl-weight">(lbs)</span></label>
+            <input type="number" id="weight" value="200" oninput="update()">
+        </div>
+        <div class="input-group">
+            <label>Height <span class="unit-label" id="lbl-height">(inches)</span></label>
+            <input type="number" id="height" value="70" oninput="update()">
+        </div>
+        <div class="input-group">
+            <label>Age</label>
+            <input type="number" id="age" value="30" oninput="update()">
+        </div>
+        <div class="input-group">
+            <label>Activity Level</label>
+            <select id="activity" onchange="update()">
+                <option value="1.2">Sedentary (Desk job, little exercise)</option>
+                <option value="1.375">Lightly Active (1-3 days/week)</option>
+                <option value="1.55">Moderately Active (3-5 days/week)</option>
+                <option value="1.725">Very Active (6-7 days/week)</option>
+            </select>
+        </div>
+
+        <h2>Goals</h2>
+        <div class="input-group">
+            <label>Start Date</label>
+            <input type="date" id="startDate" onchange="update()">
+        </div>
+        <div class="input-group">
+            <label>Goal Weight <span class="unit-label">(Optional)</span></label>
+            <input type="number" id="goal" placeholder="e.g. 170" oninput="update()">
+        </div>
+        <div class="input-group">
+            <label>Daily Calorie Budget</label>
+            <input type="number" id="calories" value="1800" oninput="update()">
+        </div>
+        
+        <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+            * Calculations use the <strong>Mifflin-St Jeor</strong> equation. TDEE updates daily as you lose weight.
+        </div>
+    </div>
+
+    <div class="results">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-val" id="disp-tdee">--</span>
+                <span class="stat-label">Starting TDEE</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val" id="disp-year">--</span>
+                <span class="stat-label">Weight in 1 Year</span>
+            </div>
+            <div class="stat-card" id="goal-card" style="opacity: 0.5;">
+                <span class="stat-val" id="disp-goal">--</span>
+                <span class="stat-label">Goal Hit Date</span>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="weightChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    let myChart = null;
+    let currentUnit = 'imperial'; // 'imperial' or 'metric'
+
+    // Initialize defaults
+    window.onload = function() {
+        // Set default date to today correctly (Local time)
+        const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD format
+        document.getElementById('startDate').value = today;
+        
+        // Load localstorage if exists
+        loadData();
+        
+        update();
+    };
+
+    function setUnits(unit) {
+        if (unit === currentUnit) return;
+        
+        // Convert current inputs before switching
+        const wInput = document.getElementById('weight');
+        const hInput = document.getElementById('height');
+        const gInput = document.getElementById('goal');
+        
+        let w = parseFloat(wInput.value);
+        let h = parseFloat(hInput.value);
+        let g = parseFloat(gInput.value);
+
+        if (unit === 'metric') {
+            // Imperial -> Metric
+            if (w) wInput.value = (w * 0.453592).toFixed(1);
+            if (h) hInput.value = (h * 2.54).toFixed(1);
+            if (g) gInput.value = (g * 0.453592).toFixed(1);
+            
+            document.getElementById('lbl-weight').innerText = "(kg)";
+            document.getElementById('lbl-height').innerText = "(cm)";
+            document.getElementById('btn-imperial').classList.remove('active');
+            document.getElementById('btn-metric').classList.add('active');
+        } else {
+            // Metric -> Imperial
+            if (w) wInput.value = (w * 2.20462).toFixed(1);
+            if (h) hInput.value = (h / 2.54).toFixed(1);
+            if (g) gInput.value = (g * 2.20462).toFixed(1);
+
+            document.getElementById('lbl-weight').innerText = "(lbs)";
+            document.getElementById('lbl-height').innerText = "(inches)";
+            document.getElementById('btn-metric').classList.remove('active');
+            document.getElementById('btn-imperial').classList.add('active');
+        }
+        
+        currentUnit = unit;
+        update();
+    }
+
+    function update() {
+        saveData(); // Save inputs to localstorage
+
+        // 1. Gather Inputs
+        const gender = document.getElementById('gender').value;
+        let weight = parseFloat(document.getElementById('weight').value);
+        let height = parseFloat(document.getElementById('height').value);
+        const age = parseFloat(document.getElementById('age').value);
+        const activity = parseFloat(document.getElementById('activity').value);
+        const calories = parseFloat(document.getElementById('calories').value);
+        let goal = parseFloat(document.getElementById('goal').value);
+        const startDateStr = document.getElementById('startDate').value;
+
+        // Validation: If critical data missing, show dashed lines and exit
+        if (!weight || !height || !age || !calories || !startDateStr) {
+            resetStats();
+            return;
+        }
+
+        // 2. Normalize to Metric for Calculation (Math engine is always Metric)
+        let weightKg = currentUnit === 'imperial' ? weight * 0.453592 : weight;
+        let heightCm = currentUnit === 'imperial' ? height * 2.54 : height;
+        let goalKg = goal ? (currentUnit === 'imperial' ? goal * 0.453592 : goal) : null;
+
+        // 3. Simulation Loop
+        const labels = [];
+        const dataPoints = [];
+        let currentWeightKg = weightKg;
+        let goalDateText = "--";
+        let goalMet = false;
+        
+        // Calculate TDEE once for the "Starting TDEE" box
+        let startBMR = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + (gender === 'male' ? 5 : -161);
+        document.getElementById('disp-tdee').innerText = Math.round(startBMR * activity);
+
+        // Date Setup
+        let dateObj = new Date(startDateStr + "T12:00:00");
+
+        for (let i = 0; i <= 365; i++) {
+            // A. Recalculate TDEE (Adaptive)
+            let bmr = (10 * currentWeightKg) + (6.25 * heightCm) - (5 * age) + (gender === 'male' ? 5 : -161);
+            let tdee = bmr * activity;
+            let deficit = tdee - calories; // Positive means weight loss
+
+            // B. Update Weight (7700kcal per kg approx)
+            let dailyLossKg = deficit / 7700; 
+            currentWeightKg -= dailyLossKg;
+
+            // C. Check Goal
+            if (goalKg && currentWeightKg <= goalKg && !goalMet) {
+                goalMet = true;
+                goalDateText = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            // D. Add Data Point (Weekly)
+            if (i % 7 === 0 || i === 0) {
+                labels.push(dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+                // Convert back to display unit
+                let displayVal = currentUnit === 'imperial' ? currentWeightKg * 2.20462 : currentWeightKg;
+                dataPoints.push(displayVal.toFixed(1));
+            }
+
+            // Increment Day
+            dateObj.setDate(dateObj.getDate() + 1);
+        }
+
+        // 4. Update Stats UI
+        let finalWeight = currentUnit === 'imperial' ? currentWeightKg * 2.20462 : currentWeightKg;
+        document.getElementById('disp-year').innerText = Math.round(finalWeight) + (currentUnit === 'imperial' ? " lbs" : " kg");
+        
+        const goalCard = document.getElementById('goal-card');
+        const goalDisp = document.getElementById('disp-goal');
+        
+        if (goal) {
+            goalDisp.innerText = goalDateText;
+            goalCard.style.opacity = "1";
+        } else {
+            goalDisp.innerText = "--";
+            goalCard.style.opacity = "0.5";
+        }
+
+        // 5. Render Chart
+        renderChart(labels, dataPoints, goal);
+    }
+
+    function renderChart(labels, data, goal) {
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        const unitLabel = currentUnit === 'imperial' ? 'lbs' : 'kg';
+
+        if (myChart) myChart.destroy();
+
+        // Prepare Annotation (Goal Line)
+        const annotations = {};
+        if (goal) {
+            annotations.goalLine = {
+                type: 'line',
+                yMin: goal,
+                yMax: goal,
+                borderColor: '#ef4444',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                label: {
+                    display: true,
+                    content: `Goal: ${goal} ${unitLabel}`,
+                    position: 'end',
+                    backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                    font: { size: 10 }
+                }
+            };
+        }
+
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `Projected Weight`,
+                    data: data,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.05)',
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { display: false },
+                    annotation: { annotations: annotations },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.parsed.y} ${unitLabel}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
+                    y: { 
+                        grid: { color: '#f1f5f9' },
+                        title: { display: true, text: `Weight (${unitLabel})` }
+                    }
+                }
+            }
+        });
+    }
+
+    function resetStats() {
+        document.getElementById('disp-tdee').innerText = "--";
+        document.getElementById('disp-year').innerText = "--";
+        document.getElementById('disp-goal').innerText = "--";
+        if (myChart) {
+            myChart.data.datasets[0].data = [];
+            myChart.update();
+        }
+    }
+
+    function saveData() {
+        const data = {
+            gender: document.getElementById('gender').value,
+            weight: document.getElementById('weight').value,
+            height: document.getElementById('height').value,
+            age: document.getElementById('age').value,
+            activity: document.getElementById('activity').value,
+            calories: document.getElementById('calories').value,
+            goal: document.getElementById('goal').value,
+            unit: currentUnit
+        };
+        localStorage.setItem('weightSimData', JSON.stringify(data));
+    }
+
+    function loadData() {
+        const saved = localStorage.getItem('weightSimData');
+        if (saved) {
+            const data = JSON.parse(saved);
+            if(data.gender) document.getElementById('gender').value = data.gender;
+            if(data.weight) document.getElementById('weight').value = data.weight;
+            if(data.height) document.getElementById('height').value = data.height;
+            if(data.age) document.getElementById('age').value = data.age;
+            if(data.activity) document.getElementById('activity').value = data.activity;
+            if(data.calories) document.getElementById('calories').value = data.calories;
+            if(data.goal) document.getElementById('goal').value = data.goal;
+            
+            // If saved unit is different from default, switch it
+            if (data.unit && data.unit !== currentUnit) {
+                currentUnit = data.unit;
+                if (currentUnit === 'metric') {
+                     document.getElementById('lbl-weight').innerText = "(kg)";
+                     document.getElementById('lbl-height').innerText = "(cm)";
+                     document.getElementById('btn-imperial').classList.remove('active');
+                     document.getElementById('btn-metric').classList.add('active');
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
