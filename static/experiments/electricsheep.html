@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Sheep - WebGL Fractal Flames</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="glCanvas"></canvas>
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+        attribute vec2 a_position;
+        void main() {
+            gl_Position = vec4(a_position, 0.0, 1.0);
+        }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        precision highp float;
+
+        uniform vec2 u_resolution;
+        uniform float u_time;
+
+        #define PI 3.14159265359
+        #define TAU 6.28318530718
+
+        // Random and noise functions
+        float hash(vec2 p) {
+            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+
+        float noise(vec2 p) {
+            vec2 i = floor(p);
+            vec2 f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+
+            float a = hash(i);
+            float b = hash(i + vec2(1.0, 0.0));
+            float c = hash(i + vec2(0.0, 1.0));
+            float d = hash(i + vec2(1.0, 1.0));
+
+            return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+        }
+
+        float fbm(vec2 p) {
+            float value = 0.0;
+            float amplitude = 0.5;
+            float frequency = 1.0;
+
+            for (int i = 0; i < 6; i++) {
+                value += amplitude * noise(p * frequency);
+                amplitude *= 0.5;
+                frequency *= 2.0;
+            }
+            return value;
+        }
+
+        // Fractal flame variations
+        vec2 sinusoidal(vec2 p) {
+            return sin(p);
+        }
+
+        vec2 spherical(vec2 p) {
+            float r2 = dot(p, p) + 1e-6;
+            return p / r2;
+        }
+
+        vec2 swirl(vec2 p) {
+            float r2 = dot(p, p);
+            float s = sin(r2);
+            float c = cos(r2);
+            return vec2(p.x * s - p.y * c, p.x * c + p.y * s);
+        }
+
+        vec2 horseshoe(vec2 p) {
+            float r = length(p) + 1e-6;
+            return vec2((p.x - p.y) * (p.x + p.y), 2.0 * p.x * p.y) / r;
+        }
+
+        vec2 polar(vec2 p) {
+            float r = length(p);
+            float theta = atan(p.y, p.x);
+            return vec2(theta / PI, r - 1.0);
+        }
+
+        vec2 handkerchief(vec2 p) {
+            float r = length(p);
+            float theta = atan(p.y, p.x);
+            return r * vec2(sin(theta + r), cos(theta - r));
+        }
+
+        vec2 heart(vec2 p) {
+            float r = length(p);
+            float theta = atan(p.y, p.x);
+            return r * vec2(sin(theta * r), -cos(theta * r));
+        }
+
+        vec2 disc(vec2 p) {
+            float r = length(p) + 1e-6;
+            float theta = atan(p.y, p.x);
+            return theta / PI * vec2(sin(PI * r), cos(PI * r));
+        }
+
+        vec2 spiral(vec2 p) {
+            float r = length(p) + 1e-6;
+            float theta = atan(p.y, p.x);
+            return vec2(cos(theta) + sin(r), sin(theta) - cos(r)) / r;
+        }
+
+        vec2 hyperbolic(vec2 p) {
+            float r = length(p) + 1e-6;
+            float theta = atan(p.y, p.x);
+            return vec2(sin(theta) / r, r * cos(theta));
+        }
+
+        vec2 julia(vec2 p, float t) {
+            float r = sqrt(length(p));
+            float theta = atan(p.y, p.x) * 0.5;
+            float omega = floor(hash(vec2(t, 0.0)) * 2.0) * PI;
+            return r * vec2(cos(theta + omega), sin(theta + omega));
+        }
+
+        // Color palette inspired by Electric Sheep
+        vec3 palette(float t, float shift) {
+            vec3 a = vec3(0.5, 0.5, 0.5);
+            vec3 b = vec3(0.5, 0.5, 0.5);
+            vec3 c = vec3(1.0, 1.0, 1.0);
+            vec3 d = vec3(0.0 + shift, 0.33 + shift, 0.67 + shift);
+            return a + b * cos(TAU * (c * t + d));
+        }
+
+        vec3 electricSheepColor(float t, float time) {
+            float shift = time * 0.05;
+
+            // Multiple overlapping color schemes
+            vec3 col1 = palette(t, shift);
+            vec3 col2 = palette(t + 0.33, shift + 0.5);
+            vec3 col3 = palette(t + 0.67, shift + 1.0);
+
+            float blend = sin(time * 0.3) * 0.5 + 0.5;
+            vec3 color = mix(col1, mix(col2, col3, blend), sin(time * 0.2) * 0.5 + 0.5);
+
+            return color;
+        }
+
+        // Main fractal flame iteration
+        vec3 fractalFlame(vec2 uv, float time) {
+            vec2 p = uv * 2.0;
+
+            float density = 0.0;
+            vec3 colorAccum = vec3(0.0);
+
+            // Time-varying parameters for morphing
+            float morphTime = time * 0.15;
+            float variation1 = sin(morphTime) * 0.5 + 0.5;
+            float variation2 = cos(morphTime * 0.7) * 0.5 + 0.5;
+            float variation3 = sin(morphTime * 1.3) * 0.5 + 0.5;
+
+            // Multiple flame layers
+            for (int layer = 0; layer < 3; layer++) {
+                vec2 z = p;
+                float layerOffset = float(layer) * 0.33;
+
+                // Iterate the fractal
+                for (int i = 0; i < 32; i++) {
+                    float fi = float(i);
+                    float t = fi / 32.0;
+
+                    // Apply different variations based on time
+                    vec2 z1 = sinusoidal(z);
+                    vec2 z2 = swirl(z);
+                    vec2 z3 = spherical(z);
+                    vec2 z4 = horseshoe(z);
+                    vec2 z5 = spiral(z);
+                    vec2 z6 = heart(z);
+                    vec2 z7 = julia(z, time);
+                    vec2 z8 = disc(z);
+
+                    // Blend variations smoothly over time
+                    float blend1 = sin(morphTime + fi * 0.1) * 0.5 + 0.5;
+                    float blend2 = cos(morphTime * 0.8 + fi * 0.15) * 0.5 + 0.5;
+                    float blend3 = sin(morphTime * 1.2 + fi * 0.2) * 0.5 + 0.5;
+                    float blend4 = cos(morphTime * 0.6 + fi * 0.12) * 0.5 + 0.5;
+
+                    vec2 za = mix(z1, z2, blend1);
+                    vec2 zb = mix(z3, z4, blend2);
+                    vec2 zc = mix(z5, z6, blend3);
+                    vec2 zd = mix(z7, z8, blend4);
+
+                    vec2 zab = mix(za, zb, variation1);
+                    vec2 zcd = mix(zc, zd, variation2);
+
+                    z = mix(zab, zcd, variation3);
+
+                    // Add rotation
+                    float angle = time * 0.1 + fi * 0.02;
+                    float ca = cos(angle);
+                    float sa = sin(angle);
+                    z = vec2(z.x * ca - z.y * sa, z.x * sa + z.y * ca);
+
+                    // Scale
+                    z *= 0.95 + 0.1 * sin(time * 0.5 + fi * 0.1);
+
+                    // Accumulate density with distance falloff
+                    float dist = length(z - p);
+                    float contribution = exp(-dist * 3.0) * (1.0 - t);
+                    density += contribution;
+
+                    // Accumulate color
+                    float colorIndex = t + layerOffset + length(z) * 0.2 + time * 0.02;
+                    colorAccum += electricSheepColor(colorIndex, time) * contribution;
+                }
+            }
+
+            // Normalize
+            density = clamp(density * 0.05, 0.0, 1.0);
+            colorAccum = colorAccum * 0.02;
+
+            // Apply gamma and enhance
+            colorAccum = pow(colorAccum, vec3(0.8));
+
+            // Add glow
+            float glow = density * density;
+            colorAccum += vec3(glow * 0.5, glow * 0.3, glow * 0.7);
+
+            return colorAccum;
+        }
+
+        // Flowing energy tendrils
+        vec3 energyFlow(vec2 uv, float time) {
+            vec2 p = uv;
+            vec3 color = vec3(0.0);
+
+            for (int i = 0; i < 5; i++) {
+                float fi = float(i);
+                float t = time * (0.3 + fi * 0.1);
+
+                vec2 offset = vec2(
+                    sin(t + fi) * 0.5,
+                    cos(t * 0.7 + fi * 1.3) * 0.5
+                );
+
+                vec2 q = p + offset;
+
+                float angle = atan(q.y, q.x) + t * 0.5;
+                float r = length(q);
+
+                float wave = sin(angle * 3.0 + r * 5.0 - t * 2.0);
+                wave += sin(angle * 5.0 - r * 3.0 + t * 1.5);
+                wave *= 0.5;
+
+                float intensity = exp(-r * 2.0) * (wave * 0.5 + 0.5);
+                intensity = pow(intensity, 2.0);
+
+                vec3 tendrilColor = electricSheepColor(r + fi * 0.2 + wave * 0.1, time + fi);
+                color += tendrilColor * intensity * 0.3;
+            }
+
+            return color;
+        }
+
+        // Domain warping for organic flow
+        vec2 warp(vec2 p, float time) {
+            float t = time * 0.1;
+            vec2 offset = vec2(
+                fbm(p + vec2(t, 0.0)),
+                fbm(p + vec2(0.0, t))
+            );
+            return p + offset * 0.5;
+        }
+
+        void main() {
+            vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+
+            // Apply domain warping for flowing effect
+            vec2 warpedUV = warp(uv, u_time);
+
+            // Main fractal flame
+            vec3 flame = fractalFlame(warpedUV, u_time);
+
+            // Energy tendrils overlay
+            vec3 energy = energyFlow(uv, u_time);
+
+            // Background glow
+            float bgGlow = fbm(uv * 3.0 + u_time * 0.1);
+            vec3 bgColor = electricSheepColor(bgGlow + u_time * 0.01, u_time) * 0.1;
+
+            // Combine layers
+            vec3 color = bgColor + flame + energy;
+
+            // Tone mapping
+            color = color / (1.0 + color);
+
+            // Vignette
+            float vignette = 1.0 - dot(uv, uv) * 0.3;
+            color *= vignette;
+
+            // Final gamma correction
+            color = pow(color, vec3(0.9));
+
+            gl_FragColor = vec4(color, 1.0);
+        }
+    </script>
+
+    <script>
+        function initWebGL() {
+            const canvas = document.getElementById('glCanvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+            if (!gl) {
+                alert('WebGL not supported');
+                return;
+            }
+
+            // Compile shader
+            function compileShader(gl, source, type) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            // Create program
+            const vertexSource = document.getElementById('vertexShader').textContent;
+            const fragmentSource = document.getElementById('fragmentShader').textContent;
+
+            const vertexShader = compileShader(gl, vertexSource, gl.VERTEX_SHADER);
+            const fragmentShader = compileShader(gl, fragmentSource, gl.FRAGMENT_SHADER);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Program link error:', gl.getProgramInfoLog(program));
+                return;
+            }
+
+            gl.useProgram(program);
+
+            // Create fullscreen quad
+            const positions = new Float32Array([
+                -1, -1,
+                 1, -1,
+                -1,  1,
+                 1,  1
+            ]);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'a_position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            // Get uniform locations
+            const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+
+            // Resize handler
+            function resize() {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Animation loop
+            const startTime = performance.now();
+
+            function render() {
+                const time = (performance.now() - startTime) / 1000;
+
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                gl.uniform1f(timeLocation, time);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                requestAnimationFrame(render);
+            }
+
+            render();
+        }
+
+        window.addEventListener('load', initWebGL);
+    </script>
+</body>
+
+</html>

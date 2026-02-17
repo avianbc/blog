@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Dreams - WebGL Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #0a0a0f;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        #title {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="title">NEURAL DREAMS</div>
+    <div id="info">Move mouse to interact • Scroll to zoom</div>
+    <canvas id="canvas"></canvas>
+
+    <script id="node-vertex-shader" type="x-shader/x-vertex">
+        attribute vec3 aPosition;
+        attribute vec3 aOffset;
+        attribute float aScale;
+        attribute vec3 aColor;
+        attribute float aPhase;
+
+        uniform mat4 uProjection;
+        uniform mat4 uView;
+        uniform float uTime;
+
+        varying vec3 vColor;
+        varying vec3 vNormal;
+        varying float vGlow;
+
+        void main() {
+            float pulse = 0.8 + 0.2 * sin(uTime * 2.0 + aPhase);
+            float breathe = 1.0 + 0.15 * sin(uTime * 1.5 + aPhase * 0.5);
+
+            vec3 pos = aPosition * aScale * breathe + aOffset;
+
+            gl_Position = uProjection * uView * vec4(pos, 1.0);
+
+            vColor = aColor;
+            vNormal = normalize(aPosition);
+            vGlow = pulse;
+        }
+    </script>
+
+    <script id="node-fragment-shader" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec3 vColor;
+        varying vec3 vNormal;
+        varying float vGlow;
+
+        void main() {
+            vec3 lightDir = normalize(vec3(0.5, 1.0, 0.8));
+            float diff = max(dot(vNormal, lightDir), 0.0);
+
+            vec3 ambient = vColor * 0.3;
+            vec3 diffuse = vColor * diff * 0.5;
+            vec3 glow = vColor * vGlow * 0.8;
+
+            // Fresnel-like rim lighting
+            float rim = 1.0 - max(dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0);
+            rim = pow(rim, 2.0);
+            vec3 rimColor = vColor * rim * 1.5;
+
+            vec3 finalColor = ambient + diffuse + glow + rimColor;
+
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+    </script>
+
+    <script id="connection-vertex-shader" type="x-shader/x-vertex">
+        attribute vec3 aPosition;
+        attribute float aT;
+        attribute vec3 aStartColor;
+        attribute vec3 aEndColor;
+        attribute float aConnectionId;
+
+        uniform mat4 uProjection;
+        uniform mat4 uView;
+        uniform float uTime;
+
+        varying vec3 vColor;
+        varying float vT;
+        varying float vPulse;
+
+        void main() {
+            gl_Position = uProjection * uView * vec4(aPosition, 1.0);
+
+            // Mix colors along the connection
+            vColor = mix(aStartColor, aEndColor, aT);
+            vT = aT;
+
+            // Create traveling pulse effect
+            float pulseSpeed = 1.5;
+            float pulseWidth = 0.15;
+            float pulsePos = fract(uTime * pulseSpeed + aConnectionId * 0.1);
+            float dist = abs(aT - pulsePos);
+            dist = min(dist, 1.0 - dist); // Wrap around
+            vPulse = smoothstep(pulseWidth, 0.0, dist);
+        }
+    </script>
+
+    <script id="connection-fragment-shader" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec3 vColor;
+        varying float vT;
+        varying float vPulse;
+
+        void main() {
+            // Base alpha fades at ends
+            float alpha = smoothstep(0.0, 0.1, vT) * smoothstep(1.0, 0.9, vT);
+            alpha *= 0.4;
+
+            // Add pulse brightness
+            vec3 pulseColor = vColor + vec3(0.5) * vPulse;
+            alpha += vPulse * 0.6;
+
+            gl_FragColor = vec4(pulseColor, alpha);
+        }
+    </script>
+
+    <script id="particle-vertex-shader" type="x-shader/x-vertex">
+        attribute vec3 aPosition;
+        attribute vec3 aVelocity;
+        attribute vec3 aColor;
+        attribute float aLife;
+        attribute float aSize;
+
+        uniform mat4 uProjection;
+        uniform mat4 uView;
+        uniform float uTime;
+
+        varying vec3 vColor;
+        varying float vAlpha;
+
+        void main() {
+            float life = fract(aLife + uTime * 0.3);
+            vec3 pos = aPosition + aVelocity * life * 5.0;
+
+            gl_Position = uProjection * uView * vec4(pos, 1.0);
+            gl_PointSize = aSize * (1.0 - life) * 20.0;
+
+            vColor = aColor;
+            vAlpha = (1.0 - life) * 0.8;
+        }
+    </script>
+
+    <script id="particle-fragment-shader" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec3 vColor;
+        varying float vAlpha;
+
+        void main() {
+            vec2 center = gl_PointCoord - 0.5;
+            float dist = length(center);
+            float alpha = smoothstep(0.5, 0.0, dist) * vAlpha;
+
+            gl_FragColor = vec4(vColor, alpha);
+        }
+    </script>
+
+    <script id="background-vertex-shader" type="x-shader/x-vertex">
+        attribute vec2 aPosition;
+        varying vec2 vUv;
+
+        void main() {
+            vUv = aPosition * 0.5 + 0.5;
+            gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+    </script>
+
+    <script id="background-fragment-shader" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform vec2 uResolution;
+
+        // Simplex noise functions
+        vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+        float snoise(vec2 v) {
+            const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+            vec2 i  = floor(v + dot(v, C.yy));
+            vec2 x0 = v - i + dot(i, C.xx);
+            vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+            vec4 x12 = x0.xyxy + C.xxzz;
+            x12.xy -= i1;
+            i = mod289(i);
+            vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+            vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+            m = m*m; m = m*m;
+            vec3 x = 2.0 * fract(p * C.www) - 1.0;
+            vec3 h = abs(x) - 0.5;
+            vec3 ox = floor(x + 0.5);
+            vec3 a0 = x - ox;
+            m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+            vec3 g;
+            g.x = a0.x * x0.x + h.x * x0.y;
+            g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+            return 130.0 * dot(m, g);
+        }
+
+        void main() {
+            vec2 uv = vUv;
+
+            // Deep space gradient
+            vec3 color1 = vec3(0.02, 0.02, 0.08); // Deep blue-black
+            vec3 color2 = vec3(0.08, 0.02, 0.12); // Deep purple
+            vec3 color3 = vec3(0.02, 0.06, 0.10); // Deep teal
+
+            float gradient = uv.y;
+            vec3 baseColor = mix(color1, color2, gradient);
+            baseColor = mix(baseColor, color3, sin(uv.x * 3.14159) * 0.5);
+
+            // Animated noise for nebula effect
+            float noise1 = snoise(uv * 3.0 + uTime * 0.05) * 0.5 + 0.5;
+            float noise2 = snoise(uv * 5.0 - uTime * 0.03) * 0.5 + 0.5;
+            float noise3 = snoise(uv * 8.0 + vec2(uTime * 0.02, -uTime * 0.01)) * 0.5 + 0.5;
+
+            vec3 nebula = vec3(0.15, 0.05, 0.25) * noise1 * 0.3;
+            nebula += vec3(0.05, 0.15, 0.25) * noise2 * 0.2;
+            nebula += vec3(0.25, 0.1, 0.15) * noise3 * 0.15;
+
+            vec3 finalColor = baseColor + nebula;
+
+            // Vignette
+            float vignette = 1.0 - length(vUv - 0.5) * 0.8;
+            finalColor *= vignette;
+
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+    </script>
+
+    <script>
+        // ============================================
+        // NEURAL DREAMS - WebGL Visualization
+        // An artistic interpretation of neural networks
+        // ============================================
+
+        const canvas = document.getElementById('canvas');
+        const gl = canvas.getContext('webgl', {
+            antialias: true,
+            alpha: false,
+            premultipliedAlpha: false
+        });
+
+        if (!gl) {
+            alert('WebGL not supported');
+        }
+
+        // Enable extensions
+        gl.getExtension('OES_standard_derivatives');
+
+        // State
+        let time = 0;
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        let rotationX = 0;
+        let rotationY = 0;
+        let zoom = 1;
+        let targetZoom = 1;
+
+        // Neural network structure
+        const layers = [20, 35, 50, 65, 80, 90, 95, 100, 95, 90, 80, 70, 60, 50, 40, 30, 20]; // Nodes per layer
+        const nodes = [];
+        const connections = [];
+        const particles = [];
+
+        // Color palettes for different layers
+        const colorPalettes = [
+            [0.9, 0.3, 0.5],   // Pink
+            [0.8, 0.4, 0.9],   // Purple
+            [0.4, 0.5, 1.0],   // Blue
+            [0.3, 0.8, 0.9],   // Cyan
+            [0.4, 0.9, 0.6],   // Teal
+            [0.9, 0.8, 0.3],   // Gold
+            [1.0, 0.5, 0.3],   // Orange
+        ];
+
+        // ============================================
+        // SHADER UTILITIES
+        // ============================================
+
+        function createShader(type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        function createProgram(vertexSource, fragmentSource) {
+            const vertexShader = createShader(gl.VERTEX_SHADER, vertexSource);
+            const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentSource);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Program link error:', gl.getProgramInfoLog(program));
+                return null;
+            }
+            return program;
+        }
+
+        // ============================================
+        // GEOMETRY GENERATION
+        // ============================================
+
+        function createIcosahedron() {
+            const t = (1.0 + Math.sqrt(5.0)) / 2.0;
+
+            const vertices = [
+                -1,  t,  0,    1,  t,  0,   -1, -t,  0,    1, -t,  0,
+                 0, -1,  t,    0,  1,  t,    0, -1, -t,    0,  1, -t,
+                 t,  0, -1,    t,  0,  1,   -t,  0, -1,   -t,  0,  1
+            ];
+
+            const indices = [
+                0, 11, 5,   0, 5, 1,    0, 1, 7,    0, 7, 10,   0, 10, 11,
+                1, 5, 9,    5, 11, 4,   11, 10, 2,  10, 7, 6,   7, 1, 8,
+                3, 9, 4,    3, 4, 2,    3, 2, 6,    3, 6, 8,    3, 8, 9,
+                4, 9, 5,    2, 4, 11,   6, 2, 10,   8, 6, 7,    9, 8, 1
+            ];
+
+            // Normalize vertices to unit sphere
+            const normalizedVertices = [];
+            for (let i = 0; i < vertices.length; i += 3) {
+                const x = vertices[i];
+                const y = vertices[i + 1];
+                const z = vertices[i + 2];
+                const len = Math.sqrt(x*x + y*y + z*z);
+                normalizedVertices.push(x/len, y/len, z/len);
+            }
+
+            // Subdivide for smoother sphere
+            function subdivide(verts, inds, iterations) {
+                for (let iter = 0; iter < iterations; iter++) {
+                    const newIndices = [];
+                    const midpointCache = {};
+
+                    function getMidpoint(i1, i2) {
+                        const key = Math.min(i1, i2) + '_' + Math.max(i1, i2);
+                        if (midpointCache[key] !== undefined) {
+                            return midpointCache[key];
+                        }
+
+                        const x = (verts[i1*3] + verts[i2*3]) / 2;
+                        const y = (verts[i1*3+1] + verts[i2*3+1]) / 2;
+                        const z = (verts[i1*3+2] + verts[i2*3+2]) / 2;
+                        const len = Math.sqrt(x*x + y*y + z*z);
+
+                        const newIndex = verts.length / 3;
+                        verts.push(x/len, y/len, z/len);
+                        midpointCache[key] = newIndex;
+                        return newIndex;
+                    }
+
+                    for (let i = 0; i < inds.length; i += 3) {
+                        const i0 = inds[i];
+                        const i1 = inds[i+1];
+                        const i2 = inds[i+2];
+
+                        const m01 = getMidpoint(i0, i1);
+                        const m12 = getMidpoint(i1, i2);
+                        const m20 = getMidpoint(i2, i0);
+
+                        newIndices.push(
+                            i0, m01, m20,
+                            i1, m12, m01,
+                            i2, m20, m12,
+                            m01, m12, m20
+                        );
+                    }
+
+                    inds = newIndices;
+                }
+                return { vertices: verts, indices: inds };
+            }
+
+            const subdivided = subdivide([...normalizedVertices], [...indices], 2);
+
+            // Convert to triangles
+            const finalVertices = [];
+            for (let i = 0; i < subdivided.indices.length; i++) {
+                const idx = subdivided.indices[i];
+                finalVertices.push(
+                    subdivided.vertices[idx*3],
+                    subdivided.vertices[idx*3+1],
+                    subdivided.vertices[idx*3+2]
+                );
+            }
+
+            return new Float32Array(finalVertices);
+        }
+
+        // ============================================
+        // NEURAL NETWORK GENERATION
+        // ============================================
+
+        function generateNetwork() {
+            const layerSpacing = 4;
+            const totalWidth = (layers.length - 1) * layerSpacing;
+            const startX = -totalWidth / 2;
+
+            // Generate nodes
+            for (let l = 0; l < layers.length; l++) {
+                const numNodes = layers[l];
+                const x = startX + l * layerSpacing;
+                const layerNodes = [];
+
+                for (let n = 0; n < numNodes; n++) {
+                    // Create dynamic, interesting shapes that evolve through layers
+                    const angle = (n / numNodes) * Math.PI * 2;
+
+                    // Multiple radius variations for complex shapes
+                    const spiralFactor = l * 0.4;
+                    const waveFactor = Math.sin(angle * 3 + l * 0.5) * 0.8;
+                    const breatheFactor = Math.sin(l * 0.3) * 1.5;
+                    const petalFactor = Math.cos(angle * 5 + l * 0.7) * 0.6;
+
+                    // Base radius varies with layer and creates bulging effect
+                    const baseRadius = 2 + Math.sin(l * 0.4) * 2.5 + Math.cos(l * 0.6) * 1.5;
+                    const radius = baseRadius + waveFactor + breatheFactor + petalFactor;
+
+                    // Spiral effect - nodes rotate around the pipe as they progress
+                    const spiralAngle = angle + spiralFactor;
+
+                    // Add some chaos with multi-frequency variations
+                    const chaos1 = Math.sin(angle * 7 + l) * 0.4;
+                    const chaos2 = Math.cos(angle * 11 + l * 1.3) * 0.3;
+
+                    // Position with all effects combined
+                    const y = Math.cos(spiralAngle) * radius + chaos1 + (Math.random() - 0.5) * 0.5;
+                    const z = Math.sin(spiralAngle) * radius + chaos2 + (Math.random() - 0.5) * 0.5;
+
+                    // Color based on layer with variation
+                    const baseColor = colorPalettes[l % colorPalettes.length];
+                    const colorVariation = 0.2;
+                    const color = [
+                        baseColor[0] + (Math.random() - 0.5) * colorVariation,
+                        baseColor[1] + (Math.random() - 0.5) * colorVariation,
+                        baseColor[2] + (Math.random() - 0.5) * colorVariation
+                    ];
+
+                    const node = {
+                        x, y, z,
+                        scale: 0.15 + Math.random() * 0.1,
+                        color,
+                        phase: Math.random() * Math.PI * 2,
+                        layer: l
+                    };
+
+                    layerNodes.push(node);
+                    nodes.push(node);
+                }
+
+                // Create connections to next layer
+                if (l < layers.length - 1) {
+                    const nextLayerStart = nodes.length;
+                    const nextNumNodes = layers[l + 1];
+
+                    // Connect each node to some nodes in the next layer
+                    for (let n = 0; n < numNodes; n++) {
+                        const sourceNode = layerNodes[n];
+                        const numConnections = Math.floor(2 + Math.random() * 3);
+
+                        for (let c = 0; c < numConnections; c++) {
+                            const targetIndex = Math.floor(Math.random() * nextNumNodes);
+                            connections.push({
+                                sourceLayer: l,
+                                sourceIndex: n,
+                                targetLayer: l + 1,
+                                targetIndex,
+                                startColor: sourceNode.color,
+                                endColor: colorPalettes[(l + 1) % colorPalettes.length]
+                            });
+                        }
+                    }
+                }
+            }
+
+            // Generate particles
+            for (let i = 0; i < 2000; i++) {
+                particles.push({
+                    x: (Math.random() - 0.5) * 20,
+                    y: (Math.random() - 0.5) * 10,
+                    z: (Math.random() - 0.5) * 10,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    vz: (Math.random() - 0.5) * 0.5,
+                    color: colorPalettes[Math.floor(Math.random() * colorPalettes.length)],
+                    life: Math.random(),
+                    size: 0.5 + Math.random() * 1.5
+                });
+            }
+        }
+
+        // ============================================
+        // BUFFER CREATION
+        // ============================================
+
+        function createNodeBuffers() {
+            const sphereGeometry = createIcosahedron();
+            const numVertices = sphereGeometry.length / 3;
+
+            // Instance data
+            const offsets = [];
+            const scales = [];
+            const colors = [];
+            const phases = [];
+
+            for (const node of nodes) {
+                for (let v = 0; v < numVertices; v++) {
+                    offsets.push(node.x, node.y, node.z);
+                    scales.push(node.scale);
+                    colors.push(node.color[0], node.color[1], node.color[2]);
+                    phases.push(node.phase);
+                }
+            }
+
+            // Repeat geometry for each node
+            const positions = [];
+            for (let n = 0; n < nodes.length; n++) {
+                for (let v = 0; v < sphereGeometry.length; v++) {
+                    positions.push(sphereGeometry[v]);
+                }
+            }
+
+            return {
+                position: createBuffer(new Float32Array(positions)),
+                offset: createBuffer(new Float32Array(offsets)),
+                scale: createBuffer(new Float32Array(scales)),
+                color: createBuffer(new Float32Array(colors)),
+                phase: createBuffer(new Float32Array(phases)),
+                count: positions.length / 3
+            };
+        }
+
+        function createConnectionBuffers() {
+            const positions = [];
+            const ts = [];
+            const startColors = [];
+            const endColors = [];
+            const connectionIds = [];
+
+            const segments = 20;
+
+            for (let c = 0; c < connections.length; c++) {
+                const conn = connections[c];
+
+                // Find source and target nodes
+                let sourceIdx = 0;
+                for (let l = 0; l < conn.sourceLayer; l++) {
+                    sourceIdx += layers[l];
+                }
+                sourceIdx += conn.sourceIndex;
+
+                let targetIdx = 0;
+                for (let l = 0; l < conn.targetLayer; l++) {
+                    targetIdx += layers[l];
+                }
+                targetIdx += conn.targetIndex;
+
+                const source = nodes[sourceIdx];
+                const target = nodes[targetIdx];
+
+                if (!source || !target) continue;
+
+                // Create curved line with control points
+                const midX = (source.x + target.x) / 2;
+                const midY = (source.y + target.y) / 2 + (Math.random() - 0.5) * 1;
+                const midZ = (source.z + target.z) / 2 + (Math.random() - 0.5) * 1;
+
+                for (let s = 0; s < segments; s++) {
+                    const t1 = s / segments;
+                    const t2 = (s + 1) / segments;
+
+                    // Quadratic bezier
+                    function bezier(t) {
+                        const mt = 1 - t;
+                        return {
+                            x: mt*mt*source.x + 2*mt*t*midX + t*t*target.x,
+                            y: mt*mt*source.y + 2*mt*t*midY + t*t*target.y,
+                            z: mt*mt*source.z + 2*mt*t*midZ + t*t*target.z
+                        };
+                    }
+
+                    const p1 = bezier(t1);
+                    const p2 = bezier(t2);
+
+                    positions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+                    ts.push(t1, t2);
+                    startColors.push(...conn.startColor, ...conn.startColor);
+                    endColors.push(...conn.endColor, ...conn.endColor);
+                    connectionIds.push(c * 0.01, c * 0.01);
+                }
+            }
+
+            return {
+                position: createBuffer(new Float32Array(positions)),
+                t: createBuffer(new Float32Array(ts)),
+                startColor: createBuffer(new Float32Array(startColors)),
+                endColor: createBuffer(new Float32Array(endColors)),
+                connectionId: createBuffer(new Float32Array(connectionIds)),
+                count: positions.length / 3
+            };
+        }
+
+        function createParticleBuffers() {
+            const positions = [];
+            const velocities = [];
+            const colors = [];
+            const lives = [];
+            const sizes = [];
+
+            for (const p of particles) {
+                positions.push(p.x, p.y, p.z);
+                velocities.push(p.vx, p.vy, p.vz);
+                colors.push(p.color[0], p.color[1], p.color[2]);
+                lives.push(p.life);
+                sizes.push(p.size);
+            }
+
+            return {
+                position: createBuffer(new Float32Array(positions)),
+                velocity: createBuffer(new Float32Array(velocities)),
+                color: createBuffer(new Float32Array(colors)),
+                life: createBuffer(new Float32Array(lives)),
+                size: createBuffer(new Float32Array(sizes)),
+                count: particles.length
+            };
+        }
+
+        function createBackgroundBuffers() {
+            const vertices = new Float32Array([
+                -1, -1,
+                 1, -1,
+                -1,  1,
+                -1,  1,
+                 1, -1,
+                 1,  1
+            ]);
+
+            return {
+                position: createBuffer(vertices),
+                count: 6
+            };
+        }
+
+        function createBuffer(data) {
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+            return buffer;
+        }
+
+        // ============================================
+        // MATRIX UTILITIES
+        // ============================================
+
+        function perspective(fov, aspect, near, far) {
+            const f = 1.0 / Math.tan(fov / 2);
+            const nf = 1 / (near - far);
+            return new Float32Array([
+                f / aspect, 0, 0, 0,
+                0, f, 0, 0,
+                0, 0, (far + near) * nf, -1,
+                0, 0, 2 * far * near * nf, 0
+            ]);
+        }
+
+        function lookAt(eye, center, up) {
+            const zAxis = normalize([eye[0]-center[0], eye[1]-center[1], eye[2]-center[2]]);
+            const xAxis = normalize(cross(up, zAxis));
+            const yAxis = cross(zAxis, xAxis);
+
+            return new Float32Array([
+                xAxis[0], yAxis[0], zAxis[0], 0,
+                xAxis[1], yAxis[1], zAxis[1], 0,
+                xAxis[2], yAxis[2], zAxis[2], 0,
+                -dot(xAxis, eye), -dot(yAxis, eye), -dot(zAxis, eye), 1
+            ]);
+        }
+
+        function normalize(v) {
+            const len = Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+            return [v[0]/len, v[1]/len, v[2]/len];
+        }
+
+        function cross(a, b) {
+            return [
+                a[1]*b[2] - a[2]*b[1],
+                a[2]*b[0] - a[0]*b[2],
+                a[0]*b[1] - a[1]*b[0]
+            ];
+        }
+
+        function dot(a, b) {
+            return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        function resize() {
+            canvas.width = window.innerWidth * window.devicePixelRatio;
+            canvas.height = window.innerHeight * window.devicePixelRatio;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+
+        // Create shaders
+        const nodeProgram = createProgram(
+            document.getElementById('node-vertex-shader').textContent,
+            document.getElementById('node-fragment-shader').textContent
+        );
+
+        const connectionProgram = createProgram(
+            document.getElementById('connection-vertex-shader').textContent,
+            document.getElementById('connection-fragment-shader').textContent
+        );
+
+        const particleProgram = createProgram(
+            document.getElementById('particle-vertex-shader').textContent,
+            document.getElementById('particle-fragment-shader').textContent
+        );
+
+        const backgroundProgram = createProgram(
+            document.getElementById('background-vertex-shader').textContent,
+            document.getElementById('background-fragment-shader').textContent
+        );
+
+        // Get attribute and uniform locations
+        const nodeLocations = {
+            aPosition: gl.getAttribLocation(nodeProgram, 'aPosition'),
+            aOffset: gl.getAttribLocation(nodeProgram, 'aOffset'),
+            aScale: gl.getAttribLocation(nodeProgram, 'aScale'),
+            aColor: gl.getAttribLocation(nodeProgram, 'aColor'),
+            aPhase: gl.getAttribLocation(nodeProgram, 'aPhase'),
+            uProjection: gl.getUniformLocation(nodeProgram, 'uProjection'),
+            uView: gl.getUniformLocation(nodeProgram, 'uView'),
+            uTime: gl.getUniformLocation(nodeProgram, 'uTime')
+        };
+
+        const connectionLocations = {
+            aPosition: gl.getAttribLocation(connectionProgram, 'aPosition'),
+            aT: gl.getAttribLocation(connectionProgram, 'aT'),
+            aStartColor: gl.getAttribLocation(connectionProgram, 'aStartColor'),
+            aEndColor: gl.getAttribLocation(connectionProgram, 'aEndColor'),
+            aConnectionId: gl.getAttribLocation(connectionProgram, 'aConnectionId'),
+            uProjection: gl.getUniformLocation(connectionProgram, 'uProjection'),
+            uView: gl.getUniformLocation(connectionProgram, 'uView'),
+            uTime: gl.getUniformLocation(connectionProgram, 'uTime')
+        };
+
+        const particleLocations = {
+            aPosition: gl.getAttribLocation(particleProgram, 'aPosition'),
+            aVelocity: gl.getAttribLocation(particleProgram, 'aVelocity'),
+            aColor: gl.getAttribLocation(particleProgram, 'aColor'),
+            aLife: gl.getAttribLocation(particleProgram, 'aLife'),
+            aSize: gl.getAttribLocation(particleProgram, 'aSize'),
+            uProjection: gl.getUniformLocation(particleProgram, 'uProjection'),
+            uView: gl.getUniformLocation(particleProgram, 'uView'),
+            uTime: gl.getUniformLocation(particleProgram, 'uTime')
+        };
+
+        const backgroundLocations = {
+            aPosition: gl.getAttribLocation(backgroundProgram, 'aPosition'),
+            uTime: gl.getUniformLocation(backgroundProgram, 'uTime'),
+            uResolution: gl.getUniformLocation(backgroundProgram, 'uResolution')
+        };
+
+        // Generate network and buffers
+        generateNetwork();
+        const nodeBuffers = createNodeBuffers();
+        const connectionBuffers = createConnectionBuffers();
+        const particleBuffers = createParticleBuffers();
+        const backgroundBuffers = createBackgroundBuffers();
+
+        // ============================================
+        // INPUT HANDLING
+        // ============================================
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        canvas.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+            targetRotationY = mouseX * 0.5;
+            targetRotationX = mouseY * 0.3;
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            targetZoom += e.deltaY * 0.001;
+            targetZoom = Math.max(0.5, Math.min(2.0, targetZoom));
+        });
+
+        // Touch support
+        canvas.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 1) {
+                const touch = e.touches[0];
+                mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
+                mouseY = (touch.clientY / window.innerHeight) * 2 - 1;
+                targetRotationY = mouseX * 0.5;
+                targetRotationX = mouseY * 0.3;
+            }
+        });
+
+        // ============================================
+        // RENDER LOOP
+        // ============================================
+
+        function render() {
+            time += 0.016;
+
+            // Smooth rotation and zoom
+            rotationX += (targetRotationX - rotationX) * 0.05;
+            rotationY += (targetRotationY - rotationY) * 0.05;
+            zoom += (targetZoom - zoom) * 0.05;
+
+            // Auto-rotation
+            const autoRotation = time * 0.1;
+
+            // Camera position
+            const distance = 15 * zoom;
+            const camX = Math.sin(autoRotation + rotationY) * distance;
+            const camY = rotationX * 5;
+            const camZ = Math.cos(autoRotation + rotationY) * distance;
+
+            const projection = perspective(
+                Math.PI / 4,
+                canvas.width / canvas.height,
+                0.1,
+                100
+            );
+
+            const view = lookAt(
+                [camX, camY, camZ],
+                [0, 0, 0],
+                [0, 1, 0]
+            );
+
+            // Clear
+            gl.clearColor(0, 0, 0, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            // Draw background
+            gl.disable(gl.DEPTH_TEST);
+            gl.useProgram(backgroundProgram);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, backgroundBuffers.position);
+            gl.enableVertexAttribArray(backgroundLocations.aPosition);
+            gl.vertexAttribPointer(backgroundLocations.aPosition, 2, gl.FLOAT, false, 0, 0);
+
+            gl.uniform1f(backgroundLocations.uTime, time);
+            gl.uniform2f(backgroundLocations.uResolution, canvas.width, canvas.height);
+
+            gl.drawArrays(gl.TRIANGLES, 0, backgroundBuffers.count);
+
+            // Enable blending and depth
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+            // Draw connections
+            gl.useProgram(connectionProgram);
+
+            gl.uniformMatrix4fv(connectionLocations.uProjection, false, projection);
+            gl.uniformMatrix4fv(connectionLocations.uView, false, view);
+            gl.uniform1f(connectionLocations.uTime, time);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, connectionBuffers.position);
+            gl.enableVertexAttribArray(connectionLocations.aPosition);
+            gl.vertexAttribPointer(connectionLocations.aPosition, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, connectionBuffers.t);
+            gl.enableVertexAttribArray(connectionLocations.aT);
+            gl.vertexAttribPointer(connectionLocations.aT, 1, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, connectionBuffers.startColor);
+            gl.enableVertexAttribArray(connectionLocations.aStartColor);
+            gl.vertexAttribPointer(connectionLocations.aStartColor, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, connectionBuffers.endColor);
+            gl.enableVertexAttribArray(connectionLocations.aEndColor);
+            gl.vertexAttribPointer(connectionLocations.aEndColor, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, connectionBuffers.connectionId);
+            gl.enableVertexAttribArray(connectionLocations.aConnectionId);
+            gl.vertexAttribPointer(connectionLocations.aConnectionId, 1, gl.FLOAT, false, 0, 0);
+
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+            gl.drawArrays(gl.LINES, 0, connectionBuffers.count);
+
+            // Draw particles
+            gl.useProgram(particleProgram);
+
+            gl.uniformMatrix4fv(particleLocations.uProjection, false, projection);
+            gl.uniformMatrix4fv(particleLocations.uView, false, view);
+            gl.uniform1f(particleLocations.uTime, time);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, particleBuffers.position);
+            gl.enableVertexAttribArray(particleLocations.aPosition);
+            gl.vertexAttribPointer(particleLocations.aPosition, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, particleBuffers.velocity);
+            gl.enableVertexAttribArray(particleLocations.aVelocity);
+            gl.vertexAttribPointer(particleLocations.aVelocity, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, particleBuffers.color);
+            gl.enableVertexAttribArray(particleLocations.aColor);
+            gl.vertexAttribPointer(particleLocations.aColor, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, particleBuffers.life);
+            gl.enableVertexAttribArray(particleLocations.aLife);
+            gl.vertexAttribPointer(particleLocations.aLife, 1, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, particleBuffers.size);
+            gl.enableVertexAttribArray(particleLocations.aSize);
+            gl.vertexAttribPointer(particleLocations.aSize, 1, gl.FLOAT, false, 0, 0);
+
+            gl.drawArrays(gl.POINTS, 0, particleBuffers.count);
+
+            // Draw nodes
+            gl.enable(gl.DEPTH_TEST);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+            gl.useProgram(nodeProgram);
+
+            gl.uniformMatrix4fv(nodeLocations.uProjection, false, projection);
+            gl.uniformMatrix4fv(nodeLocations.uView, false, view);
+            gl.uniform1f(nodeLocations.uTime, time);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, nodeBuffers.position);
+            gl.enableVertexAttribArray(nodeLocations.aPosition);
+            gl.vertexAttribPointer(nodeLocations.aPosition, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, nodeBuffers.offset);
+            gl.enableVertexAttribArray(nodeLocations.aOffset);
+            gl.vertexAttribPointer(nodeLocations.aOffset, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, nodeBuffers.scale);
+            gl.enableVertexAttribArray(nodeLocations.aScale);
+            gl.vertexAttribPointer(nodeLocations.aScale, 1, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, nodeBuffers.color);
+            gl.enableVertexAttribArray(nodeLocations.aColor);
+            gl.vertexAttribPointer(nodeLocations.aColor, 3, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, nodeBuffers.phase);
+            gl.enableVertexAttribArray(nodeLocations.aPhase);
+            gl.vertexAttribPointer(nodeLocations.aPhase, 1, gl.FLOAT, false, 0, 0);
+
+            gl.drawArrays(gl.TRIANGLES, 0, nodeBuffers.count);
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+    </script>
+</body>
+</html>
