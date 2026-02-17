@@ -2,7 +2,7 @@
 date = 2018-05-14T00:28:02-04:00
 title = "Chicken tornado - A PixiJS experiment"
 categories = ['Programming']
-tags = ['JavaScript', 'PixiJS']
+tags = ['JavaScript', 'PixiJS', 'Experiments']
 +++
 
 I was bored and decided to see what [PixiJS](https://www.pixijs.com/) is all about. Sooo... I made a tornado of chickens.

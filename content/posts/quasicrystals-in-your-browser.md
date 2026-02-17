@@ -2,7 +2,7 @@
 date = 2025-04-12T17:50:42-05:00
 title = "Quasicrystals in Your Browser"
 categories = ['Programming']
-tags = ['JavaScript', 'Quasicrystals']
+tags = ['JavaScript', 'Quasicrystals', 'Experiments']
 featuredImage = "/images/2025/quasicrystal.gif"
 +++
 

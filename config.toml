@@ -79,12 +79,20 @@ name = "Blog"
 weight = 1
 url  = "posts/"
 [[menu.main]]
-name = "Consulting"
+name = "Experiments"
 weight = 2
+url = "tags/experiments/"
+[[menu.main]]
+name = "Workouts"
+weight = 3
+url = "dashboard/"
+[[menu.main]]
+name = "Consulting"
+weight = 4
 url = "consulting/"
 [[menu.main]]
 name = "About"
-weight = 3
+weight = 5
 url = "about/"
 
 [markup]
