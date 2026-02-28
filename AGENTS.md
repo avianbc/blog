@@ -35,9 +35,9 @@ Code examples should be complete and working, not fragments. Include tests when 
 
 ## Style Patterns
 
-**Use:** em dashes for asides, parenthetical qualifiers for nuance, "Basically" as a simplification marker, direct address ("you"/"your"), imperative form for instructions, exclamation points only when genuinely excited.
+**Use:** parenthetical qualifiers for nuance, "Basically" as a simplification marker, direct address ("you"/"your"), imperative form for instructions, exclamation points only when genuinely excited.
 
-**Never:** emojis, "In this post we will...", "Let's dive in!", "Thanks for reading!", hashtags, corporate buzzwords ("leverage", "synergy"), excessive hedging ("perhaps", "arguably"), artificial enthusiasm, SEO filler.
+**Never:** em dashes, hyphens as punctuation, emojis, "In this post we will...", "Let's dive in!", "Thanks for reading!", hashtags, corporate buzzwords ("leverage", "synergy"), excessive hedging ("perhaps", "arguably"), artificial enthusiasm, SEO filler.
 
 ## Example Openings
 
