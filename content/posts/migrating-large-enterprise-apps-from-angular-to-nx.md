@@ -115,11 +115,11 @@ The merges happened over two days using separate feature branches per repo:
 3. **Day 2, afternoon**: Outlook add-in
 4. **Day 2, late afternoon**: UI component library
 
-Using a separate feature branch per merge was important. Each merge was independently reviewable and rollback-able. The subsequent week was almost entirely stabilization: ~30 commits fixing CI/CD pipelines, build paths, code quality analysis tool configuration, and Nx affected calculations.
+Using a separate feature branch per merge was important. Each merge was independently reviewable and rollback-able. The subsequent week was dedicated to stabilization: ~30 commits fixing CI/CD pipelines, build paths, code quality analysis tool configuration, and Nx affected calculations.
 
 ## Challenges
 
-### 1. CI/CD: Preserving vs. Rewriting (The Biggest Regret)
+### 1. CI/CD: Preserving vs. Rewriting (Know the Tradeoff)
 
 Each of the original repos had its own independent `.gitlab-ci.yml`. Rather than rewrite everything from scratch, we preserved the child pipelines largely intact and wrapped a new parent pipeline around them.
 
@@ -141,11 +141,11 @@ The resulting architecture:
 
 A deploy script queries Nx for projects tagged `publishable`, dynamically generates a trigger file, and kicks off the appropriate child pipelines based on which projects `nx affected` identified.
 
-**Why this decision:** The child pipelines had working Docker builds, container registry pushes, code quality scans, and versioning integrations. Rewriting all of it would have taken weeks. Wrapping them in a parent pipeline took days.
+**Why this decision:** The child pipelines had working Docker builds, container registry pushes, code quality scans, and versioning integrations. Rewriting all of it would have taken weeks. Wrapping them in a parent pipeline took days. This was the right call — shipping the migration quickly had real value, and a full CI/CD rewrite in the same week would have significantly delayed that.
 
-**The long-term cost:** This architecture created more than two years of ongoing maintenance burden. Every CI change required understanding the parent/child interaction. Each build job ran twice per pipeline — once in the parent (via `nx affected`) and again in the child. By 2025, an infrastructure analysis put the CI runner cost well into five figures annually and produced thousands of lines of strategy documents evaluating different consolidation approaches.
+**The ongoing cost:** Each build job runs twice per pipeline — once in the parent (via `nx affected`) and again in the child. Every CI change requires understanding the parent/child interaction. This overhead compounds over time and is higher than we initially anticipated.
 
-**The lesson:** If your old pipelines are complex and you're doing a monorepo consolidation anyway, strongly consider rewriting CI/CD from scratch. The short-term savings of preserving the old architecture rarely survive contact with the full long-term maintenance cost.
+**The lesson:** Preserving existing pipelines is often the right pragmatic call. But go in with eyes open: treat CI/CD modernization as a first-class post-migration project rather than eventual cleanup. The longer it sits, the more the parent/child coupling accumulates context and the harder it becomes to untangle.
 
 #### Specific CI/CD Issues Encountered
 
@@ -176,7 +176,7 @@ Initial workaround: hardcode a known-good commit SHA as `NX_BASE`. Proper fix:
 NX_BASE: ${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
 ```
 
-Use the MR diff base for MR pipelines, or the previous commit for push pipelines. This took several CI iterations to land correctly.
+Use the MR diff base for MR pipelines, or the previous commit for push pipelines. This took a few iterations to land correctly.
 
 **3. `nx.json` defaultBase for release branches**
 
@@ -184,7 +184,7 @@ Nx uses `affected.defaultBase` in `nx.json` as the base branch for local affecte
 
 **4. Code quality tool path breakage**
 
-After everything moved into `apps/` and `libs/` subdirectories, all configuration file paths for our static analysis tool were broken. This took six commits across multiple attempts to fully resolve. **Lesson:** Before starting the merge, document every file whose path is hardcoded in CI — Docker build contexts, code quality config files, artifact upload paths, all of it.
+After everything moved into `apps/` and `libs/` subdirectories, all configuration file paths for our static analysis tool were broken. This required several targeted fixes to fully resolve. **Lesson:** Before starting the merge, document every file whose path is hardcoded in CI — Docker build contexts, code quality config files, artifact upload paths, all of it.
 
 ---
 
@@ -234,7 +234,7 @@ Also add a `tsconfig.editor.json` per project:
 
 And update the project `tsconfig.json` to include `tsconfig.spec.json` and `tsconfig.editor.json` in its `references` array.
 
-**The timeline of discovery:** This issue didn't exist at migration time (TypeScript was on 4.9.x). It appeared after the TypeScript 5.x bump but wasn't formally diagnosed and fixed until over a year later. During that period, developers likely worked around IDE errors or dismissed them as Angular upgrade noise.
+**The timeline of discovery:** This issue didn't exist at migration time (TypeScript was on 4.9.x). It appeared after the TypeScript 5.x bump but wasn't formally diagnosed and fixed until over a year later. The symptoms were easy to attribute to the concurrent Angular major version upgrade — phantom IDE errors during a large framework bump are easy to write off as upgrade noise, which is exactly what made this hard to catch.
 
 **The lesson:** After any TypeScript major version upgrade, explicitly verify that IDE type checking and the compiler agree on errors. If they diverge, check tsconfig inheritance chains first — specifically, ensure `tsconfig.app.json` extends the *local* `tsconfig.json`, not the workspace root `tsconfig.base.json` directly.
 
@@ -296,9 +296,9 @@ The monorepo unified these at a root `.eslintrc.json`. Key decisions:
 - Browser-specific globals (from the add-in) were added to the root config
 - Component selector prefix was standardized across the workspace
 
-ESLint wasn't *fully* unified at migration time — individual apps kept local `.eslintrc.json` files that extended the root, with duplicated rules. Consolidation happened incrementally; a single cleanup commit 16 months post-migration removed nine duplicated `extends` entries from two apps.
+ESLint wasn't *fully* unified at migration time — individual apps kept local `.eslintrc.json` files that extended the root, with duplicated rules. Consolidation happened incrementally; a single cleanup commit well over a year post-migration removed nine duplicated `extends` entries from two apps.
 
-**The lesson:** A dedicated "unification sprint" immediately post-migration would have been cleaner than 18 months of incremental cleanup.
+**The lesson:** A dedicated unification sprint immediately post-migration would have been far cleaner than incremental cleanup.
 
 ---
 
@@ -346,11 +346,11 @@ The Angular 16 → 19 upgrade (~18 months after migration) was the most signific
 
 **Converting the most complex repo to Nx first** gave a stable, tested foundation to merge the simpler repos into. Start with the hardest structural problem before bringing in any other moving parts.
 
-### What Created Technical Debt
+### What We'd Do Differently
 
-**Preserving the old CI/CD pipelines** was pragmatic but accumulated significant maintenance cost. Every CI change required understanding the parent/child interaction. The duplicate build jobs added time and cost. The retrospective math is stark: a complete CI/CD rewrite in the first week would have paid for itself within a few months.
+**Preserving the old CI/CD pipelines** was the right pragmatic call to ship quickly, but the ongoing maintenance overhead — duplicate build jobs, coupled config, context-switching between parent and child — was higher than anticipated. Treat CI/CD modernization as a first-class post-migration project, not eventual cleanup.
 
-**Not fully unifying configuration at migration time** left ESLint rules, tsconfig flags, and package scripts inconsistent. Incremental normalization stretched over more than a year. A dedicated unification sprint immediately post-migration would have compressed that work significantly.
+**Not fully unifying configuration at migration time** left ESLint rules, tsconfig flags, and package scripts inconsistent. A dedicated unification sprint immediately post-migration would have compressed what ended up being gradual cleanup over many months.
 
 ### What Was Hard to Predict
 
@@ -363,6 +363,6 @@ The Angular 16 → 19 upgrade (~18 months after migration) was the most signific
 1. **Do the major version alignment work 1–3 months before the merge**, not during
 2. **Build and test a prototype CI/CD pipeline** against the new parent structure before doing any of the merges
 3. **Allocate a full week of dedicated time** for stabilization — plan no feature work for that sprint
-4. **Seriously consider rewriting CI/CD from scratch** if the old pipelines are complex. The maintenance cost of carrying forward the old architecture almost always exceeds the short-term savings
+4. **Decide on CI/CD preservation vs. rewrite deliberately** — preserving is often the right call to ship quickly, but plan a dedicated modernization sprint soon after rather than letting the parent/child coupling calcify
 5. **After any TypeScript major version upgrade**, verify that IDE errors and compiler errors agree. If they diverge, check tsconfig inheritance chains immediately
 6. **Document every path hardcoded in CI** before starting the merge — Docker build contexts, code quality config paths, artifact upload destinations, all of it
