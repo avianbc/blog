@@ -142,6 +142,8 @@ The resulting architecture:
 
 A deploy script queries Nx for projects tagged `publishable`, dynamically generates a trigger file, and kicks off the appropriate child pipelines based on which projects `nx affected` identified.
 
+The `publishable` tag convention came directly out of one of the monorepo's core benefits: since all apps now consume shared libraries via TypeScript path mappings, there's no publish cycle for internal libs anymore. They don't go to the private npm registry. They don't have child pipelines. The only projects that still need a deploy pipeline are the apps themselves (Docker builds, container registry pushes) and any libs that are still published externally. Tagging those explicitly was the cleanest way to make that distinction in CI without hard-coding project names.
+
 **Why this decision:** The child pipelines had working Docker builds, container registry pushes, code quality scans, and versioning integrations. Rewriting all of it would have taken weeks. Wrapping them in a parent pipeline took days. Shipping quickly mattered. It was the right call.
 
 **The ongoing cost:** Each build job runs twice per pipeline: once in the parent (via `nx affected`) and again in the child. Every CI change requires understanding the parent/child interaction. This overhead compounds over time and is higher than we initially anticipated.
