@@ -1,19 +1,35 @@
 +++
 date = 2026-03-13T12:00:00-04:00
-title = "I Built a Full CLI for a Legacy CRM in One Afternoon (with AI)"
+title = "I Built a Full CLI for a Legacy Web App in One Afternoon (with AI)"
 categories = ['Programming']
 tags = ['AI', 'Python', 'CLI', 'Claude Code']
 +++
 
-Our CRM platform has been around for over a decade. The backend is a sprawl of three separate HTTP services: a legacy REST API (v1), a newer REST API (v2), and an Elasticsearch-backed search service. They share a JWT token but have different base URLs, different conventions, and different quirks. There's no unified CLI. If you want to poke at the API, you open Swagger, copy a Bearer token, and start curling.
+Our platform has been around for nearly two decades. The backend is a sprawl of three separate HTTP services: a legacy REST API (v1), a newer REST API (v2), and an Elasticsearch-backed search service. They share a JWT token but have different base URLs, different conventions, and different quirks. There's no unified CLI. If you want to poke at the API, you open Swagger, copy a Bearer token, and start curling.
 
 I decided to fix that. With Claude Code and an open-source framework called [CLI-Anything](https://github.com/HKUDS/CLI-Anything), I built a fully working Python CLI with CRUD for six entity types, four search modes, an interactive REPL, and 47 tests. One afternoon. 18 commits. About 3,000 lines of code.
 
 Here's how it actually went.
 
+## How CLI-Anything works
+
+CLI-Anything is a Claude Code plugin. You install it from the marketplace, point it at a codebase or API docs, and it runs a 7-phase automated pipeline:
+
+1. **Analyze** — scans the source, maps functionality to commands
+2. **Design** — architects command groups, state model, output formats
+3. **Implement** — builds the actual CLI using [Click](https://github.com/pallets/click), a Python library for composing command-line interfaces declaratively
+4. **Plan Tests** — writes a TEST.md with unit and E2E test plans
+5. **Write Tests** — implements the test suite
+6. **Document** — generates README and results
+7. **Publish** — creates `setup.py`, installs the CLI to PATH as a proper pip package
+
+Click is doing the heavy lifting on the CLI side. It handles argument parsing, subcommand routing, help text, and type validation. The generated code also includes a REPL mode (enter the command bare, no subcommand, and you get an interactive shell with history and autocomplete) and a `--json` flag on every command for machine consumption.
+
+The output is a pip-installable Python package. `pip install -e .` and your new command is on PATH.
+
 ## The initial generation
 
-CLI-Anything is a Claude Code plugin that analyzes a piece of software and generates a CLI harness for it. You point it at your API docs or codebase, and it runs through a pipeline: analyze, design, implement, write tests, document. The initial scaffold dropped 2,738 lines across 23 files. A full Click-based CLI with commands for companies, contacts, opportunities, projects, activities, personnel, and search.
+I pointed CLI-Anything at our API and let it run. The initial scaffold dropped 2,738 lines across 23 files. A full Click-based CLI with commands for companies, contacts, opportunities, projects, activities, personnel, and search.
 
 My first prompt after generation:
 
