@@ -142,6 +142,8 @@ The resulting architecture:
 
 A deploy script queries Nx for projects tagged `publishable`, dynamically generates a trigger file, and kicks off the appropriate child pipelines based on which projects `nx affected` identified.
 
+The `publishable` tag convention came directly out of one of the monorepo's core benefits: since all apps now consume shared libraries via TypeScript path mappings, there's no publish cycle for internal libs anymore. They don't go to the private npm registry. They don't have child pipelines. The only projects that still need a deploy pipeline are the apps themselves (Docker builds, container registry pushes) and any libs that are still published externally. Tagging those explicitly was the cleanest way to make that distinction in CI without hard-coding project names.
+
 **Why this decision:** The child pipelines had working Docker builds, container registry pushes, code quality scans, and versioning integrations. Rewriting all of it would have taken weeks. Wrapping them in a parent pipeline took days. Shipping quickly mattered. It was the right call.
 
 **The ongoing cost:** Each build job runs twice per pipeline: once in the parent (via `nx affected`) and again in the child. Every CI change requires understanding the parent/child interaction. This overhead compounds over time and is higher than we initially anticipated.
@@ -269,6 +271,18 @@ The UI component library couldn't be immediately switched from an npm package to
 2. Later: Once the library was properly integrated as an Nx lib with path mappings in `tsconfig.base.json`, the npm package reference was removed
 
 This meant there was a period where the library existed in the monorepo *and* was still being published and consumed as an npm package. That's fine. Don't rush the cutover.
+
+#### Single Version Policy vs. Independently Maintained Dependencies
+
+Nx [supports both approaches](https://nx.dev/concepts/decisions/dependency-management), and the choice is consequential. We went with a single version policy: one root `package.json`, one lockfile, one source of truth for every dependency version across the entire workspace.
+
+The main reason was Angular. When you need to bump all three apps from Angular 16 to 17 simultaneously (and you do, because compatibility across mixed versions is a mess), a single version policy means you change one file. With independently maintained dependencies, that's the same upgrade done three times, in three `package.json` files, with three opportunities to end up half-migrated. Coordinating major framework upgrades was a known recurring cost. Eliminating that coordination overhead was a concrete win.
+
+The tradeoff is real though. The Nx docs are honest about it: independently maintained dependencies let teams move at different velocities. If one app needs to upgrade a library urgently and another can't touch it for two sprints, single version policy forces a conversation. In our case that wasn't a constraint worth worrying about. All apps were on the same release cycle and upgrading together was the goal, so there was no velocity to sacrifice.
+
+If your projects are more decoupled or owned by teams with genuinely divergent schedules, the coordination overhead could outweigh the bookkeeping savings. Independently maintained deps might actually save you time. That's the honest version of this decision.
+
+One thing worth noting: Nx's dependency graph is smart enough to avoid unnecessary cache misses even when a root-level lockfile changes. The "every dependency update invalidates all caches" concern doesn't hold here.
 
 #### Minor Version Drift
 
