@@ -1,5 +1,5 @@
 +++
-date = 2026-03-13T21:00:00-04:00
+date = 2026-03-13T12:00:00-04:00
 title = "I Built a Full CLI for a Legacy CRM in One Afternoon (with AI)"
 categories = ['Programming']
 tags = ['AI', 'Python', 'CLI', 'Claude Code']
