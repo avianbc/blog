@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #111; }
+    #grid { display: grid; width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    const CHECKBOX_SIZE = 16;
+    let checkboxes = [];
+    let cols = 0, rows = 0;
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cols = Math.floor(window.innerWidth / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+    }
+
+    build();
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { build(); startMaze(); }, 150);
+    });
+
+    function cbIdx(c, r) { return r * cols + c; }
+    function setCell(c, r, val) {
+      if (c >= 0 && c < cols && r >= 0 && r < rows) checkboxes[cbIdx(c, r)].checked = val;
+    }
+
+    const DIRS = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+    const STEPS_PER_FRAME = 40;
+
+    let mazeCols, mazeRows, visited, stack, rafId;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function startMaze() {
+      if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
+
+      mazeCols = Math.floor(cols / 2);
+      mazeRows = Math.floor(rows / 2);
+
+      checkboxes.forEach(cb => (cb.checked = false));
+
+      visited = new Uint8Array(mazeCols * mazeRows);
+
+      // Start at maze cell (0, 0)
+      visited[0] = 1;
+      setCell(0, 0, true);
+      stack = [[0, 0]];
+
+      function step() {
+        for (let i = 0; i < STEPS_PER_FRAME; i++) {
+          if (stack.length === 0) {
+            setTimeout(startMaze, 2000);
+            return;
+          }
+
+          const [mc, mr] = stack[stack.length - 1];
+
+          // Collect unvisited neighbors
+          const neighbors = [];
+          for (const [dc, dr] of DIRS) {
+            const nc = mc + dc;
+            const nr = mr + dr;
+            if (nc >= 0 && nc < mazeCols && nr >= 0 && nr < mazeRows && !visited[nr * mazeCols + nc]) {
+              neighbors.push([nc, nr, dc, dr]);
+            }
+          }
+
+          if (neighbors.length > 0) {
+            shuffle(neighbors);
+            const [nc, nr, dc, dr] = neighbors[0];
+            // Carve the wall between current cell and chosen neighbor
+            setCell(mc * 2 + dc, mr * 2 + dr, true);
+            // Check the neighbor cell checkbox
+            setCell(nc * 2, nr * 2, true);
+            visited[nr * mazeCols + nc] = 1;
+            stack.push([nc, nr]);
+          } else {
+            stack.pop();
+          }
+        }
+
+        rafId = requestAnimationFrame(step);
+      }
+
+      rafId = requestAnimationFrame(step);
+    }
+
+    startMaze();
+  </script>
+</body>
+</html>
