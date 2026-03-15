@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patterns</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #111;
+  overflow: hidden;
+}
+
+#grid {
+  display: grid;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  background: #111;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+input[type="checkbox"]:checked {
+  background: #e4e4e4;
+}
+
+#hud {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.68);
+  color: #fff;
+  font-family: monospace;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  line-height: 1.9;
+  user-select: none;
+  z-index: 9999;
+  min-width: 160px;
+}
+
+.hud-title {
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 1px;
+}
+
+.hud-hint {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+#next-btn {
+  margin-top: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ddd;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+#next-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.speed-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #777;
+}
+
+#speed-slider {
+  width: 85px;
+  cursor: pointer;
+}
+
+#speed-display {
+  color: #e4e4e4;
+  min-width: 30px;
+  font-size: 11px;
+}
+</style>
+</head>
+<body>
+
+<div id="grid"></div>
+
+<div id="hud">
+  <div class="hud-title">PATTERNS</div>
+  <div id="mode-label">Moire Rings</div>
+  <div class="hud-hint">Space to cycle modes</div>
+  <button id="next-btn">Next Mode</button>
+  <div class="speed-row">
+    Speed
+    <input type="range" id="speed-slider" min="0.5" max="3" step="0.1" value="1">
+    <span id="speed-display">1.0x</span>
+  </div>
+</div>
+
+<script>
+const CHECKBOX_SIZE = 16;
+const TAU = Math.PI * 2;
+
+// ---- Mode implementations ----
+// Each receives (col, row, cx, cy, t) and returns boolean (checked or not).
+
+function modeMoireRings(c, r, cx, cy, t) {
+  const freq = 0.38;
+  const ox = 9, oy = 5;
+  const dx1 = c - cx,        dy1 = r - cy;
+  const dx2 = c - (cx + ox), dy2 = r - (cy + oy);
+  const d1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+  const d2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+  return Math.sin(d1 * freq - t) + Math.sin(d2 * freq - t * 1.05) > 0.25;
+}
+
+function modeSpiral(c, r, cx, cy, t) {
+  const dx = c - cx, dy = r - cy;
+  const d = Math.sqrt(dx * dx + dy * dy);
+  if (d < 0.5) return false;
+  const k = 0.30;
+  let phase = (Math.atan2(dy, dx) + Math.log(d + 1) * k - t) % TAU;
+  if (phase < 0) phase += TAU;
+  return phase < Math.PI;
+}
+
+function modeTunnel(c, r, cx, cy, t) {
+  const dx = c - cx, dy = r - cy;
+  const d = Math.sqrt(dx * dx + dy * dy);
+  const ringWidth = 3.5;
+  const spd = 0.55;
+  // Rings zoom inward (increasing t shrinks the pattern toward center)
+  const idx = Math.floor((d + t * spd) / ringWidth);
+  return (idx & 1) === 0;
+}
+
+function modeRadialMoire(c, r, cx, cy, t) {
+  const dx = c - cx, dy = r - cy;
+  const d = Math.sqrt(dx * dx + dy * dy);
+  if (d < 1) return false;
+  const angle = Math.atan2(dy, dx);
+  const lines = 20;
+  // Two line fans at slightly different angular frequencies, counter-rotating
+  const v1 = Math.sin(angle * lines + t);
+  const v2 = Math.sin(angle * lines * 1.09 - t * 0.85);
+  return (v1 > 0) !== (v2 > 0);
+}
+
+const MODES = [
+  { name: 'Moire Rings',     dt: 0.05,  fn: modeMoireRings  },
+  { name: 'Rotating Spiral', dt: 0.04,  fn: modeSpiral      },
+  { name: 'Tunnel',          dt: 0.05,  fn: modeTunnel      },
+  { name: 'Radial Moire',    dt: 0.03,  fn: modeRadialMoire },
+];
+
+// ---- State ----
+let modeIdx = 0;
+let t = 0;
+let speedMult = 1.0;
+let cols = 0, rows = 0;
+let boxes = null;
+let rafId = null;
+
+// ---- DOM refs ----
+const gridEl       = document.getElementById('grid');
+const modeLabelEl  = document.getElementById('mode-label');
+const nextBtn      = document.getElementById('next-btn');
+const speedSlider  = document.getElementById('speed-slider');
+const speedDisplay = document.getElementById('speed-display');
+
+// ---- Grid construction ----
+function buildGrid() {
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
+  cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+  rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+  gridEl.innerHTML = '';
+  gridEl.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+  gridEl.style.width  = `${cols * CHECKBOX_SIZE}px`;
+  gridEl.style.height = `${rows * CHECKBOX_SIZE}px`;
+
+  const total = rows * cols;
+  const frag = document.createDocumentFragment();
+  boxes = new Array(total);
+
+  for (let i = 0; i < total; i++) {
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.tabIndex = -1;
+    frag.appendChild(cb);
+    boxes[i] = cb;
+  }
+
+  gridEl.appendChild(frag);
+  loop();
+}
+
+// ---- Animation loop ----
+function loop() {
+  const m  = MODES[modeIdx];
+  t += m.dt * speedMult;
+
+  const cx = cols / 2;
+  const cy = rows / 2;
+  const fn = m.fn;
+
+  for (let r = 0; r < rows; r++) {
+    const base = r * cols;
+    for (let c = 0; c < cols; c++) {
+      const v = fn(c, r, cx, cy, t);
+      const box = boxes[base + c];
+      // Only write when state actually changes — saves DOM churn
+      if (box.checked !== v) box.checked = v;
+    }
+  }
+
+  rafId = requestAnimationFrame(loop);
+}
+
+// ---- Controls ----
+function nextMode() {
+  modeIdx = (modeIdx + 1) % MODES.length;
+  modeLabelEl.textContent = MODES[modeIdx].name;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    nextMode();
+  }
+});
+
+nextBtn.addEventListener('click', nextMode);
+
+speedSlider.addEventListener('input', () => {
+  speedMult = parseFloat(speedSlider.value);
+  speedDisplay.textContent = speedMult.toFixed(1) + 'x';
+});
+
+// Debounced resize — rebuilds grid, preserves mode and t
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(buildGrid, 160);
+});
+
+// ---- Init ----
+modeLabelEl.textContent = MODES[modeIdx].name;
+buildGrid();
+</script>
+</body>
+</html>
