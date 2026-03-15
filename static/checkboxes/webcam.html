@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DITHER CAM</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 0;
+      line-height: 0;
+      user-select: none;
+    }
+
+    #grid input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      display: inline-block;
+      vertical-align: top;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      background: #111;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    #grid input[type="checkbox"]:checked {
+      background: #ddd;
+    }
+
+    #hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.82);
+      color: #fff;
+      padding: 14px 18px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      min-width: 248px;
+    }
+
+    #hud-title {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      margin-bottom: 4px;
+    }
+
+    #hud-status {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    #start-btn {
+      display: block;
+      background: #242424;
+      color: #bbb;
+      border: 1px solid #383838;
+      padding: 5px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-align: left;
+    }
+
+    #start-btn:hover {
+      background: #2e2e2e;
+      color: #eee;
+    }
+
+    #controls {
+      display: none;
+    }
+
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .ctrl-label {
+      font-size: 12px;
+      color: #888;
+      width: 72px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .ctrl-row input[type="range"] {
+      flex: 1;
+      accent-color: #aaa;
+      cursor: pointer;
+      min-width: 90px;
+    }
+
+    .ctrl-val {
+      font-size: 11px;
+      color: #555;
+      width: 28px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+
+  <div id="hud">
+    <div id="hud-title">DITHER CAM</div>
+    <div id="hud-status">Camera off</div>
+    <button id="start-btn">Start camera</button>
+    <div id="controls">
+      <div class="ctrl-row">
+        <label class="ctrl-label" for="mirror-cb">Mirror</label>
+        <input type="checkbox" id="mirror-cb" checked>
+      </div>
+      <div class="ctrl-row">
+        <label class="ctrl-label" for="invert-cb">Invert</label>
+        <input type="checkbox" id="invert-cb">
+      </div>
+      <div class="ctrl-row">
+        <label class="ctrl-label" for="thresh-slider">Threshold</label>
+        <input type="range" id="thresh-slider" min="0" max="255" value="128">
+        <span class="ctrl-val" id="thresh-val">128</span>
+      </div>
+    </div>
+  </div>
+
+  <video id="cam" autoplay playsinline style="display:none"></video>
+
+  <script>
+    let CHECKBOX_SIZE = 6;
+
+    const gridEl       = document.getElementById('grid');
+    const startBtn     = document.getElementById('start-btn');
+    const statusEl     = document.getElementById('hud-status');
+    const controlsEl   = document.getElementById('controls');
+    const mirrorCb     = document.getElementById('mirror-cb');
+    const invertCb     = document.getElementById('invert-cb');
+    const threshSlider = document.getElementById('thresh-slider');
+    const threshVal    = document.getElementById('thresh-val');
+    const video        = document.getElementById('cam');
+
+    let cols = 0, rows = 0;
+    let boxes = [];
+    let stream = null;
+    let rafId = null;
+
+    const offscreen = document.createElement('canvas');
+    const octx = offscreen.getContext('2d', { willReadFrequently: true });
+
+    // ── Grid ────────────────────────────────────────────────────────────
+
+    function buildGrid() {
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      gridEl.style.width  = cols * CHECKBOX_SIZE + 'px';
+      gridEl.style.height = rows * CHECKBOX_SIZE + 'px';
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+      boxes = new Array(total);
+
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.style.width  = CHECKBOX_SIZE + 'px';
+        cb.style.height = CHECKBOX_SIZE + 'px';
+        frag.appendChild(cb);
+        boxes[i] = cb;
+      }
+
+      gridEl.innerHTML = '';
+      gridEl.appendChild(frag);
+    }
+
+    // ── Dithering ───────────────────────────────────────────────────────
+
+    function floydSteinberg(gray, w, h, threshold) {
+      const buf = new Float32Array(gray);
+      const out = new Uint8Array(w * h);
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const i   = y * w + x;
+          const old = buf[i];
+          const neu = old < threshold ? 0 : 255;
+          out[i]    = neu;
+          const err = old - neu;
+
+          if (x + 1 < w)
+            buf[i + 1]              += err * (7 / 16);
+          if (y + 1 < h) {
+            if (x > 0)
+              buf[(y+1)*w + (x-1)] += err * (3 / 16);
+            buf[(y+1)*w + x]       += err * (5 / 16);
+            if (x + 1 < w)
+              buf[(y+1)*w + (x+1)] += err * (1 / 16);
+          }
+        }
+      }
+      return out;
+    }
+
+    // ── Render ──────────────────────────────────────────────────────────
+
+    function renderDithered(dithered, w, h, invert) {
+      const offX = Math.floor((cols - w) / 2);
+      const offY = Math.floor((rows - h) / 2);
+
+      for (let i = 0; i < boxes.length; i++) boxes[i].checked = false;
+
+      for (let iy = 0; iy < h; iy++) {
+        const gy = iy + offY;
+        if (gy < 0 || gy >= rows) continue;
+        const rowBase = gy * cols;
+        const srcBase = iy * w;
+        for (let ix = 0; ix < w; ix++) {
+          const gx = ix + offX;
+          if (gx < 0 || gx >= cols) continue;
+          const lit = dithered[srcBase + ix] === 255;
+          boxes[rowBase + gx].checked = invert ? !lit : lit;
+        }
+      }
+    }
+
+    // ── Webcam frame loop ───────────────────────────────────────────────
+
+    function captureFrame() {
+      if (video.readyState < video.HAVE_CURRENT_DATA) {
+        rafId = requestAnimationFrame(captureFrame);
+        return;
+      }
+
+      const scale = Math.min(cols / video.videoWidth, rows / video.videoHeight);
+      const w = Math.max(1, Math.round(video.videoWidth  * scale));
+      const h = Math.max(1, Math.round(video.videoHeight * scale));
+
+      offscreen.width  = w;
+      offscreen.height = h;
+
+      octx.save();
+      if (mirrorCb.checked) {
+        octx.translate(w, 0);
+        octx.scale(-1, 1);
+      }
+      octx.drawImage(video, 0, 0, w, h);
+      octx.restore();
+
+      const { data } = octx.getImageData(0, 0, w, h);
+      const gray = new Float32Array(w * h);
+      for (let i = 0; i < w * h; i++) {
+        const b = i << 2;
+        gray[i] = 0.299 * data[b] + 0.587 * data[b+1] + 0.114 * data[b+2];
+      }
+
+      const threshold = parseInt(threshSlider.value, 10);
+      const dithered = floydSteinberg(gray, w, h, threshold);
+      renderDithered(dithered, w, h, invertCb.checked);
+
+      rafId = requestAnimationFrame(captureFrame);
+    }
+
+    // ── Camera ──────────────────────────────────────────────────────────
+
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user' },
+          audio: false
+        });
+        video.srcObject = stream;
+        statusEl.textContent = 'Camera active';
+        startBtn.textContent = 'Stop camera';
+        controlsEl.style.display = 'block';
+        rafId = requestAnimationFrame(captureFrame);
+      } catch (err) {
+        statusEl.textContent = 'Camera denied or unavailable';
+        console.error('getUserMedia error:', err);
+      }
+    }
+
+    function stopCamera() {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+      }
+      video.srcObject = null;
+      statusEl.textContent = 'Camera off';
+      startBtn.textContent = 'Start camera';
+      controlsEl.style.display = 'none';
+      for (let i = 0; i < boxes.length; i++) boxes[i].checked = false;
+      renderPlaceholder();
+    }
+
+    // ── Placeholder ─────────────────────────────────────────────────────
+
+    function renderPlaceholder() {
+      const msg = 'DITHER CAM';
+      const tmp = document.createElement('canvas');
+      tmp.width  = cols;
+      tmp.height = rows;
+      const tc = tmp.getContext('2d');
+
+      tc.fillStyle = '#000';
+      tc.fillRect(0, 0, cols, rows);
+
+      let fs = Math.floor(rows * 0.3);
+      tc.font = `bold ${fs}px monospace`;
+      let tw = tc.measureText(msg).width;
+      const maxW = cols * 0.85;
+      if (tw > maxW) {
+        fs = Math.floor(fs * maxW / tw);
+        tc.font = `bold ${fs}px monospace`;
+        tw = tc.measureText(msg).width;
+      }
+
+      const tx = Math.floor((cols - tw) / 2);
+      const ty = Math.floor(rows / 2 + fs * 0.35);
+
+      tc.fillStyle = '#fff';
+      tc.fillText(msg, tx, ty);
+
+      const { data } = tc.getImageData(0, 0, cols, rows);
+      const gray = new Float32Array(cols * rows);
+      for (let i = 0; i < cols * rows; i++) {
+        const b = i << 2;
+        gray[i] = 0.299 * data[b] + 0.587 * data[b+1] + 0.114 * data[b+2];
+      }
+
+      const dithered = floydSteinberg(gray, cols, rows, 128);
+      for (let i = 0; i < boxes.length; i++) {
+        boxes[i].checked = dithered[i] === 255;
+      }
+    }
+
+    // ── Events ──────────────────────────────────────────────────────────
+
+    startBtn.addEventListener('click', () => {
+      if (stream) stopCamera();
+      else startCamera();
+    });
+
+    threshSlider.addEventListener('input', () => {
+      threshVal.textContent = threshSlider.value;
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        buildGrid();
+        if (!stream) renderPlaceholder();
+      }, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      buildGrid();
+      if (!stream) renderPlaceholder();
+    }, { passive: false });
+
+    // ── Init ─────────────────────────────────────────────────────────────
+    buildGrid();
+    renderPlaceholder();
+  </script>
+</body>
+</html>
