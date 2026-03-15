@@ -60,6 +60,12 @@
       resizeTimer = setTimeout(build, 150);
     });
 
+    // ---- Random Noise ----
+    //
+    // Picks FLIPS_PER_FRAME random checkboxes each animation frame and
+    // toggles their state. No state beyond the checkboxes themselves —
+    // pure chaos.
+
     function tick() {
       const len = checkboxes.length;
       for (let i = 0; i < FLIPS_PER_FRAME; i++) {

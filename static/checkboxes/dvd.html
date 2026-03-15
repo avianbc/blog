@@ -89,6 +89,15 @@
       resizeTimer = setTimeout(build, 150);
     });
 
+    // ---- DVD Bounce ----
+    //
+    // An 8×4 block of checkboxes bounces around the screen at one cell per
+    // MOVE_INTERVAL ms, reversing direction on each wall. When both axes
+    // reverse on the same frame (an exact corner hit) the entire grid
+    // flashes — all checkboxes checked for several frames — and the corner
+    // counter increments. Everything is frame-timed; the flash is a
+    // countdown that pauses normal motion until it drains to zero.
+
     function animate(timestamp) {
       requestAnimationFrame(animate);
 

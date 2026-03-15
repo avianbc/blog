@@ -124,6 +124,21 @@ input[type="checkbox"]:checked {
 const CHECKBOX_SIZE = 16;
 const TAU = Math.PI * 2;
 
+// ---- Geometric Patterns ----
+//
+// Four animated modes, each computing a boolean per cell from its distance
+// and angle relative to the grid centre and a running time value t:
+//
+//   Moire Rings  — two offset ring systems; interference = sum of two sine
+//                  waves on dist1 and dist2 from slightly different centres.
+//   Spiral       — logarithmic spiral: phase = atan2(dy,dx) + log(d)*k − t.
+//   Tunnel       — concentric rings scrolling inward: floor((d+t)/w) & 1.
+//   Radial Moire — two counter-rotating line fans at slightly different
+//                  angular frequencies, XOR'd for a pulsing pattern.
+//
+// Only cells whose value changed from the previous frame are written to the
+// DOM (dirty diff), cutting unnecessary checkbox updates each frame.
+
 // ---- Mode implementations ----
 // Each receives (col, row, cx, cy, t) and returns boolean (checked or not).
 

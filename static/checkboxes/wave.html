@@ -88,6 +88,17 @@
       animId = requestAnimationFrame(tick);
     }
 
+    // ---- Wave Sources ----
+    //
+    // Several circular wave sources drift around the viewport on independent
+    // velocity vectors, bouncing off the edges. Each frame, every checkbox
+    // evaluates the superposition of all sources:
+    //   sum += sin(dist(cell, source) * k − time * WAVE_SPEED)
+    // Positive sum → checked (bright); negative → unchecked (dark). The
+    // shifting constructive and destructive interference between drifting
+    // sources produces continuously evolving patterns. Click anywhere to
+    // spawn a new source (up to MAX_SOURCES).
+
     function tick(ts) {
       if (lastTs === null) lastTs = ts;
       const dt = Math.min((ts - lastTs) / 1000, 0.05); // cap to avoid jumps on tab re-focus

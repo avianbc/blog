@@ -196,6 +196,16 @@
     const offscreen = document.createElement('canvas');
     const octx = offscreen.getContext('2d');
 
+    // ---- Dither ----
+    //
+    // Loads an image via drag-and-drop or file picker, converts it to
+    // grayscale, then applies Floyd-Steinberg error diffusion to produce a
+    // 1-bit result. Quantisation error propagates to right and row-below
+    // neighbours with the classic 7/16, 3/16, 5/16, 1/16 weighting. The
+    // source grayscale is stored so re-dithering on threshold or invert
+    // changes doesn't require reloading the image. Checked = bright,
+    // unchecked = dark (the #111 background shows through).
+
     // ── Grid ────────────────────────────────────────────────────────────
 
     function buildGrid() {

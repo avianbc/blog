@@ -71,6 +71,17 @@
       resizeTimer = setTimeout(build, 150);
     });
 
+    // ---- Water Wave ----
+    //
+    // 2D wave equation on a discrete grid using the finite-difference scheme:
+    //   nxt[i] = damp * (2*cur[i] - prv[i] + WAVE_SPEED * Δ²cur[i])
+    // Two Float32Array buffers (cur / prv) are ping-ponged each frame, with
+    // prv reused as the write target to avoid allocations. Δ² is the
+    // 4-neighbour Laplacian. WAVE_SPEED ≤ 0.5 keeps the scheme stable.
+    // A drop adds DROP_AMP to a random interior cell; the impulse radiates
+    // as circular ripples. Click to spawn manually. Space to pause auto
+    // rain. Cells are checked when the amplitude exceeds THRESHOLD.
+
     function spawnDrop() {
       // keep one cell away from edges so the boundary condition doesn't eat the impulse
       const x = 1 + Math.floor(Math.random() * (cols - 2));

@@ -106,6 +106,15 @@
     let lastTick = 0;
     let { strip, stripWidth } = buildStrip(MESSAGE);
 
+    // ---- Marquee ----
+    //
+    // Pre-renders the message into a flat bitmap strip — one row per font
+    // row, one column per pixel across all characters. Each tick a window
+    // of `cols` columns is read from the strip, offset by a scrollOffset
+    // that advances SCROLL_SPEED columns per FRAME_INTERVAL ms. The read
+    // wraps modulo stripWidth so the text loops seamlessly. Font is 5×7
+    // pixel bitmaps stored as compact 5-bit row values per character.
+
     function build() {
       const grid = document.getElementById('grid');
       grid.innerHTML = '';

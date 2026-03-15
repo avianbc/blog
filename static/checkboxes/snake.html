@@ -96,6 +96,16 @@
       setCell(x, y, true);
     }
 
+    // ---- Snake ----
+    //
+    // Snake is a head-first array of {x, y} cells; all body cells are
+    // checked. A direction buffer (nextDir) absorbs key presses between
+    // ticks so rapid double-presses can't accidentally reverse the snake.
+    // Food always spawns outside the occupied Set so it never lands on the
+    // body. The tail is popped before the collision check so moving into
+    // the vacating tail cell is legal. Wraps at all edges. Self-collision
+    // triggers GAME OVER and auto-restarts after 1.5 s.
+
     function startGame() {
       clearInterval(loop);
       clearAll();

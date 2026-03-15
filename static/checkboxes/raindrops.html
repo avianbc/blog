@@ -88,6 +88,16 @@
     lastChecked = new Set();
   }
 
+  // ---- Raindrops ----
+  //
+  // Rain particle simulation. Each drop tracks column, fractional row, and
+  // speed (1–3 cells/tick, accumulated so faster drops skip rows smoothly).
+  // When a drop's row reaches the bottom it spawns a 3-frame horizontal
+  // splash (±1 and ±2 columns) and deposits a puddle that fades over 10
+  // ticks. New drops spawn each tick at a rate set by the intensity slider.
+  // Rendering is diff-based — a lastChecked Set tracks active cells from
+  // the previous frame so only changed cells are toggled in the DOM.
+
   function tick() {
     const spawnCount = Math.max(1, Math.round(cols * intensity / 100));
     for (let i = 0; i < spawnCount; i++) {

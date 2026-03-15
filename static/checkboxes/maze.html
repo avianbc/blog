@@ -46,6 +46,18 @@
       if (c >= 0 && c < cols && r >= 0 && r < rows) checkboxes[cbIdx(c, r)].checked = val;
     }
 
+    // ---- Maze ----
+    //
+    // Iterative depth-first-search (recursive backtracking) on a half-res
+    // logical grid. Display cells sit at even (col, row) positions; wall
+    // checkboxes sit at odd ones. The DFS maintains a stack of visited
+    // cells; each step picks a random unvisited neighbour, carves the wall
+    // between them (checks the odd-index checkbox), marks the neighbour
+    // visited, and pushes it. Backtracking pops when all neighbours are
+    // visited. When the stack empties the maze restarts after a short pause.
+    // STEPS_PER_FRAME walls are carved per animation frame so generation
+    // progress is visible in real time.
+
     const DIRS = [[0, -1], [0, 1], [-1, 0], [1, 0]];
     const STEPS_PER_FRAME = 40;
 

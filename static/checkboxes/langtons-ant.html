@@ -100,6 +100,16 @@
       return y * cols + x;
     }
 
+    // ---- Langton's Ant ----
+    //
+    // Classic two-colour Turing machine on a grid: on a white (unchecked)
+    // cell the ant turns right 90°, flips it black, and steps forward. On
+    // a black (checked) cell it turns left 90°, flips it white, and steps
+    // forward. The ant starts at the centre facing up. STEPS_PER_FRAME
+    // steps are computed per animation frame so the emergent "highway"
+    // pattern — which forms after roughly 10,000 steps — appears quickly.
+    // The grid is toroidal (edges wrap). Space to pause, R to reset.
+
     function step() {
       const cell = checkboxes[idx(antX, antY)];
       if (cell.checked) {

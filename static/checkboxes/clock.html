@@ -56,6 +56,15 @@
       resizeTimer = setTimeout(() => { build(); renderTime(); }, 150);
     });
 
+    // ---- Clock ----
+    //
+    // Renders the current wall-clock time (HH:MM:SS) on the checkbox grid
+    // using a hand-drawn 5×7 pixel font. Each digit is painted at a centred
+    // position by iterating the 35-element bitmap for that character and
+    // checking the corresponding grid cell. The colon glyphs blink on/off
+    // each second. A setInterval fires every second to clear and re-draw;
+    // resize re-runs renderTime() after rebuilding so the clock stays centred.
+
     // 5×7 pixel font, row-major (35 values per digit, 14 for colon)
     const FONT = {
       '0': [

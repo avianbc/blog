@@ -84,6 +84,17 @@
     const hudCenter = document.getElementById('hud-center');
     const hudZoom   = document.getElementById('hud-zoom');
 
+    // ---- Mandelbrot Set ----
+    //
+    // Each checkbox maps to a point c = (px, py) on the complex plane.
+    // We iterate z = z² + c up to MAX_ITER times, checking |z|² > 4 for
+    // escape. Points that never escape are in-set — checked (bright).
+    // Escaped points are unchecked (dark background shows through). The
+    // view is parameterised by a centre (cx, cy) and a width; clicking
+    // divides the width by ZOOM_FACTOR and recentres on the clicked cell.
+    // Right-click or double-click zooms out. The render fires once per
+    // zoom event, not every animation frame.
+
     // ── Build / rebuild the checkbox grid ────────────────────────────────────
 
     function buildGrid() {

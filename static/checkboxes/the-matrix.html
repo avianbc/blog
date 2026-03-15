@@ -74,6 +74,16 @@
       initDroplets();
     }
 
+    // ---- The Matrix ----
+    //
+    // Each column runs one droplet: a bright "head" cell descending one row
+    // per speed-interval (1–3 frames/step), followed by a fading green
+    // trail of variable length (12–31 cells). Fade is handled by a CSS
+    // keyframe animation applied when the head advances — no JS timers
+    // needed. When the head exits the bottom the droplet is recycled from
+    // off the top with freshly randomised trail length and speed, keeping
+    // columns visually out of sync.
+
     function makeDroplet(col, stagger) {
       const trail = 12 + Math.floor(Math.random() * 25);  // 12–31 cells
       const speed = 1 + Math.floor(Math.random() * 3);    // 1–3 frames/step

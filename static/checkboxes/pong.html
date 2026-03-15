@@ -149,6 +149,16 @@
     }
   }
 
+  // ---- Pong ----
+  //
+  // Physics run in floating-point cells/sec with a capped delta-time so
+  // pausing the tab doesn't launch the ball at ludicrous speed. Ball
+  // bounces off top and bottom walls; a paddle hit resets the ball to the
+  // paddle face and adds BALL_SPEED_INC to speed (capped at BALL_SPEED_MAX).
+  // Scores are drawn directly on the grid as 5×7 pixel-art digits. Left
+  // player: W / S. Right player: Up / Down. The whole grid is cleared each
+  // frame, then the ball, paddles, and digit scores are painted.
+
   // ── Game state ────────────────────────────────────────────────────────────────
   let ballX, ballY, ballVX, ballVY, ballSpeed;
   let leftY, rightY;

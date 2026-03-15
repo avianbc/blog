@@ -111,6 +111,16 @@
       }
     });
 
+    // ---- Game of Life ----
+    //
+    // Conway's B3/S23 ruleset: a dead cell with exactly 3 live neighbours
+    // comes alive; a live cell survives with 2 or 3. All cells are evaluated
+    // against the previous generation simultaneously — the next state is
+    // written to a Uint8Array and applied in one pass to avoid reading
+    // half-updated state. The grid is toroidal (edges wrap). Seeded at ~25%
+    // density on build/resize. Click and drag to paint or erase cells; that
+    // pauses the simulation until the mouse button is released.
+
     function countNeighbors(index) {
       const r = Math.floor(index / cols);
       const c = index % cols;
