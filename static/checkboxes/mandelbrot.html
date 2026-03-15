@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandelbrot</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+      user-select: none;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+      cursor: crosshair;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      display: block;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      pointer-events: none;
+    }
+
+    input[type="checkbox"]:checked {
+      background: #ddd;
+    }
+
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      padding: 8px 12px;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+
+  <div id="hud">
+    <div>MANDELBROT</div>
+    <div id="hud-center"></div>
+    <div id="hud-zoom"></div>
+    <div>Click to zoom in &middot; Right-click to zoom out &middot; R to reset</div>
+  </div>
+
+  <script>
+    const CHECKBOX_SIZE = 16;
+    const INIT_CX    = -0.5;
+    const INIT_CY    = 0;
+    const INIT_WIDTH = 3.5;
+    const MAX_ITER   = 64;
+    const ZOOM_FACTOR = 2.5;
+
+    let cx        = INIT_CX;
+    let cy        = INIT_CY;
+    let viewWidth = INIT_WIDTH;
+    let zoomLevel = 1;
+
+    let cols = 0, rows = 0;
+    let checkboxes = [];
+
+    const grid      = document.getElementById('grid');
+    const hudCenter = document.getElementById('hud-center');
+    const hudZoom   = document.getElementById('hud-zoom');
+
+    // ── Build / rebuild the checkbox grid ────────────────────────────────────
+
+    function buildGrid() {
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      grid.innerHTML = '';
+      checkboxes = new Array(rows * cols);
+      const frag = document.createDocumentFragment();
+
+      for (let i = 0; i < rows * cols; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+        checkboxes[i] = cb;
+      }
+
+      grid.appendChild(frag);
+    }
+
+    // ── Mandelbrot escape test ────────────────────────────────────────────────
+
+    function inSet(px, py) {
+      let zx = 0, zy = 0;
+      for (let i = 0; i < MAX_ITER; i++) {
+        const zx2 = zx * zx;
+        const zy2 = zy * zy;
+        if (zx2 + zy2 > 4) return false;
+        zy = 2 * zx * zy + py;
+        zx = zx2 - zy2 + px;
+      }
+      return true;
+    }
+
+    // ── Render current view ───────────────────────────────────────────────────
+
+    function render() {
+      const ps       = viewWidth / cols;
+      const halfCols = cols / 2;
+      const halfRows = rows / 2;
+
+      for (let r = 0; r < rows; r++) {
+        const py  = cy - (r - halfRows + 0.5) * ps;
+        const base = r * cols;
+        for (let c = 0; c < cols; c++) {
+          const px = cx + (c - halfCols + 0.5) * ps;
+          checkboxes[base + c].checked = inSet(px, py);
+        }
+      }
+
+      hudCenter.textContent = `Center: (${cx.toFixed(4)}, ${cy.toFixed(4)})`;
+      hudZoom.textContent   = `Zoom: ${zoomLevel.toFixed(4)}x`;
+    }
+
+    // ── Coordinate helpers ────────────────────────────────────────────────────
+
+    function cellToComplex(col, row) {
+      const ps = viewWidth / cols;
+      return [
+        cx + (col - cols / 2 + 0.5) * ps,
+        cy - (row - rows / 2 + 0.5) * ps
+      ];
+    }
+
+    function eventToCell(e) {
+      const rect = grid.getBoundingClientRect();
+      const col  = Math.floor((e.clientX - rect.left)  / CHECKBOX_SIZE);
+      const row  = Math.floor((e.clientY - rect.top)   / CHECKBOX_SIZE);
+      if (col < 0 || col >= cols || row < 0 || row >= rows) return null;
+      return [col, row];
+    }
+
+    // ── Zoom actions ──────────────────────────────────────────────────────────
+
+    function zoomIn(col, row) {
+      const [nx, ny] = cellToComplex(col, row);
+      cx = nx; cy = ny;
+      viewWidth /= ZOOM_FACTOR;
+      zoomLevel *= ZOOM_FACTOR;
+      render();
+    }
+
+    function zoomOut(col, row) {
+      const [nx, ny] = cellToComplex(col, row);
+      cx = nx; cy = ny;
+      viewWidth *= ZOOM_FACTOR;
+      zoomLevel /= ZOOM_FACTOR;
+      render();
+    }
+
+    function reset() {
+      cx = INIT_CX; cy = INIT_CY;
+      viewWidth = INIT_WIDTH; zoomLevel = 1;
+      render();
+    }
+
+    // ── Input handling ────────────────────────────────────────────────────────
+
+    // Single vs double-click: wait 220 ms; a second click within that window
+    // cancels the zoom-in and triggers zoom-out instead.
+    let clickTimer    = null;
+    let pendingCell   = null;
+
+    grid.addEventListener('click', (e) => {
+      const cell = eventToCell(e);
+      if (!cell) return;
+
+      if (clickTimer) {
+        clearTimeout(clickTimer);
+        clickTimer  = null;
+        pendingCell = null;
+        zoomOut(cell[0], cell[1]);
+      } else {
+        pendingCell = cell;
+        clickTimer  = setTimeout(() => {
+          clickTimer  = null;
+          const [col, row] = pendingCell;
+          pendingCell = null;
+          zoomIn(col, row);
+        }, 220);
+      }
+    });
+
+    grid.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const cell = eventToCell(e);
+      if (!cell) return;
+      if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; pendingCell = null; }
+      zoomOut(cell[0], cell[1]);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'r' || e.key === 'R') reset();
+    });
+
+    // ── Resize ────────────────────────────────────────────────────────────────
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        buildGrid();
+        render();
+      }, 150);
+    });
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+
+    buildGrid();
+    render();
+  </script>
+</body>
+</html>
