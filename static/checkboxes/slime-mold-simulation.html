@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slime Mold Simulation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #060610;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: #060610;
+    }
+
+    input[type="checkbox"]:checked {
+      background: #44ffb0;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    // Physarum polycephalum (slime mould) simulation.
+    // Agents sense chemical trail ahead and to each side, steering toward the
+    // strongest signal and depositing their own trail as they go.
+    // The trail diffuses (toroidally) and decays each frame, producing the
+    // branching vein network slime mould is famous for.
+
+    let CELL           = 8;  // checkbox size px
+    const N              = 4000; // agent count
+    const STEPS_PER_FRAME = 4;  // simulation ticks per rendered frame
+                                 // (DOM update stays at 60fps; math runs N× faster)
+
+    // Agent behaviour
+    const SA    = Math.PI / 4;  // sensor angle offset (45°)
+    const SD    = 4;            // sensor distance in cells
+    const SR    = 1;            // sensor sample radius: averages (2SR+1)² cells
+    const RA    = Math.PI / 5;  // max turn per step (36°); actual turn is RA × random
+    const SS    = 1.0;          // step size in cells
+
+    // Precompute sensor-angle trig (angle-addition formulas avoid 6 trig calls/agent)
+    const cosSA = Math.cos(SA);
+    const sinSA = Math.sin(SA);
+
+    // Trail dynamics — adjusted for STEPS_PER_FRAME so visual behaviour is
+    // the same regardless of step count
+    const DEPOSIT   = 2.5;
+    const MAX_TRAIL = 10.0;
+    const DECAY     = 0.985;  // per step; ~0.94 net per frame at 4 steps
+    const DIFFUSE   = 0.18;   // blend toward 3×3 average, per step
+
+    // Checkbox threshold
+    const THRESHOLD = 1.2;
+
+    let cols, rows, trail, tmp, agents, checkboxes, animId;
+
+    // -------------------------------------------------------------------------
+    // Build / rebuild DOM grid and reset simulation
+    // -------------------------------------------------------------------------
+    function build() {
+      if (animId) cancelAnimationFrame(animId);
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      cols = Math.floor(window.innerWidth  / CELL);
+      rows = Math.floor(window.innerHeight / CELL);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CELL}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CELL}px)`;
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      trail = new Float32Array(total);
+      tmp   = new Float32Array(total);
+
+      // Scatter agents randomly across the full canvas with random headings.
+      // A ring spawn gets locked into a ring — random scatter self-organises
+      // into the branching network within the first few hundred frames.
+      agents = new Float32Array(N * 3); // packed: x, y, angle
+      for (let i = 0; i < N; i++) {
+        agents[i * 3]     = Math.random() * cols;
+        agents[i * 3 + 1] = Math.random() * rows;
+        agents[i * 3 + 2] = Math.random() * Math.PI * 2;
+      }
+
+      animId = requestAnimationFrame(tick);
+    }
+
+    // -------------------------------------------------------------------------
+    // Toroidal trail lookup — sums a (2SR+1)² neighborhood for robust sensing
+    // -------------------------------------------------------------------------
+    function sense(fx, fy) {
+      const xi = ((fx | 0) % cols + cols) % cols;
+      const yi = ((fy | 0) % rows + rows) % rows;
+      let sum = 0;
+      for (let dy = -SR; dy <= SR; dy++) {
+        const ny = (yi + dy + rows) % rows;
+        for (let dx = -SR; dx <= SR; dx++) {
+          sum += trail[ny * cols + (xi + dx + cols) % cols];
+        }
+      }
+      return sum;
+    }
+
+    // -------------------------------------------------------------------------
+    // One simulation step: move all agents + diffuse trail
+    // -------------------------------------------------------------------------
+    function step() {
+      // -- Move agents and deposit trail --
+      for (let i = 0; i < N; i++) {
+        const b = i * 3;
+        let x = agents[b];
+        let y = agents[b + 1];
+        let a = agents[b + 2];
+
+        const ca = Math.cos(a);
+        const sa = Math.sin(a);
+
+        // Derive sensor-direction vectors via angle-addition (2 trig calls, not 6)
+        const lcx = ca * cosSA + sa * sinSA;  // cos(a - SA)
+        const lsy = sa * cosSA - ca * sinSA;  // sin(a - SA)
+        const rcx = ca * cosSA - sa * sinSA;  // cos(a + SA)
+        const rsy = sa * cosSA + ca * sinSA;  // sin(a + SA)
+
+        const fwd   = sense(x + ca  * SD, y + sa  * SD);
+        const left  = sense(x + lcx * SD, y + lsy * SD);
+        const right = sense(x + rcx * SD, y + rsy * SD);
+
+        // Weighted random turn: scale the turn angle by a random 0–1 factor
+        // (same trick as the reference shader) for more organic steering
+        const tw = Math.random();
+        if (fwd >= left && fwd >= right) {
+          // hold course
+        } else if (left > right) {
+          a -= tw * RA;
+        } else if (right > left) {
+          a += tw * RA;
+        } else {
+          a += tw * RA * (Math.random() < 0.5 ? -1 : 1);
+        }
+
+        x += Math.cos(a) * SS;
+        y += Math.sin(a) * SS;
+
+        // Toroidal wrap
+        if (x < 0)     x += cols;
+        if (x >= cols) x -= cols;
+        if (y < 0)     y += rows;
+        if (y >= rows) y -= rows;
+
+        agents[b]     = x;
+        agents[b + 1] = y;
+        agents[b + 2] = a;
+
+        trail[(y | 0) * cols + (x | 0)] = Math.min(
+          trail[(y | 0) * cols + (x | 0)] + DEPOSIT, MAX_TRAIL
+        );
+      }
+
+      // -- Diffuse + decay: toroidal 3×3 blur --
+      for (let row = 0; row < rows; row++) {
+        const rowM = ((row - 1 + rows) % rows) * cols;
+        const rowC = row * cols;
+        const rowP = ((row + 1) % rows) * cols;
+
+        for (let col = 0; col < cols; col++) {
+          const colM = (col - 1 + cols) % cols;
+          const colP = (col + 1) % cols;
+
+          const avg = (
+            trail[rowM + colM] + trail[rowM + col] + trail[rowM + colP] +
+            trail[rowC + colM] + trail[rowC + col] + trail[rowC + colP] +
+            trail[rowP + colM] + trail[rowP + col] + trail[rowP + colP]
+          ) / 9;
+
+          tmp[rowC + col] = (trail[rowC + col] * (1 - DIFFUSE) + avg * DIFFUSE) * DECAY;
+        }
+      }
+
+      trail.set(tmp);
+    }
+
+    // -------------------------------------------------------------------------
+    // RAF loop: simulate STEPS_PER_FRAME times, then update the DOM once
+    // -------------------------------------------------------------------------
+    function tick() {
+      for (let s = 0; s < STEPS_PER_FRAME; s++) step();
+
+      // -- Render --
+      for (let i = 0, len = checkboxes.length; i < len; i++) {
+        const on = trail[i] > THRESHOLD;
+        if (checkboxes[i].checked !== on) checkboxes[i].checked = on;
+      }
+
+      animId = requestAnimationFrame(tick);
+    }
+
+    build();
+
+    // -------------------------------------------------------------------------
+    // Mouse painting — deposits trail directly so agents swarm toward it
+    // -------------------------------------------------------------------------
+    const BRUSH_RADIUS  = 3;   // cells
+    const BRUSH_DEPOSIT = MAX_TRAIL; // saturate under the cursor
+
+    let painting = false;
+
+    function paintAt(clientX, clientY) {
+      const col = Math.floor(clientX / CELL);
+      const row = Math.floor(clientY / CELL);
+      for (let dy = -BRUSH_RADIUS; dy <= BRUSH_RADIUS; dy++) {
+        for (let dx = -BRUSH_RADIUS; dx <= BRUSH_RADIUS; dx++) {
+          if (dx * dx + dy * dy > BRUSH_RADIUS * BRUSH_RADIUS) continue;
+          const c = ((col + dx) % cols + cols) % cols;
+          const r = ((row + dy) % rows + rows) % rows;
+          trail[r * cols + c] = BRUSH_DEPOSIT;
+        }
+      }
+    }
+
+    window.addEventListener('mousedown', e => { painting = true;  paintAt(e.clientX, e.clientY); });
+    window.addEventListener('mousemove', e => { if (painting) paintAt(e.clientX, e.clientY); });
+    window.addEventListener('mouseup',   () => { painting = false; });
+    window.addEventListener('mouseleave',() => { painting = false; });
+
+    // Touch support
+    window.addEventListener('touchstart', e => { painting = true;  paintAt(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchmove',  e => { if (painting) paintAt(e.touches[0].clientX, e.touches[0].clientY); },   { passive: true });
+    window.addEventListener('touchend',   () => { painting = false; });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 200);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CELL = Math.max(4, Math.min(64, CELL + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+  </script>
+</body>
+</html>

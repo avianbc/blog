@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DVD</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #111; }
+    #grid { display: grid; width: 100vw; height: 100vh; }
+    #counter {
+      position: fixed;
+      bottom: 8px;
+      right: 8px;
+      color: #888;
+      font: 12px monospace;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <div id="counter">corners: 0</div>
+  <script>
+    let CHECKBOX_SIZE = 32;
+    const LOGO_W = 8;
+    const LOGO_H = 4;
+    const MOVE_INTERVAL = 80; // ms between moves
+
+    let checkboxes = [];
+    let cols = 0, rows = 0;
+
+    let logoX = 0, logoY = 0;
+    let dx = 1, dy = 1;
+    let cornerCount = 0;
+    let flashFrames = 0;
+    let lastMoveTime = 0;
+
+    const counterEl = document.getElementById('counter');
+
+    function idx(c, r) { return r * cols + c; }
+    function setState(c, r, val) {
+      if (c >= 0 && c < cols && r >= 0 && r < rows) checkboxes[idx(c, r)].checked = val;
+    }
+
+    function drawLogo(val) {
+      for (let r = 0; r < LOGO_H; r++) {
+        for (let c = 0; c < LOGO_W; c++) {
+          setState(logoX + c, logoY + r, val);
+        }
+      }
+    }
+
+    function flashAll(val) {
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = val;
+      }
+    }
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cols = Math.floor(window.innerWidth / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      logoX = Math.floor(Math.random() * Math.max(1, cols - LOGO_W));
+      logoY = Math.floor(Math.random() * Math.max(1, rows - LOGO_H));
+      dx = 1; dy = 1;
+      flashFrames = 0;
+      drawLogo(true);
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    // ---- DVD Bounce ----
+    //
+    // An 8×4 block of checkboxes bounces around the screen at one cell per
+    // MOVE_INTERVAL ms, reversing direction on each wall. When both axes
+    // reverse on the same frame (an exact corner hit) the entire grid
+    // flashes — all checkboxes checked for several frames — and the corner
+    // counter increments. Everything is frame-timed; the flash is a
+    // countdown that pauses normal motion until it drains to zero.
+
+    function animate(timestamp) {
+      requestAnimationFrame(animate);
+
+      // Handle corner flash: hold all checked for N frames then restore
+      if (flashFrames > 0) {
+        flashFrames--;
+        if (flashFrames === 0) {
+          flashAll(false);
+          drawLogo(true);
+        }
+        return;
+      }
+
+      if (timestamp - lastMoveTime < MOVE_INTERVAL) return;
+      lastMoveTime = timestamp;
+
+      // Erase current logo
+      drawLogo(false);
+
+      let newX = logoX + dx;
+      let newY = logoY + dy;
+      let reversedX = false;
+      let reversedY = false;
+
+      if (newX < 0) {
+        dx = -dx;
+        newX = 0;
+        reversedX = true;
+      } else if (newX + LOGO_W > cols) {
+        dx = -dx;
+        newX = cols - LOGO_W;
+        reversedX = true;
+      }
+
+      if (newY < 0) {
+        dy = -dy;
+        newY = 0;
+        reversedY = true;
+      } else if (newY + LOGO_H > rows) {
+        dy = -dy;
+        newY = rows - LOGO_H;
+        reversedY = true;
+      }
+
+      logoX = newX;
+      logoY = newY;
+
+      if (reversedX && reversedY) {
+        cornerCount++;
+        counterEl.textContent = `corners: ${cornerCount}`;
+        flashAll(true);
+        flashFrames = 4; // hold flash for 4 frames (~240ms at 60fps)
+        return;
+      }
+
+      drawLogo(true);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

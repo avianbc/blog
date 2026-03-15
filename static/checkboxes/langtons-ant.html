@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Langton's Ant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #111; }
+    #grid { display: grid; width: 100vw; height: 100vh; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 10px 14px;
+      border-radius: 4px;
+      pointer-events: none;
+      user-select: none;
+    }
+    #hud h1 { font-size: 14px; letter-spacing: 1px; margin-bottom: 4px; }
+    #hud .hint { color: #aaa; font-size: 11px; margin-top: 6px; }
+    #reset-btn {
+      pointer-events: all;
+      margin-top: 8px;
+      background: #333;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 3px;
+      padding: 3px 10px;
+      font-family: monospace;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    #reset-btn:hover { background: #444; }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <div id="hud">
+    <h1>LANGTON'S ANT</h1>
+    <div id="steps">Steps: 0</div>
+    <div class="hint">On white: turn right. On black: turn left.</div>
+    <div class="hint">Space: pause/resume &nbsp; R: reset</div>
+    <button id="reset-btn">Reset</button>
+  </div>
+  <script>
+    let CHECKBOX_SIZE = 8;
+    const STEPS_PER_FRAME = 200;
+
+    // Directions: 0=up, 1=right, 2=down, 3=left
+    const DX = [0, 1, 0, -1];
+    const DY = [-1, 0, 1, 0];
+
+    let checkboxes = [];
+    let cols = 0, rows = 0;
+    let antX, antY, antDir;
+    let stepCount = 0;
+    let paused = false;
+    let rafId = null;
+
+    const stepsEl = document.getElementById('steps');
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      reset();
+    }
+
+    function reset() {
+      for (const cb of checkboxes) cb.checked = false;
+      antX = Math.floor(cols / 2);
+      antY = Math.floor(rows / 2);
+      antDir = 0; // facing up
+      stepCount = 0;
+      stepsEl.textContent = 'Steps: 0';
+    }
+
+    function idx(x, y) {
+      return y * cols + x;
+    }
+
+    // ---- Langton's Ant ----
+    //
+    // Classic two-colour Turing machine on a grid: on a white (unchecked)
+    // cell the ant turns right 90°, flips it black, and steps forward. On
+    // a black (checked) cell it turns left 90°, flips it white, and steps
+    // forward. The ant starts at the centre facing up. STEPS_PER_FRAME
+    // steps are computed per animation frame so the emergent "highway"
+    // pattern — which forms after roughly 10,000 steps — appears quickly.
+    // The grid is toroidal (edges wrap). Space to pause, R to reset.
+
+    function step() {
+      const cell = checkboxes[idx(antX, antY)];
+      if (cell.checked) {
+        antDir = (antDir + 3) % 4; // turn left
+      } else {
+        antDir = (antDir + 1) % 4; // turn right
+      }
+      cell.checked = !cell.checked;
+
+      antX = (antX + DX[antDir] + cols) % cols;
+      antY = (antY + DY[antDir] + rows) % rows;
+      stepCount++;
+    }
+
+    function tick() {
+      if (!paused) {
+        for (let i = 0; i < STEPS_PER_FRAME; i++) step();
+        stepsEl.textContent = 'Steps: ' + stepCount.toLocaleString();
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { build(); }, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        paused = !paused;
+      } else if (e.key === 'r' || e.key === 'R') {
+        reset();
+      }
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', reset);
+
+    tick();
+  </script>
+</body>
+</html>

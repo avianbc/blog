@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    let CHECKBOX_SIZE = 16; // px — tweak to taste
+    const FLIPS_PER_FRAME = 80;
+
+    let checkboxes = [];
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      const cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      const rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    // ---- Random Noise ----
+    //
+    // Picks FLIPS_PER_FRAME random checkboxes each animation frame and
+    // toggles their state. No state beyond the checkboxes themselves —
+    // pure chaos.
+
+    function tick() {
+      const len = checkboxes.length;
+      for (let i = 0; i < FLIPS_PER_FRAME; i++) {
+        const cb = checkboxes[Math.floor(Math.random() * len)];
+        cb.checked = !cb.checked;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    tick();
+  </script>
+</body>
+</html>

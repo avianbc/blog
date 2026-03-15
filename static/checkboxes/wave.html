@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wave</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    let CHECKBOX_SIZE = 16;
+    const MAX_SOURCES = 6;
+
+    let checkboxes = [];
+    let cols = 0, rows = 0;
+    let animId = null;
+    let sources = [];
+    let lastTs = null;
+
+    function randBetween(a, b) {
+      return a + Math.random() * (b - a);
+    }
+
+    function createSource(x, y) {
+      return {
+        x,
+        y,
+        freq:       randBetween(0.3, 1.1),
+        wavelength: randBetween(50, 130),
+        amplitude:  randBetween(0.8, 1.2),
+        phase:      Math.random() * Math.PI * 2,
+        vx:         randBetween(-40, 40),
+        vy:         randBetween(-40, 40),
+      };
+    }
+
+    function initSources() {
+      const W = cols * CHECKBOX_SIZE;
+      const H = rows * CHECKBOX_SIZE;
+      sources = [
+        Object.assign(createSource(W * 0.25, H * 0.35), { freq: 0.5,  wavelength: 80,  vx: 18,  vy: 12  }),
+        Object.assign(createSource(W * 0.75, H * 0.40), { freq: 0.73, wavelength: 60,  vx: -22, vy: 15  }),
+        Object.assign(createSource(W * 0.50, H * 0.72), { freq: 0.91, wavelength: 105, vx: 10,  vy: -25 }),
+      ];
+    }
+
+    function build() {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      initSources();
+      lastTs = null;
+      animId = requestAnimationFrame(tick);
+    }
+
+    // ---- Wave Sources ----
+    //
+    // Several circular wave sources drift around the viewport on independent
+    // velocity vectors, bouncing off the edges. Each frame, every checkbox
+    // evaluates the superposition of all sources:
+    //   sum += sin(dist(cell, source) * k − time * WAVE_SPEED)
+    // Positive sum → checked (bright); negative → unchecked (dark). The
+    // shifting constructive and destructive interference between drifting
+    // sources produces continuously evolving patterns. Click anywhere to
+    // spawn a new source (up to MAX_SOURCES).
+
+    function tick(ts) {
+      if (lastTs === null) lastTs = ts;
+      const dt = Math.min((ts - lastTs) / 1000, 0.05); // cap to avoid jumps on tab re-focus
+      lastTs = ts;
+
+      const t = ts / 1000;
+      const W = cols * CHECKBOX_SIZE;
+      const H = rows * CHECKBOX_SIZE;
+      const TAU = 2 * Math.PI;
+
+      // Drift sources and bounce off edges
+      for (const s of sources) {
+        s.x += s.vx * dt;
+        s.y += s.vy * dt;
+        if (s.x < 0) { s.x = 0; s.vx =  Math.abs(s.vx); }
+        if (s.x > W) { s.x = W; s.vx = -Math.abs(s.vx); }
+        if (s.y < 0) { s.y = 0; s.vy =  Math.abs(s.vy); }
+        if (s.y > H) { s.y = H; s.vy = -Math.abs(s.vy); }
+      }
+
+      // Precompute per-source time-dependent terms
+      const n = sources.length;
+      const k     = new Float64Array(n);
+      const omega = new Float64Array(n);
+      const A     = new Float64Array(n);
+      const ph    = new Float64Array(n);
+      const sx    = new Float64Array(n);
+      const sy    = new Float64Array(n);
+      for (let i = 0; i < n; i++) {
+        const s = sources[i];
+        k[i]     = TAU / s.wavelength;
+        omega[i] = TAU * s.freq;
+        A[i]     = s.amplitude;
+        ph[i]    = s.phase;
+        sx[i]    = s.x;
+        sy[i]    = s.y;
+      }
+
+      // Render each cell
+      let idx = 0;
+      for (let r = 0; r < rows; r++) {
+        const cy = (r + 0.5) * CHECKBOX_SIZE;
+        for (let c = 0; c < cols; c++) {
+          const cx = (c + 0.5) * CHECKBOX_SIZE;
+          let sum = 0;
+          for (let i = 0; i < n; i++) {
+            const dx   = cx - sx[i];
+            const dy   = cy - sy[i];
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            sum += A[i] * Math.sin(k[i] * dist - omega[i] * t + ph[i]);
+          }
+          checkboxes[idx++].checked = sum > 0;
+        }
+      }
+
+      animId = requestAnimationFrame(tick);
+    }
+
+    // Click grid to spawn a new wave source at cursor position
+    document.getElementById('grid').addEventListener('click', (e) => {
+      if (sources.length >= MAX_SOURCES) sources.shift();
+      sources.push(createSource(e.clientX, e.clientY));
+    });
+
+    // Debounced resize
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    build();
+  </script>
+</body>
+</html>

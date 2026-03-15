@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wave Interference</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: hsl(var(--wave-hue, 200), 25%, 18%);
+    }
+
+    input[type="checkbox"]:checked {
+      background: hsl(var(--wave-hue, 200), 75%, 82%);
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    /*
+     * Wave interference visualizer using checkbox inputs as pixels.
+     *
+     * The screen is tiled with 16x16px checkboxes. On every animation frame,
+     * four invisible point sources are repositioned along independent Lissajous
+     * paths (parametric x/y sinusoids with irrational frequency ratios, so the
+     * motion never repeats). Each source emits circular sine waves:
+     *
+     *   amplitude = sin(distance_to_source * k - time * WAVE_SPEED)
+     *
+     * The four amplitudes are summed at every cell. If the total is positive the
+     * checkbox is checked (light); if negative, unchecked (dark). The shifting
+     * constructive/destructive interference between the drifting sources produces
+     * the continuously morphing moiré-like pattern.
+     *
+     * Space — pause / resume
+     */
+    let CHECKBOX_SIZE = 16;
+
+    let checkboxes = [];
+    let cols = 0;
+    let rows = 0;
+    let paused = false;
+
+    // Four wave sources, each drifting on an independent Lissajous path.
+    // ax/ay: amplitude as a fraction of grid width/height
+    // fx/fy: angular frequencies  px/py: phase offsets  k: spatial wave number
+    const SOURCES = [
+      { ax: 0.35, ay: 0.30, fx: 0.41, fy: 0.57, px: 0.00, py: 1.10, k: 0.28 },
+      { ax: 0.28, ay: 0.38, fx: 0.61, fy: 0.37, px: 2.30, py: 0.70, k: 0.32 },
+      { ax: 0.40, ay: 0.25, fx: 0.29, fy: 0.71, px: 4.10, py: 3.50, k: 0.25 },
+      { ax: 0.22, ay: 0.42, fx: 0.53, fy: 0.44, px: 1.60, py: 5.10, k: 0.30 },
+    ];
+    const WAVE_SPEED = 1.8;
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+    }
+
+    function render(t) {
+      const time = t * 0.001;
+      const cx = cols * 0.5;
+      const cy = rows * 0.5;
+
+      // Compute current source positions
+      const sx = new Float32Array(SOURCES.length);
+      const sy = new Float32Array(SOURCES.length);
+      for (let s = 0; s < SOURCES.length; s++) {
+        const src = SOURCES[s];
+        sx[s] = cx + src.ax * cols * Math.sin(src.fx * time + src.px);
+        sy[s] = cy + src.ay * rows * Math.sin(src.fy * time + src.py);
+      }
+
+      let idx = 0;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++, idx++) {
+          let sum = 0;
+          for (let s = 0; s < SOURCES.length; s++) {
+            const dx = c - sx[s];
+            const dy = r - sy[s];
+            sum += Math.sin(Math.sqrt(dx * dx + dy * dy) * SOURCES[s].k - time * WAVE_SPEED);
+          }
+          checkboxes[idx].checked = sum > 0;
+        }
+      }
+      document.documentElement.style.setProperty('--wave-hue', (time * 50) % 360);
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        paused = !paused;
+      }
+    });
+
+    function tick(t) {
+      if (!paused) render(t);
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

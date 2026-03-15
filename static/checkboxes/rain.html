@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rain</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    let CHECKBOX_SIZE = 12;   // px
+    const WAVE_SPEED    = 0.45; // laplacian coefficient — keep ≤ 0.5 for stability
+    const DAMPING       = 0.97;
+    const THRESHOLD     = 0.07; // amplitude needed to flip a checkbox on
+    const DROP_RATE     = 0.06; // probability per frame (~3-4 drops/sec at 60 fps)
+    const DROP_AMP      = 2.8;  // initial impulse height
+
+    let checkboxes = [];
+    let cols = 0, rows = 0;
+    let cur, prv; // Float32Array wave buffers
+    let autoRain = true;
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb._idx = i;
+        frag.appendChild(cb);
+      }
+
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      cur = new Float32Array(total);
+      prv = new Float32Array(total);
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    // ---- Water Wave ----
+    //
+    // 2D wave equation on a discrete grid using the finite-difference scheme:
+    //   nxt[i] = damp * (2*cur[i] - prv[i] + WAVE_SPEED * Δ²cur[i])
+    // Two Float32Array buffers (cur / prv) are ping-ponged each frame, with
+    // prv reused as the write target to avoid allocations. Δ² is the
+    // 4-neighbour Laplacian. WAVE_SPEED ≤ 0.5 keeps the scheme stable.
+    // A drop adds DROP_AMP to a random interior cell; the impulse radiates
+    // as circular ripples. Click to spawn manually. Space to pause auto
+    // rain. Cells are checked when the amplitude exceeds THRESHOLD.
+
+    function spawnDrop() {
+      // keep one cell away from edges so the boundary condition doesn't eat the impulse
+      const x = 1 + Math.floor(Math.random() * (cols - 2));
+      const y = 1 + Math.floor(Math.random() * (rows - 2));
+      cur[y * cols + x] += DROP_AMP;
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        autoRain = !autoRain;
+      }
+    });
+
+    document.getElementById('grid').addEventListener('click', e => {
+      const cb = e.target.closest('input[type=checkbox]');
+      if (!cb) return;
+      const idx = cb._idx;
+      if (idx === undefined) return;
+      const x = idx % cols;
+      const y = Math.floor(idx / cols);
+      // clamp away from border so the impulse has room to expand
+      const cx = Math.max(1, Math.min(cols - 2, x));
+      const cy = Math.max(1, Math.min(rows - 2, y));
+      cur[cy * cols + cx] += DROP_AMP;
+      // prevent the browser toggling the checkbox itself
+      e.preventDefault();
+    });
+
+    function tick() {
+      if (autoRain && Math.random() < DROP_RATE) spawnDrop();
+
+      // Reuse prv as the destination buffer for this frame's output.
+      // Reading prv[i] and writing nxt[i] (same array) is safe because
+      // the read is evaluated before the write in a single assignment.
+      const nxt = prv;
+
+      for (let y = 1; y < rows - 1; y++) {
+        for (let x = 1; x < cols - 1; x++) {
+          const i = y * cols + x;
+          const laplacian = cur[i - 1] + cur[i + 1] + cur[i - cols] + cur[i + cols] - 4 * cur[i];
+          const v = DAMPING * (2 * cur[i] - prv[i] + WAVE_SPEED * laplacian);
+          nxt[i] = Math.abs(v) < 0.002 ? 0 : v;
+        }
+      }
+
+      // Rotate buffers: old current becomes previous, new values become current
+      prv = cur;
+      cur = nxt;
+
+      const len = checkboxes.length;
+      for (let i = 0; i < len; i++) {
+        const on = Math.abs(cur[i]) > THRESHOLD;
+        if (checkboxes[i].checked !== on) checkboxes[i].checked = on;
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

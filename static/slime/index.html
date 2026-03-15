@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plasmodial Slime</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+    canvas { display: block; }
+
+    #ui {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-family: monospace;
+      font-size: 12px;
+      color: #888;
+      user-select: none;
+    }
+    #ui button {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    #ui button:hover { background: rgba(255,255,255,0.15); }
+    #ui select {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 4px 6px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <select id="preset">
+    <option value="demo">demo</option>
+    <option value="single">single species</option>
+    <option value="supernova">supernova</option>
+    <option value="convergence">convergence</option>
+  </select>
+  <button id="btnReset">reset</button>
+  <span id="fps">-- fps</span>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Plasmodial Slime Mold — WebGL2 GPGPU
+//
+// Algorithm straight from Jones (2010) "Characteristics of pattern formation
+// and evolution in approximations of physarum transport networks", via the
+// Unity compute shader in the plasmodial-slime repo by Muna-McQuay et al.
+//
+// Three textures ping-pong as the trail map (RGBA = 4 species channels).
+// Agents live in a float texture: xy = position, z = angle, w = speciesID.
+// Each frame:
+//   1. updateAgents  — read trail map, steer, step, deposit
+//   2. blurDecay     — 3x3 mean blur + exponential decay
+//   3. paint         — composite species channels to screen
+// ---------------------------------------------------------------------------
+
+const PRESETS = {
+  demo: {
+    numAgents: 100000,
+    decayRate: 0.03,
+    diffuseRate: 1.0,
+    initType: 'circle',   // circle | bigbang | starburst
+    species: [
+      { sensorAngle: 0.78, rotationAngle: 0.78, sensorDist: 9, sensorRadius: 1, velocity: 1.0, trailWeight: 0.5, color: [1.0, 0.2, 1.0] },
+      { sensorAngle: 0.78, rotationAngle: 0.78, sensorDist: 9, sensorRadius: 1, velocity: 1.0, trailWeight: 0.5, color: [0.5, 0.3, 1.0] },
+      { sensorAngle: 0.78, rotationAngle: 0.78, sensorDist: 9, sensorRadius: 1, velocity: 1.0, trailWeight: 0.5, color: [0.1, 0.8, 0.3] },
+      { sensorAngle: 0.78, rotationAngle: 0.78, sensorDist: 9, sensorRadius: 1, velocity: 1.0, trailWeight: 0.5, color: [0.1, 0.3, 0.9] },
+    ]
+  },
+  single: {
+    numAgents: 80000,
+    decayRate: 0.015,
+    diffuseRate: 0.8,
+    initType: 'circle',
+    species: [
+      { sensorAngle: 0.52, rotationAngle: 0.52, sensorDist: 12, sensorRadius: 1, velocity: 1.2, trailWeight: 0.6, color: [0.2, 1.0, 0.6] },
+      { sensorAngle: 0.52, rotationAngle: 0.52, sensorDist: 12, sensorRadius: 1, velocity: 1.2, trailWeight: 0.6, color: [0.2, 1.0, 0.6] },
+      { sensorAngle: 0.52, rotationAngle: 0.52, sensorDist: 12, sensorRadius: 1, velocity: 1.2, trailWeight: 0.6, color: [0.2, 1.0, 0.6] },
+      { sensorAngle: 0.52, rotationAngle: 0.52, sensorDist: 12, sensorRadius: 1, velocity: 1.2, trailWeight: 0.6, color: [0.2, 1.0, 0.6] },
+    ]
+  },
+  supernova: {
+    numAgents: 120000,
+    decayRate: 0.02,
+    diffuseRate: 1.2,
+    initType: 'bigbang',
+    species: [
+      { sensorAngle: 1.0,  rotationAngle: 1.0,  sensorDist: 7,  sensorRadius: 2, velocity: 1.5, trailWeight: 0.4, color: [1.0, 0.5, 0.1] },
+      { sensorAngle: 0.6,  rotationAngle: 0.9,  sensorDist: 11, sensorRadius: 1, velocity: 0.8, trailWeight: 0.6, color: [1.0, 0.1, 0.3] },
+      { sensorAngle: 0.78, rotationAngle: 0.78, sensorDist: 9,  sensorRadius: 1, velocity: 1.1, trailWeight: 0.5, color: [0.9, 0.9, 0.2] },
+      { sensorAngle: 0.5,  rotationAngle: 0.7,  sensorDist: 14, sensorRadius: 1, velocity: 0.6, trailWeight: 0.7, color: [1.0, 0.3, 0.8] },
+    ]
+  },
+  convergence: {
+    numAgents: 90000,
+    decayRate: 0.008,
+    diffuseRate: 0.6,
+    initType: 'starburst',
+    species: [
+      { sensorAngle: 0.3,  rotationAngle: 0.5,  sensorDist: 20, sensorRadius: 1, velocity: 0.7, trailWeight: 0.8, color: [0.0, 0.8, 1.0] },
+      { sensorAngle: 0.3,  rotationAngle: 0.5,  sensorDist: 20, sensorRadius: 1, velocity: 0.7, trailWeight: 0.8, color: [0.6, 0.1, 1.0] },
+      { sensorAngle: 0.3,  rotationAngle: 0.5,  sensorDist: 20, sensorRadius: 1, velocity: 0.7, trailWeight: 0.8, color: [0.0, 1.0, 0.5] },
+      { sensorAngle: 0.3,  rotationAngle: 0.5,  sensorDist: 20, sensorRadius: 1, velocity: 0.7, trailWeight: 0.8, color: [1.0, 0.6, 0.0] },
+    ]
+  },
+};
+
+// ---------------------------------------------------------------------------
+// GL init
+// ---------------------------------------------------------------------------
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
+if (!gl) { document.body.innerHTML = '<p style="color:#f55;padding:2em;font-family:monospace">WebGL2 not supported</p>'; throw new Error('no webgl2'); }
+
+// We need EXT_color_buffer_float to render to float textures
+const extFloat = gl.getExtension('EXT_color_buffer_float');
+if (!extFloat) { document.body.innerHTML = '<p style="color:#f55;padding:2em;font-family:monospace">EXT_color_buffer_float not supported</p>'; throw new Error('no float fbo'); }
+
+// ---------------------------------------------------------------------------
+// Shader source
+// ---------------------------------------------------------------------------
+
+const VS_FULLSCREEN = `#version 300 es
+precision highp float;
+in vec2 a_pos;
+out vec2 v_uv;
+void main() {
+  v_uv = a_pos * 0.5 + 0.5;
+  gl_Position = vec4(a_pos, 0.0, 1.0);
+}`;
+
+// Agent update: each texel = one agent stored as (posX, posY, angle, speciesID)
+// We read the trail map, compute steering, step, and output the new agent state.
+// Trail deposit is a *separate* additive pass handled on the CPU side by
+// accumulating into the trail texture using the agent positions — but since we
+// can't scatter-write in a fragment shader we use a two-phase approach:
+//   Phase A — update: write new agent state to agentTexture B
+//   Phase B — deposit: for each agent, atomically add to trail (done via a
+//             point-sprite draw with additive blending)
+//   Phase C — blur/decay
+//   Phase D — paint to screen
+
+const FS_UPDATE_AGENTS = `#version 300 es
+precision highp float;
+precision highp sampler2D;
+
+uniform sampler2D u_agents;      // current agent texture
+uniform sampler2D u_trail;       // trail map  (RGBA = 4 species)
+uniform vec2      u_resolution;  // trail map size
+uniform float     u_dt;
+uniform float     u_time;
+
+// species uniforms (4 species)
+uniform float u_sensorAngle[4];
+uniform float u_rotationAngle[4];
+uniform float u_sensorDist[4];
+uniform float u_sensorRadius[4];
+uniform float u_velocity[4];
+uniform float u_trailWeight[4];
+
+in vec2 v_uv;
+out vec4 o_agent;
+
+// hash from compute shader (Schechter & Bridson)
+uint hash(uint state) {
+  state ^= 2747636419u;
+  state *= 2654435769u;
+  state ^= state >> 16u;
+  state *= 2654435769u;
+  state ^= state >> 16u;
+  state *= 2654435769u;
+  return state;
+}
+
+float rand01(uint state) { return float(hash(state)) / 4294967295.0; }
+
+vec4 speciesMask(int id) {
+  return vec4(float(id==0), float(id==1), float(id==2), float(id==3));
+}
+
+float sampleTrail(vec2 pos, float angle, float anglOffset, int sid,
+                  float dist, float rad) {
+  float a = angle + anglOffset;
+  vec2 dir = vec2(cos(a), sin(a));
+  ivec2 center = ivec2(pos + dir * dist);
+  int r = int(rad);
+
+  vec4 strength = vec4(0.0);
+  for (int x = -r; x <= r; x++) {
+    for (int y = -r; y <= r; y++) {
+      ivec2 s = clamp(center + ivec2(x,y),
+                      ivec2(0), ivec2(u_resolution) - 1);
+      strength += texelFetch(u_trail, s, 0);
+    }
+  }
+
+  vec4 attractions = 2.0 * speciesMask(sid) - 1.0;
+  return dot(strength, attractions);
+}
+
+void main() {
+  vec4 agent = texture(u_agents, v_uv);
+  vec2 pos   = agent.xy;
+  float angle = agent.z;
+  int sid = int(agent.w + 0.5);
+  sid = clamp(sid, 0, 3);
+
+  float sA  = u_sensorAngle[sid];
+  float rA  = u_rotationAngle[sid];
+  float sd  = u_sensorDist[sid];
+  float sr  = u_sensorRadius[sid];
+  float vel = u_velocity[sid];
+
+  // random seed from position + time
+  uint rng = hash(uint(pos.y * u_resolution.x + pos.x) + hash(uint(u_time * 1e5)));
+  float r = rand01(rng);
+
+  float fwd   = sampleTrail(pos, angle,  0.0, sid, sd, sr);
+  float left  = sampleTrail(pos, angle,  sA,  sid, sd, sr);
+  float right = sampleTrail(pos, angle, -sA,  sid, sd, sr);
+
+  if (fwd > left && fwd > right) {
+    // keep going
+  } else if (fwd < left && fwd < right) {
+    // random turn
+    angle += (r - 0.5) * 2.0 * rA * u_dt;
+  } else if (left > right) {
+    angle += r * rA * u_dt;
+  } else if (right > left) {
+    angle -= r * rA * u_dt;
+  }
+
+  // step
+  vec2 dir = vec2(cos(angle), sin(angle));
+  vec2 newPos = pos + dir * vel * u_dt;
+
+  // bounce at walls
+  if (newPos.x < 0.0 || newPos.x >= u_resolution.x ||
+      newPos.y < 0.0 || newPos.y >= u_resolution.y) {
+    newPos = clamp(newPos, vec2(0.0), u_resolution - 1.0);
+    angle = rand01(hash(rng + 1u)) * 6.28318;
+  }
+
+  o_agent = vec4(newPos, angle, float(sid));
+}`;
+
+// Deposit pass: draw agents as points, additively blend species mask into trail
+const VS_DEPOSIT = `#version 300 es
+precision highp float;
+precision highp sampler2D;
+
+uniform sampler2D u_agents;
+uniform vec2 u_agentTexSize;
+uniform vec2 u_resolution;
+uniform float u_trailWeight[4];
+uniform float u_dt;
+
+out float v_species;
+out float v_weight;
+
+void main() {
+  // each vertex = one agent texel
+  int idx = gl_VertexID;
+  int atW = int(u_agentTexSize.x);
+  ivec2 tc = ivec2(idx % atW, idx / atW);
+  vec4 agent = texelFetch(u_agents, tc, 0);
+
+  vec2 pos = agent.xy;
+  int sid = int(agent.w + 0.5);
+  sid = clamp(sid, 0, 3);
+  v_species = float(sid);
+  v_weight  = u_trailWeight[sid] * u_dt;
+
+  // convert to clip space
+  vec2 ndc = (pos / u_resolution) * 2.0 - 1.0;
+  ndc.y = -ndc.y; // flip Y to match texture orientation
+  gl_Position = vec4(ndc, 0.0, 1.0);
+  gl_PointSize = 1.0;
+}`;
+
+const FS_DEPOSIT = `#version 300 es
+precision highp float;
+in float v_species;
+in float v_weight;
+out vec4 o_color;
+void main() {
+  int sid = int(v_species + 0.5);
+  vec4 mask = vec4(float(sid==0), float(sid==1), float(sid==2), float(sid==3));
+  o_color = mask * v_weight;
+}`;
+
+// Blur + decay pass
+const FS_BLUR_DECAY = `#version 300 es
+precision highp float;
+precision highp sampler2D;
+
+uniform sampler2D u_trail;
+uniform vec2 u_resolution;
+uniform float u_decayRate;
+uniform float u_diffuseRate;
+uniform float u_dt;
+
+in vec2 v_uv;
+out vec4 o_color;
+
+void main() {
+  ivec2 px = ivec2(v_uv * u_resolution);
+  vec4 orig = texelFetch(u_trail, px, 0);
+  vec4 blur = vec4(0.0);
+
+  for (int x = -1; x <= 1; x++) {
+    for (int y = -1; y <= 1; y++) {
+      ivec2 s = clamp(px + ivec2(x,y), ivec2(0), ivec2(u_resolution)-1);
+      blur += texelFetch(u_trail, s, 0);
+    }
+  }
+  blur /= 9.0;
+
+  vec4 mixed = orig * (1.0 - u_diffuseRate * u_dt) + blur * (u_diffuseRate * u_dt);
+  o_color = max(vec4(0.0), mixed - u_decayRate * u_dt);
+}`;
+
+// Paint to screen
+const FS_PAINT = `#version 300 es
+precision highp float;
+precision highp sampler2D;
+
+uniform sampler2D u_trail;
+uniform vec2 u_resolution;
+uniform vec3 u_color0;
+uniform vec3 u_color1;
+uniform vec3 u_color2;
+uniform vec3 u_color3;
+
+in vec2 v_uv;
+out vec4 o_color;
+
+void main() {
+  ivec2 px = ivec2(v_uv * u_resolution);
+  vec4 trail = texelFetch(u_trail, px, 0);
+
+  vec3 col = vec3(0.0);
+  col += trail.r * u_color0;
+  col += trail.g * u_color1;
+  col += trail.b * u_color2;
+  col += trail.a * u_color3;
+
+  // gentle tone-map so bright overlaps don't blow out
+  col = col / (col + 0.5);
+  col = pow(col, vec3(0.75));
+
+  o_color = vec4(col, 1.0);
+}`;
+
+// ---------------------------------------------------------------------------
+// GL helpers
+// ---------------------------------------------------------------------------
+function compileShader(type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+    throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+
+function linkProgram(vsSrc, fsSrc, ...attribs) {
+  const p = gl.createProgram();
+  gl.attachShader(p, compileShader(gl.VERTEX_SHADER, vsSrc));
+  gl.attachShader(p, compileShader(gl.FRAGMENT_SHADER, fsSrc));
+  attribs.forEach((n, i) => gl.bindAttribLocation(p, i, n));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS))
+    throw new Error(gl.getProgramInfoLog(p));
+  return p;
+}
+
+function makeFloatTex(w, h, data) {
+  const t = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, w, h, 0, gl.RGBA, gl.FLOAT,
+                data ? new Float32Array(data) : null);
+  return t;
+}
+
+function makeFBO(tex) {
+  const fb = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+  const s = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+  if (s !== gl.FRAMEBUFFER_COMPLETE) throw new Error('FBO incomplete: ' + s);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  return fb;
+}
+
+function uLoc(prog, name) { return gl.getUniformLocation(prog, name); }
+
+// fullscreen quad VAO
+function makeQuadVAO(prog) {
+  const vao = gl.createVertexArray();
+  gl.bindVertexArray(vao);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER,
+    new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'a_pos');
+  if (loc >= 0) {
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  }
+  gl.bindVertexArray(null);
+  return vao;
+}
+
+// empty VAO for deposit (no vertex data needed, we use gl_VertexID)
+function makeEmptyVAO() {
+  const vao = gl.createVertexArray();
+  return vao;
+}
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+let SIM_W, SIM_H;         // trail/sim resolution
+let AGENT_TEX_W, AGENT_TEX_H; // agent texture dimensions
+let numAgents;
+let preset;
+
+let progUpdate, progDeposit, progBlur, progPaint;
+let quadVAO, emptyVAO;
+let agentTex = [null, null];
+let agentFBO = [null, null];
+let trailTex = [null, null];
+let trailFBO = [null, null];
+
+let frameCount = 0;
+let lastFpsTime = performance.now();
+let rafId;
+
+// ---------------------------------------------------------------------------
+// Initialization
+// ---------------------------------------------------------------------------
+function init(presetName) {
+  preset = PRESETS[presetName];
+  numAgents = preset.numAgents;
+
+  // resolution: match window but cap so performance remains reasonable
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  SIM_W = Math.floor(Math.min(window.innerWidth  * dpr, 1024));
+  SIM_H = Math.floor(Math.min(window.innerHeight * dpr, 1024));
+
+  canvas.width  = SIM_W;
+  canvas.height = SIM_H;
+  canvas.style.width  = window.innerWidth  + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+
+  // agent texture: pack numAgents into a square-ish texture
+  AGENT_TEX_W = Math.ceil(Math.sqrt(numAgents));
+  AGENT_TEX_H = Math.ceil(numAgents / AGENT_TEX_W);
+
+  // compile shaders
+  progUpdate  = linkProgram(VS_FULLSCREEN, FS_UPDATE_AGENTS, 'a_pos');
+  progDeposit = linkProgram(VS_DEPOSIT,    FS_DEPOSIT);
+  progBlur    = linkProgram(VS_FULLSCREEN, FS_BLUR_DECAY,    'a_pos');
+  progPaint   = linkProgram(VS_FULLSCREEN, FS_PAINT,         'a_pos');
+
+  quadVAO  = makeQuadVAO(progUpdate);
+  emptyVAO = makeEmptyVAO();
+
+  // build initial agent data
+  const agentData = buildAgents(preset);
+
+  // agent textures
+  for (let i = 0; i < 2; i++) {
+    if (agentTex[i]) gl.deleteTexture(agentTex[i]);
+    if (agentFBO[i]) gl.deleteFramebuffer(agentFBO[i]);
+    agentTex[i] = makeFloatTex(AGENT_TEX_W, AGENT_TEX_H, i === 0 ? agentData : null);
+    agentFBO[i] = makeFBO(agentTex[i]);
+  }
+
+  // trail textures
+  for (let i = 0; i < 2; i++) {
+    if (trailTex[i]) gl.deleteTexture(trailTex[i]);
+    if (trailFBO[i]) gl.deleteFramebuffer(trailFBO[i]);
+    trailTex[i] = makeFloatTex(SIM_W, SIM_H, null);
+    trailFBO[i] = makeFBO(trailTex[i]);
+    // clear to 0
+    gl.bindFramebuffer(gl.FRAMEBUFFER, trailFBO[i]);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+}
+
+function buildAgents(p) {
+  const data = new Float32Array(AGENT_TEX_W * AGENT_TEX_H * 4);
+  const cx = SIM_W / 2, cy = SIM_H / 2;
+  const maxR = Math.min(SIM_W, SIM_H) * 0.35;
+
+  for (let i = 0; i < numAgents; i++) {
+    const sid = i % 4;  // distribute evenly across species
+    let px, py, angle;
+
+    switch (p.initType) {
+      case 'bigbang':
+        // all start at center pointing outward
+        angle = Math.random() * Math.PI * 2;
+        px = cx + (Math.random() - 0.5) * 4;
+        py = cy + (Math.random() - 0.5) * 4;
+        break;
+      case 'starburst': {
+        // distributed along rays
+        const ray = Math.floor(Math.random() * 8);
+        const rayAngle = (ray / 8) * Math.PI * 2;
+        const dist = Math.random() * maxR;
+        px = cx + Math.cos(rayAngle) * dist;
+        py = cy + Math.sin(rayAngle) * dist;
+        angle = rayAngle + (Math.random() - 0.5) * 0.4;
+        break;
+      }
+      case 'circle':
+      default: {
+        // ring around center
+        angle = Math.random() * Math.PI * 2;
+        const r = maxR * (0.3 + Math.random() * 0.15);
+        px = cx + Math.cos(angle) * r;
+        py = cy + Math.sin(angle) * r;
+        // point inward
+        angle = Math.atan2(cy - py, cx - px) + (Math.random() - 0.5) * 0.5;
+        break;
+      }
+    }
+
+    const base = i * 4;
+    data[base + 0] = px;
+    data[base + 1] = py;
+    data[base + 2] = angle;
+    data[base + 3] = sid;
+  }
+
+  return data;
+}
+
+// ---------------------------------------------------------------------------
+// Per-frame simulation
+// ---------------------------------------------------------------------------
+const SIMS_PER_FRAME = 8;
+const DT = 1.0;
+
+let ping = 0; // which buffer is "current"
+let timeSim = 0;
+
+function simulate() {
+  const sp = preset.species;
+
+  for (let iter = 0; iter < SIMS_PER_FRAME; iter++) {
+    const pong = 1 - ping;
+    timeSim += DT;
+
+    // ---- 1. Update agents -------------------------------------------------
+    gl.bindFramebuffer(gl.FRAMEBUFFER, agentFBO[pong]);
+    gl.viewport(0, 0, AGENT_TEX_W, AGENT_TEX_H);
+    gl.useProgram(progUpdate);
+    gl.bindVertexArray(quadVAO);
+
+    // bind textures
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, agentTex[ping]);
+    gl.uniform1i(uLoc(progUpdate, 'u_agents'), 0);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, trailTex[ping]);
+    gl.uniform1i(uLoc(progUpdate, 'u_trail'), 1);
+
+    gl.uniform2f(uLoc(progUpdate, 'u_resolution'), SIM_W, SIM_H);
+    gl.uniform1f(uLoc(progUpdate, 'u_dt'), DT);
+    gl.uniform1f(uLoc(progUpdate, 'u_time'), timeSim);
+
+    for (let s = 0; s < 4; s++) {
+      const spec = sp[s];
+      gl.uniform1f(gl.getUniformLocation(progUpdate, `u_sensorAngle[${s}]`),   spec.sensorAngle);
+      gl.uniform1f(gl.getUniformLocation(progUpdate, `u_rotationAngle[${s}]`), spec.rotationAngle);
+      gl.uniform1f(gl.getUniformLocation(progUpdate, `u_sensorDist[${s}]`),    spec.sensorDist);
+      gl.uniform1f(gl.getUniformLocation(progUpdate, `u_sensorRadius[${s}]`),  spec.sensorRadius);
+      gl.uniform1f(gl.getUniformLocation(progUpdate, `u_velocity[${s}]`),      spec.velocity);
+      gl.uniform1f(gl.getUniformLocation(progUpdate, `u_trailWeight[${s}]`),   spec.trailWeight);
+    }
+
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    // ---- 2. Deposit trail into trailTex[ping] (in-place additive) ---------
+    // We deposit into the *current* trail (ping) so blur reads it afterward.
+    gl.bindFramebuffer(gl.FRAMEBUFFER, trailFBO[ping]);
+    gl.viewport(0, 0, SIM_W, SIM_H);
+    gl.useProgram(progDeposit);
+    gl.bindVertexArray(emptyVAO);
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE); // additive
+
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, agentTex[pong]);
+    gl.uniform1i(uLoc(progDeposit, 'u_agents'), 0);
+    gl.uniform2f(uLoc(progDeposit, 'u_agentTexSize'), AGENT_TEX_W, AGENT_TEX_H);
+    gl.uniform2f(uLoc(progDeposit, 'u_resolution'), SIM_W, SIM_H);
+    gl.uniform1f(uLoc(progDeposit, 'u_dt'), DT);
+    for (let s = 0; s < 4; s++)
+      gl.uniform1f(gl.getUniformLocation(progDeposit, `u_trailWeight[${s}]`), sp[s].trailWeight);
+
+    gl.drawArrays(gl.POINTS, 0, numAgents);
+    gl.disable(gl.BLEND);
+
+    // ---- 3. Blur + decay: trailTex[ping] -> trailTex[pong] ----------------
+    gl.bindFramebuffer(gl.FRAMEBUFFER, trailFBO[pong]);
+    gl.viewport(0, 0, SIM_W, SIM_H);
+    gl.useProgram(progBlur);
+    gl.bindVertexArray(quadVAO);
+
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, trailTex[ping]);
+    gl.uniform1i(uLoc(progBlur, 'u_trail'), 0);
+    gl.uniform2f(uLoc(progBlur, 'u_resolution'), SIM_W, SIM_H);
+    gl.uniform1f(uLoc(progBlur, 'u_decayRate'),  preset.decayRate);
+    gl.uniform1f(uLoc(progBlur, 'u_diffuseRate'), preset.diffuseRate);
+    gl.uniform1f(uLoc(progBlur, 'u_dt'), DT);
+
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    ping = pong;
+  }
+}
+
+function paint() {
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, SIM_W, SIM_H);
+  gl.useProgram(progPaint);
+  gl.bindVertexArray(quadVAO);
+
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, trailTex[ping]);
+  gl.uniform1i(uLoc(progPaint, 'u_trail'), 0);
+  gl.uniform2f(uLoc(progPaint, 'u_resolution'), SIM_W, SIM_H);
+
+  const sp = preset.species;
+  gl.uniform3fv(uLoc(progPaint, 'u_color0'), sp[0].color);
+  gl.uniform3fv(uLoc(progPaint, 'u_color1'), sp[1].color);
+  gl.uniform3fv(uLoc(progPaint, 'u_color2'), sp[2].color);
+  gl.uniform3fv(uLoc(progPaint, 'u_color3'), sp[3].color);
+
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+}
+
+// ---------------------------------------------------------------------------
+// Loop
+// ---------------------------------------------------------------------------
+function loop(now) {
+  simulate();
+  paint();
+
+  frameCount++;
+  const elapsed = now - lastFpsTime;
+  if (elapsed >= 500) {
+    const fps = (frameCount / elapsed * 1000).toFixed(0);
+    document.getElementById('fps').textContent = fps + ' fps';
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+
+  rafId = requestAnimationFrame(loop);
+}
+
+// ---------------------------------------------------------------------------
+// Boot
+// ---------------------------------------------------------------------------
+init('demo');
+rafId = requestAnimationFrame(loop);
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  cancelAnimationFrame(rafId);
+  timeSim = 0;
+  ping = 0;
+  init(document.getElementById('preset').value);
+  rafId = requestAnimationFrame(loop);
+});
+
+document.getElementById('preset').addEventListener('change', (e) => {
+  cancelAnimationFrame(rafId);
+  timeSim = 0;
+  ping = 0;
+  init(e.target.value);
+  rafId = requestAnimationFrame(loop);
+});
+
+window.addEventListener('resize', () => {
+  cancelAnimationFrame(rafId);
+  timeSim = 0;
+  ping = 0;
+  init(document.getElementById('preset').value);
+  rafId = requestAnimationFrame(loop);
+});
+</script>
+</body>
+</html>

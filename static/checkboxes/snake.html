@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #111; }
+    #grid { display: grid; width: 100vw; height: 100vh; }
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: none;
+      cursor: default;
+      pointer-events: none;
+      background: transparent;
+    }
+    input[type="checkbox"]:checked { background: #ddd; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 10px 14px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      user-select: none;
+      pointer-events: none;
+      min-width: 170px;
+    }
+    #hud-title { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    #hud-keys { color: #888; font-size: 11px; }
+    #hud-gameover { color: #ff4444; font-weight: bold; display: none; }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <div id="hud">
+    <div id="hud-title">SNAKE</div>
+    <div id="hud-score">Score: 0</div>
+    <div id="hud-best">Best: 0</div>
+    <div id="hud-keys">Arrow keys / WASD</div>
+    <div id="hud-gameover">GAME OVER</div>
+  </div>
+  <script>
+    let CHECKBOX_SIZE = 32;
+    let cols, rows, checkboxes;
+    let snake, dir, nextDir, food, score, highScore = 0;
+    let loop, resizeTimer;
+
+    function build() {
+      const grid = document.getElementById('grid');
+      cols = Math.floor(window.innerWidth / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+      grid.innerHTML = '';
+      checkboxes = [];
+      for (let r = 0; r < rows; r++) {
+        checkboxes[r] = [];
+        for (let c = 0; c < cols; c++) {
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.tabIndex = -1;
+          grid.appendChild(cb);
+          checkboxes[r][c] = cb;
+        }
+      }
+    }
+
+    function setCell(x, y, val) {
+      checkboxes[y][x].checked = val;
+    }
+
+    function clearAll() {
+      for (let r = 0; r < rows; r++)
+        for (let c = 0; c < cols; c++)
+          checkboxes[r][c].checked = false;
+    }
+
+    function spawnFood() {
+      const occupied = new Set(snake.map(s => `${s.x},${s.y}`));
+      let x, y;
+      do {
+        x = Math.floor(Math.random() * cols);
+        y = Math.floor(Math.random() * rows);
+      } while (occupied.has(`${x},${y}`));
+      food = { x, y };
+      setCell(x, y, true);
+    }
+
+    // ---- Snake ----
+    //
+    // Snake is a head-first array of {x, y} cells; all body cells are
+    // checked. A direction buffer (nextDir) absorbs key presses between
+    // ticks so rapid double-presses can't accidentally reverse the snake.
+    // Food always spawns outside the occupied Set so it never lands on the
+    // body. The tail is popped before the collision check so moving into
+    // the vacating tail cell is legal. Wraps at all edges. Self-collision
+    // triggers GAME OVER and auto-restarts after 1.5 s.
+
+    function startGame() {
+      clearInterval(loop);
+      clearAll();
+      document.getElementById('hud-gameover').style.display = 'none';
+
+      const sx = Math.floor(cols / 2);
+      const sy = Math.floor(rows / 2);
+      snake = [{ x: sx, y: sy }, { x: sx - 1, y: sy }, { x: sx - 2, y: sy }];
+      dir = { dx: 1, dy: 0 };
+      nextDir = { dx: 1, dy: 0 };
+      score = 0;
+      updateHUD();
+      snake.forEach(s => setCell(s.x, s.y, true));
+      spawnFood();
+      loop = setInterval(tick, 100);
+    }
+
+    function tick() {
+      dir = nextDir;
+      const head = snake[0];
+      const nx = (head.x + dir.dx + cols) % cols;
+      const ny = (head.y + dir.dy + rows) % rows;
+
+      const ateFood = nx === food.x && ny === food.y;
+
+      if (!ateFood) {
+        const tail = snake.pop();
+        setCell(tail.x, tail.y, false);
+      }
+
+      if (snake.some(s => s.x === nx && s.y === ny)) {
+        endGame();
+        return;
+      }
+
+      snake.unshift({ x: nx, y: ny });
+      setCell(nx, ny, true);
+
+      if (ateFood) {
+        score++;
+        if (score > highScore) highScore = score;
+        updateHUD();
+        spawnFood();
+      }
+    }
+
+    function endGame() {
+      clearInterval(loop);
+      document.getElementById('hud-gameover').style.display = 'block';
+      setTimeout(startGame, 1500);
+    }
+
+    function updateHUD() {
+      document.getElementById('hud-score').textContent = `Score: ${score}`;
+      document.getElementById('hud-best').textContent = `Best: ${highScore}`;
+    }
+
+    document.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowUp':    case 'w': case 'W': if (nextDir.dy !== 1)  nextDir = { dx: 0, dy: -1 }; break;
+        case 'ArrowDown':  case 's': case 'S': if (nextDir.dy !== -1) nextDir = { dx: 0, dy:  1 }; break;
+        case 'ArrowLeft':  case 'a': case 'A': if (nextDir.dx !== 1)  nextDir = { dx: -1, dy: 0 }; break;
+        case 'ArrowRight': case 'd': case 'D': if (nextDir.dx !== -1) nextDir = { dx:  1, dy: 0 }; break;
+      }
+      if (e.key.startsWith('Arrow')) e.preventDefault();
+    });
+
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { build(); startGame(); }, 200);
+    });
+
+    build();
+    startGame();
+  </script>
+</body>
+</html>

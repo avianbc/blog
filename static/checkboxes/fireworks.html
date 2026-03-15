@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fireworks</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    let CHECKBOX_SIZE = 16;
+    let checkboxes = [], cols = 0, rows = 0;
+    let prevActive = new Map();  // id → color
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+      prevActive = new Map();
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
+
+    // ---- Fireworks ----
+    //
+    // Rockets launch from the bottom with upward velocity. Gravity is applied
+    // each frame (dy += 0.07), so they decelerate naturally. When dy crosses
+    // zero the rocket has hit apogee — it explodes into 50-80 sparks fired at
+    // evenly-spaced angles with randomised speeds. Each spark then follows its
+    // own parabolic arc (gravity + drag). No timers; everything is physics.
+    //
+    // Fade is handled probabilistically: each spark has a life counter that
+    // counts down to zero. On every frame, the chance it actually gets drawn is
+    // life/maxLife. Full-life sparks are always visible; dying sparks flicker
+    // and disappear naturally — temporal dithering in place of alpha channels.
+    //
+    // Render uses a diff: we track which cell indices were active last frame
+    // (prevActive) and only toggle cells that changed. At peak load that's a
+    // few hundred checkboxes instead of the full grid.
+
+    const rockets = [];
+    const sparks  = [];
+
+    function randomColor() {
+      return `hsl(${Math.floor(Math.random() * 360)}, 100%, 65%)`;
+    }
+
+    function launch() {
+      if (rockets.length >= 5) return;
+      rockets.push({
+        x:     (0.15 + Math.random() * 0.7) * cols,
+        y:     rows - 1,
+        dx:    (Math.random() - 0.5) * 0.4,
+        dy:    -(Math.random() * 0.7 + 1.5),   // -1.5 to -2.2 cells/frame
+        color: randomColor(),
+        trail: [],
+      });
+    }
+
+    function burst(x, y, color) {
+      const n = Math.floor(Math.random() * 30) + 50;
+      for (let i = 0; i < n; i++) {
+        const angle = (i / n) * Math.PI * 2;
+        const speed = Math.random() * 1.4 + 0.3;
+        const life  = Math.floor(Math.random() * 30) + 45;
+        sparks.push({ x, y, dx: Math.cos(angle) * speed, dy: Math.sin(angle) * speed, life, maxLife: life, color });
+      }
+    }
+
+    function cellIdx(x, y) {
+      const xi = Math.round(x), yi = Math.round(y);
+      return (xi < 0 || xi >= cols || yi < 0 || yi >= rows) ? -1 : yi * cols + xi;
+    }
+
+    let nextLaunch = 20;
+
+    function tick() {
+      const active = new Map();  // id → color
+
+      if (--nextLaunch <= 0) {
+        launch();
+        nextLaunch = Math.floor(Math.random() * 55) + 35;
+      }
+
+      // rockets
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
+        r.trail.push({ x: r.x, y: r.y });
+        if (r.trail.length > 5) r.trail.shift();
+
+        r.x += r.dx;
+        r.y += r.dy;
+        r.dy += 0.07;
+
+        if (r.dy >= -0.1) {           // apogee — explode
+          burst(r.x, r.y, r.color);
+          rockets.splice(i, 1);
+          continue;
+        }
+
+        // draw trail with alternating gaps for a sparkle look
+        r.trail.forEach((t, ti) => {
+          if (ti % 2 === 0) {
+            const id = cellIdx(t.x, t.y);
+            if (id >= 0) active.set(id, r.color);
+          }
+        });
+        const id = cellIdx(r.x, r.y);
+        if (id >= 0) active.set(id, r.color);
+      }
+
+      // sparks
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.life--;
+        if (s.life <= 0) { sparks.splice(i, 1); continue; }
+
+        s.x  += s.dx;
+        s.y  += s.dy;
+        s.dy += 0.05;     // gravity
+        s.dx *= 0.97;     // drag
+
+        // probabilistic fade: full brightness early, increasingly sparse as life drains
+        if (Math.random() < s.life / s.maxLife) {
+          const id = cellIdx(s.x, s.y);
+          if (id >= 0) active.set(id, s.color);
+        }
+      }
+
+      // diff-render: only touch cells that actually changed state or color
+      for (const [id] of prevActive) {
+        if (!active.has(id)) {
+          checkboxes[id].checked = false;
+          checkboxes[id].style.accentColor = '';
+        }
+      }
+      for (const [id, color] of active) {
+        if (prevActive.get(id) !== color) {
+          checkboxes[id].checked = true;
+          checkboxes[id].style.accentColor = color;
+        }
+      }
+      prevActive = active;
+
+      requestAnimationFrame(tick);
+    }
+
+    // seed with a couple of rockets so it doesn't start empty
+    launch();
+    launch();
+    tick();
+  </script>
+</body>
+</html>

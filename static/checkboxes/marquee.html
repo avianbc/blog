@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marquee</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    let CHECKBOX_SIZE = 16;
+    const CHAR_WIDTH = 5;
+    const CHAR_HEIGHT = 7;
+    const CHAR_GAP = 1;   // columns between characters
+    const SCROLL_SPEED = 1; // columns per frame tick
+    const FRAME_INTERVAL = 40; // ms between scroll steps (~25fps scroll)
+
+    // 5x7 bitmap font: each character is 7 rows, each row is a 5-bit number (bit 4 = leftmost)
+    const FONT = {
+      'A': [0b01110,0b10001,0b10001,0b11111,0b10001,0b10001,0b10001],
+      'B': [0b11110,0b10001,0b10001,0b11110,0b10001,0b10001,0b11110],
+      'C': [0b01110,0b10001,0b10000,0b10000,0b10000,0b10001,0b01110],
+      'D': [0b11100,0b10010,0b10001,0b10001,0b10001,0b10010,0b11100],
+      'E': [0b11111,0b10000,0b10000,0b11110,0b10000,0b10000,0b11111],
+      'F': [0b11111,0b10000,0b10000,0b11110,0b10000,0b10000,0b10000],
+      'G': [0b01110,0b10001,0b10000,0b10111,0b10001,0b10001,0b01111],
+      'H': [0b10001,0b10001,0b10001,0b11111,0b10001,0b10001,0b10001],
+      'I': [0b01110,0b00100,0b00100,0b00100,0b00100,0b00100,0b01110],
+      'J': [0b00111,0b00010,0b00010,0b00010,0b00010,0b10010,0b01100],
+      'K': [0b10001,0b10010,0b10100,0b11000,0b10100,0b10010,0b10001],
+      'L': [0b10000,0b10000,0b10000,0b10000,0b10000,0b10000,0b11111],
+      'M': [0b10001,0b11011,0b10101,0b10001,0b10001,0b10001,0b10001],
+      'N': [0b10001,0b11001,0b10101,0b10011,0b10001,0b10001,0b10001],
+      'O': [0b01110,0b10001,0b10001,0b10001,0b10001,0b10001,0b01110],
+      'P': [0b11110,0b10001,0b10001,0b11110,0b10000,0b10000,0b10000],
+      'Q': [0b01110,0b10001,0b10001,0b10001,0b10101,0b10010,0b01101],
+      'R': [0b11110,0b10001,0b10001,0b11110,0b10100,0b10010,0b10001],
+      'S': [0b01111,0b10000,0b10000,0b01110,0b00001,0b00001,0b11110],
+      'T': [0b11111,0b00100,0b00100,0b00100,0b00100,0b00100,0b00100],
+      'U': [0b10001,0b10001,0b10001,0b10001,0b10001,0b10001,0b01110],
+      'V': [0b10001,0b10001,0b10001,0b10001,0b01010,0b01010,0b00100],
+      'W': [0b10001,0b10001,0b10001,0b10101,0b10101,0b11011,0b10001],
+      'X': [0b10001,0b01010,0b00100,0b00100,0b00100,0b01010,0b10001],
+      'Y': [0b10001,0b10001,0b01010,0b00100,0b00100,0b00100,0b00100],
+      'Z': [0b11111,0b00001,0b00010,0b00100,0b01000,0b10000,0b11111],
+      '0': [0b01110,0b10001,0b10011,0b10101,0b11001,0b10001,0b01110],
+      '1': [0b00100,0b01100,0b00100,0b00100,0b00100,0b00100,0b01110],
+      '2': [0b01110,0b10001,0b00001,0b00010,0b00100,0b01000,0b11111],
+      '3': [0b11111,0b00010,0b00100,0b00110,0b00001,0b10001,0b01110],
+      '4': [0b00010,0b00110,0b01010,0b10010,0b11111,0b00010,0b00010],
+      '5': [0b11111,0b10000,0b11110,0b00001,0b00001,0b10001,0b01110],
+      '6': [0b00110,0b01000,0b10000,0b11110,0b10001,0b10001,0b01110],
+      '7': [0b11111,0b00001,0b00010,0b00100,0b00100,0b00100,0b00100],
+      '8': [0b01110,0b10001,0b10001,0b01110,0b10001,0b10001,0b01110],
+      '9': [0b01110,0b10001,0b10001,0b01111,0b00001,0b00010,0b01100],
+      ' ': [0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000],
+      '.': [0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00100],
+      '!': [0b00100,0b00100,0b00100,0b00100,0b00100,0b00000,0b00100],
+      '?': [0b01110,0b10001,0b00001,0b00010,0b00100,0b00000,0b00100],
+      '*': [0b00000,0b10101,0b01110,0b11111,0b01110,0b10101,0b00000],
+      '-': [0b00000,0b00000,0b00000,0b11111,0b00000,0b00000,0b00000],
+      ':': [0b00000,0b00100,0b00000,0b00000,0b00000,0b00100,0b00000],
+    };
+
+    const MESSAGE = 'HELLO WORLD * CHECKBOX MARQUEE * ';
+
+    // Build a flat bitmap strip for the full message (width = sum of all char widths + gaps)
+    function buildStrip(message) {
+      const chars = message.toUpperCase().split('');
+      const cols = chars.reduce((acc, c) => acc + CHAR_WIDTH + CHAR_GAP, 0);
+      // strip[row][col]
+      const strip = Array.from({ length: CHAR_HEIGHT }, () => new Uint8Array(cols));
+      let x = 0;
+      for (const ch of chars) {
+        const glyph = FONT[ch] || FONT[' '];
+        for (let row = 0; row < CHAR_HEIGHT; row++) {
+          const bits = glyph[row];
+          for (let bit = 0; bit < CHAR_WIDTH; bit++) {
+            strip[row][x + bit] = (bits >> (CHAR_WIDTH - 1 - bit)) & 1;
+          }
+        }
+        x += CHAR_WIDTH + CHAR_GAP;
+      }
+      return { strip, stripWidth: cols };
+    }
+
+    let cols = 0, rows = 0;
+    let checkboxes = [];
+    let scrollOffset = 0;
+    let lastTick = 0;
+    let { strip, stripWidth } = buildStrip(MESSAGE);
+
+    // ---- Marquee ----
+    //
+    // Pre-renders the message into a flat bitmap strip — one row per font
+    // row, one column per pixel across all characters. Each tick a window
+    // of `cols` columns is read from the strip, offset by a scrollOffset
+    // that advances SCROLL_SPEED columns per FRAME_INTERVAL ms. The read
+    // wraps modulo stripWidth so the text loops seamlessly. Font is 5×7
+    // pixel bitmaps stored as compact 5-bit row values per character.
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+    }
+
+    function render() {
+      const textStartRow = Math.floor((rows - CHAR_HEIGHT) / 2);
+      const len = checkboxes.length;
+
+      // clear all
+      for (let i = 0; i < len; i++) checkboxes[i].checked = false;
+
+      // draw strip shifted by scrollOffset
+      for (let row = 0; row < CHAR_HEIGHT; row++) {
+        const gridRow = textStartRow + row;
+        if (gridRow < 0 || gridRow >= rows) continue;
+        for (let col = 0; col < cols; col++) {
+          // which column in the strip are we reading?
+          const stripCol = ((col + scrollOffset) % stripWidth + stripWidth) % stripWidth;
+          if (strip[row][stripCol]) {
+            checkboxes[gridRow * cols + col].checked = true;
+          }
+        }
+      }
+    }
+
+    function tick(ts) {
+      if (ts - lastTick >= FRAME_INTERVAL) {
+        scrollOffset = (scrollOffset + SCROLL_SPEED) % stripWidth;
+        render();
+        lastTick = ts;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    build();
+    requestAnimationFrame(tick);
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { build(); render(); }, 150);
+    });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build(); render();
+    }, { passive: false });
+  </script>
+</body>
+</html>

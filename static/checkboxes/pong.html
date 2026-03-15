@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pong – Checkbox Edition</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      position: fixed;
+      top: 0; left: 0;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #1a1a1a;
+      border: none;
+      outline: none;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    input[type="checkbox"]:checked {
+      background: #e8e8e8;
+    }
+
+    #hud {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      padding: 8px 12px;
+      border-radius: 4px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 100;
+    }
+
+    #hud strong {
+      font-size: 14px;
+      letter-spacing: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="grid"></div>
+
+<div id="hud">
+  <strong>PONG</strong><br>
+  W / S &nbsp;&nbsp;&middot;&nbsp;&nbsp; &#8593; / &#8595;<br>
+  Hit paddle = ball gets faster.<br>
+  Miss = point for opponent.
+</div>
+
+<script>
+  let CHECKBOX_SIZE  = 20;
+  const PADDLE_HEIGHT  = 4;
+  const PADDLE_OFFSET  = 2;   // cols from each edge
+  const PADDLE_SPEED   = 10;  // cells/sec
+  const BALL_SPEED_MIN = 16;  // cells/sec at serve
+  const BALL_SPEED_INC = 1.5; // added per paddle bounce
+  const BALL_SPEED_MAX = 32;
+  const FRAME_MS       = 1000 / 30;
+
+  const DIGITS = [
+    [0b11111, 0b10001, 0b10001, 0b10001, 0b10001, 0b10001, 0b11111], // 0
+    [0b00100, 0b01100, 0b00100, 0b00100, 0b00100, 0b00100, 0b01110], // 1
+    [0b11111, 0b00001, 0b00001, 0b11111, 0b10000, 0b10000, 0b11111], // 2
+    [0b11111, 0b00001, 0b00001, 0b11111, 0b00001, 0b00001, 0b11111], // 3
+    [0b10001, 0b10001, 0b10001, 0b11111, 0b00001, 0b00001, 0b00001], // 4
+    [0b11111, 0b10000, 0b10000, 0b11111, 0b00001, 0b00001, 0b11111], // 5
+    [0b11111, 0b10000, 0b10000, 0b11111, 0b10001, 0b10001, 0b11111], // 6
+    [0b11111, 0b00001, 0b00001, 0b00010, 0b00100, 0b00100, 0b00100], // 7
+    [0b11111, 0b10001, 0b10001, 0b11111, 0b10001, 0b10001, 0b11111], // 8
+    [0b11111, 0b10001, 0b10001, 0b11111, 0b00001, 0b00001, 0b11111], // 9
+  ];
+
+  // ── Grid state ──────────────────────────────────────────────────────────────
+  let cols, rows, checkboxes;
+
+  function buildGrid() {
+    cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+    rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+    grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+    grid.style.width  = cols * CHECKBOX_SIZE + 'px';
+    grid.style.height = rows * CHECKBOX_SIZE + 'px';
+
+    const total = cols * rows;
+    const frag  = document.createDocumentFragment();
+    checkboxes  = new Array(total);
+
+    for (let i = 0; i < total; i++) {
+      const cb  = document.createElement('input');
+      cb.type   = 'checkbox';
+      cb.tabIndex = -1;
+      frag.appendChild(cb);
+      checkboxes[i] = cb;
+    }
+
+    grid.appendChild(frag);
+  }
+
+  function setCell(c, r, val) {
+    if (c < 0 || c >= cols || r < 0 || r >= rows) return;
+    checkboxes[r * cols + c].checked = val;
+  }
+
+  // ── Pixel font ───────────────────────────────────────────────────────────────
+  function drawDigit(digit, sc, sr) {
+    const bm = DIGITS[digit];
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 5; c++) {
+        if (bm[r] & (1 << (4 - c))) setCell(sc + c, sr + r, true);
+      }
+    }
+  }
+
+  // Renders a non-negative integer centered at centerCol, top at topRow
+  function drawNumber(n, centerCol, topRow) {
+    const digits   = String(n).split('').map(Number);
+    const totalW   = digits.length * 5 + (digits.length - 1) * 2; // 5px + 2px gap
+    let sc = Math.floor(centerCol - totalW / 2);
+    for (const d of digits) {
+      drawDigit(d, sc, topRow);
+      sc += 7;
+    }
+  }
+
+  // ---- Pong ----
+  //
+  // Physics run in floating-point cells/sec with a capped delta-time so
+  // pausing the tab doesn't launch the ball at ludicrous speed. Ball
+  // bounces off top and bottom walls; a paddle hit resets the ball to the
+  // paddle face and adds BALL_SPEED_INC to speed (capped at BALL_SPEED_MAX).
+  // Scores are drawn directly on the grid as 5×7 pixel-art digits. Left
+  // player: W / S. Right player: Up / Down. The whole grid is cleared each
+  // frame, then the ball, paddles, and digit scores are painted.
+
+  // ── Game state ────────────────────────────────────────────────────────────────
+  let ballX, ballY, ballVX, ballVY, ballSpeed;
+  let leftY, rightY;
+  let scoreL = 0, scoreR = 0;
+
+  function lpx() { return PADDLE_OFFSET; }
+  function rpx() { return cols - 1 - PADDLE_OFFSET; }
+
+  function launchBall() {
+    ballX     = cols / 2;
+    ballY     = rows / 2;
+    ballSpeed = BALL_SPEED_MIN;
+    // Random angle ±35°, random horizontal direction
+    const angle = (Math.random() * 70 - 35) * Math.PI / 180;
+    const dir   = Math.random() < 0.5 ? 1 : -1;
+    ballVX = Math.cos(angle) * ballSpeed * dir;
+    ballVY = Math.sin(angle) * ballSpeed;
+  }
+
+  function resetPositions() {
+    leftY  = (rows - PADDLE_HEIGHT) / 2;
+    rightY = (rows - PADDLE_HEIGHT) / 2;
+  }
+
+  function resetGame() {
+    resetPositions();
+    launchBall();
+  }
+
+  function scaleToSpeed(newSpeed) {
+    const spd = Math.hypot(ballVX, ballVY);
+    if (spd === 0) return;
+    const scale = newSpeed / spd;
+    ballVX *= scale;
+    ballVY *= scale;
+  }
+
+  function bumpSpeed() {
+    ballSpeed = Math.min(ballSpeed + BALL_SPEED_INC, BALL_SPEED_MAX);
+    scaleToSpeed(ballSpeed);
+  }
+
+  // ── Input ─────────────────────────────────────────────────────────────────────
+  const keys = {};
+  window.addEventListener('keydown', e => {
+    keys[e.key] = true;
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+  window.addEventListener('keyup', e => { keys[e.key] = false; });
+
+  // ── Update ────────────────────────────────────────────────────────────────────
+  function update(dt) {
+    // Paddle movement
+    if (keys['w'] || keys['W']) leftY  -= PADDLE_SPEED * dt;
+    if (keys['s'] || keys['S']) leftY  += PADDLE_SPEED * dt;
+    if (keys['ArrowUp'])        rightY -= PADDLE_SPEED * dt;
+    if (keys['ArrowDown'])      rightY += PADDLE_SPEED * dt;
+
+    leftY  = Math.max(0, Math.min(rows - PADDLE_HEIGHT, leftY));
+    rightY = Math.max(0, Math.min(rows - PADDLE_HEIGHT, rightY));
+
+    // Ball movement
+    ballX += ballVX * dt;
+    ballY += ballVY * dt;
+
+    // Top / bottom wall bounce
+    if (ballY < 0) {
+      ballY  = -ballY;
+      ballVY = Math.abs(ballVY);
+    }
+    if (ballY > rows - 1) {
+      ballY  = 2 * (rows - 1) - ballY;
+      ballVY = -Math.abs(ballVY);
+    }
+
+    const LP = lpx();
+    const RP = rpx();
+
+    // Left paddle collision: ball moving left, approaching paddle face
+    if (ballVX < 0 && ballX <= LP + 1.5 && ballX >= LP - 0.5) {
+      const py = leftY;
+      if (ballY >= py - 0.5 && ballY <= py + PADDLE_HEIGHT - 0.5) {
+        ballVX = Math.abs(ballVX);
+        ballX  = LP + 1.5;
+        bumpSpeed();
+      }
+    }
+
+    // Right paddle collision: ball moving right, approaching paddle face
+    if (ballVX > 0 && ballX >= RP - 1.5 && ballX <= RP + 0.5) {
+      const py = rightY;
+      if (ballY >= py - 0.5 && ballY <= py + PADDLE_HEIGHT - 0.5) {
+        ballVX = -Math.abs(ballVX);
+        ballX  = RP - 1.5;
+        bumpSpeed();
+      }
+    }
+
+    // Scoring: ball exits left or right
+    if (ballX < -1) {
+      scoreR++;
+      launchBall();
+    } else if (ballX > cols) {
+      scoreL++;
+      launchBall();
+    }
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────────
+  function render() {
+    // Clear entire grid
+    const len = checkboxes.length;
+    for (let i = 0; i < len; i++) checkboxes[i].checked = false;
+
+    // Ball
+    setCell(Math.round(ballX), Math.round(ballY), true);
+
+    // Paddles
+    const LP = lpx();
+    const RP = rpx();
+    const lTop = Math.round(leftY);
+    const rTop = Math.round(rightY);
+    for (let i = 0; i < PADDLE_HEIGHT; i++) {
+      setCell(LP, lTop + i, true);
+      setCell(RP, rTop + i, true);
+    }
+
+    // Scores (pixel digits, row 2, centered in each half)
+    drawNumber(scoreL, Math.floor(cols / 4),       2);
+    drawNumber(scoreR, Math.floor(3 * cols / 4),   2);
+  }
+
+  // ── Loop ──────────────────────────────────────────────────────────────────────
+  let lastTS = null;
+
+  function loop(ts) {
+    requestAnimationFrame(loop);
+
+    if (lastTS === null) { lastTS = ts; return; }
+
+    const elapsed = ts - lastTS;
+    if (elapsed < FRAME_MS) return;
+
+    // Cap dt to avoid spiral-of-death on tab resume
+    const dt = Math.min(elapsed / 1000, 0.1);
+    lastTS = ts;
+
+    update(dt);
+    render();
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────────
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      buildGrid();
+      resetGame();
+    }, 150);
+  });
+
+  buildGrid();
+  resetGame();
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>
