@@ -70,39 +70,39 @@ The constraint is the whole point. You get one bit per "pixel": on or off. Every
 
 ## The Demos
 
-### Games
-
-**[Pong](/checkboxes/pong.html):** Fully playable, two players. Left paddle: W/S. Right paddle: arrow keys. It scores. The ball speeds up. One of the stranger ways to play Pong.
-
-**[Snake](/checkboxes/snake.html):** Same premise. Also playable.
-
 ### Simulations
 
-**[Game of Life](/checkboxes/game-of-life.html):** Conway's Game of Life. Click or drag to paint cells. The grid wraps at the edges.
+**[Slime Mold Simulation](/checkboxes/slime-mold-simulation.html):** *(interactive)* [Physarum](https://en.wikipedia.org/wiki/Physarum_polycephalum)-style agent simulation. Agents deposit trail, sense neighbors, steer toward concentration. Click or drag to deposit trail and watch them swarm toward it. The patterns look organic in a way that feels like it shouldn't work at this resolution.
 
-**[Langton's Ant](/checkboxes/langtons-ant.html):** A single ant follows two simple rules and eventually builds a "highway." Watched it longer than I'd like to admit.
+**[Langton's Ant](/checkboxes/langtons-ant.html):** A single ant follows [two simple rules](https://en.wikipedia.org/wiki/Langton%27s_ant): turn right on a lit cell, turn left on a dark one, then flip it. Chaos for a while, then it spontaneously builds a repeating diagonal highway. Watched it longer than I'd like to admit.
 
-**[Slime Mold Simulation](/checkboxes/slime-mold-simulation.html):** Physarum-style agent simulation. Agents deposit trail, sense neighbors, steer toward concentration. The patterns look organic in a way that feels like it shouldn't work at this resolution.
+**[Game of Life](/checkboxes/game-of-life.html):** *(interactive)* [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). Click or drag to paint cells. The grid wraps at the edges.
 
-**[Maze](/checkboxes/maze.html):** Generates mazes in real time using iterative depth-first search. Watches the walls get carved out as it runs, then restarts.
+**[Maze](/checkboxes/maze.html):** Generates mazes in real time using iterative [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search). You can watch the walls get carved out as it runs, then it restarts.
 
 ### Visual Effects
 
-**[Random Noise](/checkboxes/):** Randomly flip a fixed number of checkboxes per frame. Genuinely hypnotic in a broken-TV kind of way.
+**[Wave Interference](/checkboxes/wave-interference.html):** Four wave sources drift independently on [Lissajous](https://en.wikipedia.org/wiki/Lissajous_curve) paths. Their [interference pattern](https://en.wikipedia.org/wiki/Wave_interference) is thresholded to 1-bit. The result is endlessly shifting [moiré](https://en.wikipedia.org/wiki/Moir%C3%A9_pattern)-like patterns that never exactly repeat.
 
-**[Mandelbrot](/checkboxes/mandelbrot.html):** The Mandelbrot set, rendered checkbox by checkbox. At small sizes the resolution is rough enough that it looks like outsider art.
+**[Mandelbrot](/checkboxes/mandelbrot.html):** *(interactive)* The [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set). Click to zoom in, right-click to zoom out, R to reset. At low resolution it looks like outsider art. At high zoom it still looks like outsider art but that's kind of the point.
 
-**[Wave Interference](/checkboxes/wave-interference.html):** Four wave sources drifting independently on Lissajous paths. Their interference pattern is thresholded to 1-bit. Never repeats.
+**[Fireworks](/checkboxes/fireworks.html):** Surprisingly satisfying. Particle bursts with realistic arc and fade.
 
 **[The Matrix](/checkboxes/the-matrix.html):** Falling columns of checked checkboxes with a fade tail. Less "bullet time," more "budget cosplay."
 
+**[Rain](/checkboxes/rain.html)**, **[Wave](/checkboxes/wave.html)**, **[Spirals](/checkboxes/spirals.html)**, **[Random Noise](/checkboxes/)**, **[Marquee](/checkboxes/marquee.html):** Exactly what they sound like.
+
 **[DVD](/checkboxes/dvd.html):** The bouncing DVD logo. It hits the corner eventually. You're welcome.
 
-**[Fireworks](/checkboxes/fireworks.html)**, **[Rain](/checkboxes/rain.html)**, **[Wave](/checkboxes/wave.html)**, **[Spirals](/checkboxes/spirals.html)**, **[Marquee](/checkboxes/marquee.html):** Exactly what they sound like.
+### Games
+
+**[Pong](/checkboxes/pong.html):** *(interactive)* Fully playable, two players. Left paddle: W/S. Right paddle: arrow keys. It scores. The ball speeds up.
+
+**[Snake](/checkboxes/snake.html):** *(interactive)* Arrow keys or WASD. Also fully playable.
 
 ### Actually Useful
 
-**[Dither](/checkboxes/dither.html):** Drag and drop any image. Converts to grayscale, runs Floyd-Steinberg error diffusion, renders onto the grid. Checked = bright, unchecked = dark. The results are surprisingly good.
+**[Dither](/checkboxes/dither.html):** *(interactive)* Drag and drop any image. Converts to grayscale, runs [Floyd-Steinberg](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering) error diffusion, renders onto the grid. Checked = bright, unchecked = dark. The results are surprisingly good.
 
 **[Clock](/checkboxes/clock.html):** The current time in a 5x7 pixel font. You saw it at the top.
 
