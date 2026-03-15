@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Matrix</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #080808;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    @keyframes trail-fade {
+      0%   { background: #00dd44; }
+      100% { background: transparent; }
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    input[type="checkbox"].head  { background: #e8fff4; }
+    input[type="checkbox"].trail { animation: trail-fade var(--dur) linear forwards; }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    const CELL = 14;
+
+    let checkboxes = [];
+    let cols = 0;
+    let rows = 0;
+    let droplets = [];
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      cols = Math.floor(window.innerWidth  / CELL);
+      rows = Math.floor(window.innerHeight / CELL);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CELL}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CELL}px)`;
+
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      initDroplets();
+    }
+
+    function makeDroplet(col, stagger) {
+      const trail = 12 + Math.floor(Math.random() * 25);  // 12–31 cells
+      const speed = 1 + Math.floor(Math.random() * 3);    // 1–3 frames/step
+      // stagger=true: scatter starting rows so they don't all fall together on load
+      const head  = stagger
+        ? -Math.floor(Math.random() * rows)
+        : -trail - Math.floor(Math.random() * 8);
+      return { col, head, trail, speed, timer: 0 };
+    }
+
+    function initDroplets() {
+      droplets = [];
+      for (let c = 0; c < cols; c++) {
+        droplets.push(makeDroplet(c, true));
+      }
+    }
+
+    function at(col, row) {
+      if (row < 0 || row >= rows) return -1;
+      return row * cols + col;
+    }
+
+    function tick() {
+      for (const d of droplets) {
+        if (++d.timer < d.speed) continue;
+        d.timer = 0;
+
+        // Previous head becomes a fading trail cell — set once, animation does the rest
+        const prevIdx = at(d.col, d.head);
+        if (prevIdx >= 0) {
+          checkboxes[prevIdx].style.setProperty('--dur', `${d.trail * d.speed * 16}ms`);
+          checkboxes[prevIdx].className = 'trail';
+        }
+
+        d.head++;
+
+        // Light up the new head
+        const headIdx = at(d.col, d.head);
+        if (headIdx >= 0) {
+          checkboxes[headIdx].style.removeProperty('--dur');
+          checkboxes[headIdx].className = 'head';
+        }
+
+        // Clear the cell falling off the tail
+        const clearIdx = at(d.col, d.head - d.trail - 1);
+        if (clearIdx >= 0) {
+          checkboxes[clearIdx].className = '';
+        }
+
+        if (d.head - d.trail > rows) {
+          Object.assign(d, makeDroplet(d.col, false));
+        }
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    tick();
+  </script>
+</body>
+</html>
