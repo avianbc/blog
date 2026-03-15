@@ -50,7 +50,7 @@
     <div id="hud-gameover">GAME OVER</div>
   </div>
   <script>
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
     let cols, rows, checkboxes;
     let snake, dir, nextDir, food, score, highScore = 0;
     let loop, resizeTimer;
@@ -177,6 +177,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { build(); startGame(); }, 200);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build(); startGame();
+    }, { passive: false });
 
     build();
     startGame();

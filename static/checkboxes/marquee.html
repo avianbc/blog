@@ -24,7 +24,7 @@
 <body>
   <div id="grid"></div>
   <script>
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
     const CHAR_WIDTH = 5;
     const CHAR_HEIGHT = 7;
     const CHAR_GAP = 1;   // columns between characters
@@ -170,6 +170,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { build(); render(); }, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build(); render();
+    }, { passive: false });
   </script>
 </body>
 </html>

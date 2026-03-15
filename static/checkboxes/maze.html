@@ -13,7 +13,7 @@
 <body>
   <div id="grid"></div>
   <script>
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
     let checkboxes = [];
     let cols = 0, rows = 0;
 
@@ -40,6 +40,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { build(); startMaze(); }, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build(); startMaze();
+    }, { passive: false });
 
     function cbIdx(c, r) { return r * cols + c; }
     function setCell(c, r, val) {

@@ -45,7 +45,7 @@
 <body>
   <div id="grid"></div>
   <script>
-    const CELL = 14;
+    let CELL = 14;
 
     let checkboxes = [];
     let cols = 0;
@@ -148,6 +148,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CELL = Math.max(4, Math.min(64, CELL + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
 
     tick();
   </script>

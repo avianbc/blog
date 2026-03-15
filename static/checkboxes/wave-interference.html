@@ -54,7 +54,7 @@
      *
      * Space — pause / resume
      */
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
 
     let checkboxes = [];
     let cols = 0;
@@ -131,6 +131,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
 
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {

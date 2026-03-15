@@ -24,7 +24,7 @@
 <body>
   <div id="grid"></div>
   <script>
-    const CHECKBOX_SIZE = 16; // px — tweak to taste
+    let CHECKBOX_SIZE = 16; // px — tweak to taste
     const FLIPS_PER_FRAME = 80;
 
     let checkboxes = [];
@@ -59,6 +59,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
 
     // ---- Random Noise ----
     //

@@ -65,7 +65,7 @@
   </div>
 
   <script>
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
     const INIT_CX    = -0.5;
     const INIT_CY    = 0;
     const INIT_WIDTH = 3.5;
@@ -243,6 +243,12 @@
         render();
       }, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      buildGrid(); render();
+    }, { passive: false });
 
     // ── Init ──────────────────────────────────────────────────────────────────
 

@@ -23,7 +23,7 @@
   <div id="grid"></div>
   <div id="counter">corners: 0</div>
   <script>
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
     const LOGO_W = 8;
     const LOGO_H = 4;
     const MOVE_INTERVAL = 80; // ms between moves
@@ -88,6 +88,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
 
     // ---- DVD Bounce ----
     //

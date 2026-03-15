@@ -43,7 +43,7 @@
     // The trail diffuses (toroidally) and decays each frame, producing the
     // branching vein network slime mould is famous for.
 
-    const CELL           = 13;  // checkbox size px
+    let CELL           = 13;  // checkbox size px
     const N              = 4000; // agent count
     const STEPS_PER_FRAME = 4;  // simulation ticks per rendered frame
                                  // (DOM update stays at 60fps; math runs N× faster)
@@ -259,6 +259,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 200);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CELL = Math.max(4, Math.min(64, CELL + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
   </script>
 </body>
 </html>

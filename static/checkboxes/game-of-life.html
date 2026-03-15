@@ -41,7 +41,7 @@
 <body>
   <div id="grid"></div>
   <script>
-    const CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 16;
     const SIM_INTERVAL  = 100; // ms between generations
 
     let checkboxes = [];
@@ -160,6 +160,12 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 150);
     });
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+      build();
+    }, { passive: false });
 
     // Space to pause/resume, R to randomize
     window.addEventListener('keydown', (e) => {

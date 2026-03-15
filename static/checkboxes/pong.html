@@ -72,7 +72,7 @@
 </div>
 
 <script>
-  const CHECKBOX_SIZE  = 16;
+  let CHECKBOX_SIZE  = 16;
   const PADDLE_HEIGHT  = 4;
   const PADDLE_OFFSET  = 2;   // cols from each edge
   const PADDLE_SPEED   = 10;  // cells/sec
@@ -321,6 +321,12 @@
       resetGame();
     }, 150);
   });
+
+  window.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+    buildGrid(); resetGame();
+  }, { passive: false });
 
   buildGrid();
   resetGame();

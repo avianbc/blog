@@ -121,7 +121,7 @@ input[type="checkbox"]:checked {
 </div>
 
 <script>
-const CHECKBOX_SIZE = 16;
+let CHECKBOX_SIZE = 16;
 const TAU = Math.PI * 2;
 
 // ---- Geometric Patterns ----
@@ -285,6 +285,12 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(buildGrid, 160);
 });
+
+window.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
+  buildGrid();
+}, { passive: false });
 
 // ---- Init ----
 modeLabelEl.textContent = MODES[modeIdx].name;
