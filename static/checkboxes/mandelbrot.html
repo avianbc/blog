@@ -244,12 +244,6 @@
       }, 150);
     });
 
-    window.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
-      buildGrid(); render();
-    }, { passive: false });
-
     // ── Init ──────────────────────────────────────────────────────────────────
 
     buildGrid();

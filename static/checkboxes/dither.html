@@ -174,7 +174,7 @@
   </div>
 
   <script>
-    let CHECKBOX_SIZE = 16;
+    let CHECKBOX_SIZE = 6;
 
     const gridEl       = document.getElementById('grid');
     const fileInput    = document.getElementById('file-input');
@@ -222,6 +222,8 @@
       for (let i = 0; i < total; i++) {
         const cb = document.createElement('input');
         cb.type = 'checkbox';
+        cb.style.width  = CHECKBOX_SIZE + 'px';
+        cb.style.height = CHECKBOX_SIZE + 'px';
         frag.appendChild(cb);
         boxes[i] = cb;
       }

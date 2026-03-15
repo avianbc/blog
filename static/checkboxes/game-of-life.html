@@ -161,12 +161,6 @@
       resizeTimer = setTimeout(build, 150);
     });
 
-    window.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
-      build();
-    }, { passive: false });
-
     // Space to pause/resume, R to randomize
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
