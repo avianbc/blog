@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DITHER</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 0;
+      line-height: 0;
+      user-select: none;
+    }
+
+    #grid input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      display: inline-block;
+      vertical-align: top;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      background: #111;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    #grid input[type="checkbox"]:checked {
+      background: #ddd;
+    }
+
+    #hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.82);
+      color: #fff;
+      padding: 14px 18px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      min-width: 248px;
+    }
+
+    #hud-title {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      margin-bottom: 4px;
+    }
+
+    #hud-hint {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    #load-btn {
+      display: block;
+      background: #242424;
+      color: #bbb;
+      border: 1px solid #383838;
+      padding: 5px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-align: left;
+    }
+
+    #load-btn:hover {
+      background: #2e2e2e;
+      color: #eee;
+    }
+
+    #img-info {
+      display: none;
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 10px;
+      word-break: break-all;
+    }
+
+    #controls {
+      display: none;
+    }
+
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .ctrl-label {
+      font-size: 12px;
+      color: #888;
+      width: 72px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .ctrl-row input[type="range"] {
+      flex: 1;
+      accent-color: #aaa;
+      cursor: pointer;
+      min-width: 90px;
+    }
+
+    .ctrl-val {
+      font-size: 11px;
+      color: #555;
+      width: 28px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    #drop-border {
+      position: fixed;
+      inset: 0;
+      border: 3px dashed #444;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s;
+      z-index: 5;
+    }
+
+    body.drag-over #drop-border {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <div id="drop-border"></div>
+
+  <div id="hud">
+    <div id="hud-title">DITHER</div>
+    <div id="hud-hint">Drop an image or click Load</div>
+    <button id="load-btn">Load image</button>
+    <input type="file" id="file-input" accept="image/*" style="display:none">
+    <div id="img-info"></div>
+    <div id="controls">
+      <div class="ctrl-row">
+        <label class="ctrl-label" for="invert-cb">Invert</label>
+        <input type="checkbox" id="invert-cb">
+      </div>
+      <div class="ctrl-row">
+        <label class="ctrl-label" for="thresh-slider">Threshold</label>
+        <input type="range" id="thresh-slider" min="0" max="255" value="128">
+        <span class="ctrl-val" id="thresh-val">128</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CHECKBOX_SIZE = 16;
+
+    const gridEl       = document.getElementById('grid');
+    const fileInput    = document.getElementById('file-input');
+    const loadBtn      = document.getElementById('load-btn');
+    const imgInfo      = document.getElementById('img-info');
+    const controlsEl   = document.getElementById('controls');
+    const invertCb     = document.getElementById('invert-cb');
+    const threshSlider = document.getElementById('thresh-slider');
+    const threshVal    = document.getElementById('thresh-val');
+
+    let cols = 0, rows = 0;
+    let boxes = [];
+
+    let srcImage    = null;
+    let srcFilename = '';
+    let srcGray     = null;
+    let imgW = 0, imgH = 0;
+
+    const offscreen = document.createElement('canvas');
+    const octx = offscreen.getContext('2d');
+
+    // ── Grid ────────────────────────────────────────────────────────────
+
+    function buildGrid() {
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      gridEl.style.width  = cols * CHECKBOX_SIZE + 'px';
+      gridEl.style.height = rows * CHECKBOX_SIZE + 'px';
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+      boxes = new Array(total);
+
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+        boxes[i] = cb;
+      }
+
+      gridEl.innerHTML = '';
+      gridEl.appendChild(frag);
+    }
+
+    // ── Dithering ───────────────────────────────────────────────────────
+
+    function floydSteinberg(gray, w, h, threshold) {
+      const buf = new Float32Array(gray); // work on a copy
+      const out = new Uint8Array(w * h);
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const i   = y * w + x;
+          const old = buf[i];
+          const neu = old < threshold ? 0 : 255;
+          out[i]    = neu;
+          const err = old - neu;
+
+          if (x + 1 < w)
+            buf[i + 1]              += err * (7 / 16);
+          if (y + 1 < h) {
+            if (x > 0)
+              buf[(y+1)*w + (x-1)] += err * (3 / 16);
+            buf[(y+1)*w + x]       += err * (5 / 16);
+            if (x + 1 < w)
+              buf[(y+1)*w + (x+1)] += err * (1 / 16);
+          }
+        }
+      }
+      return out;
+    }
+
+    // ── Render ──────────────────────────────────────────────────────────
+
+    function renderDithered(dithered, w, h, invert) {
+      const offX = Math.floor((cols - w) / 2);
+      const offY = Math.floor((rows - h) / 2);
+
+      for (let i = 0; i < boxes.length; i++) boxes[i].checked = false;
+
+      for (let iy = 0; iy < h; iy++) {
+        const gy = iy + offY;
+        if (gy < 0 || gy >= rows) continue;
+        const rowBase = gy * cols;
+        const srcBase = iy * w;
+        for (let ix = 0; ix < w; ix++) {
+          const gx = ix + offX;
+          if (gx < 0 || gx >= cols) continue;
+          const lit = dithered[srcBase + ix] === 255;
+          boxes[rowBase + gx].checked = invert ? !lit : lit;
+        }
+      }
+    }
+
+    function redither() {
+      if (!srcGray) return;
+      const t = parseInt(threshSlider.value, 10);
+      renderDithered(floydSteinberg(srcGray, imgW, imgH, t), imgW, imgH, invertCb.checked);
+    }
+
+    // ── Image loading ───────────────────────────────────────────────────
+
+    function processImage(img, filename) {
+      srcImage    = img;
+      srcFilename = filename;
+
+      const scale = Math.min(cols / img.width, rows / img.height);
+      imgW = Math.max(1, Math.round(img.width  * scale));
+      imgH = Math.max(1, Math.round(img.height * scale));
+
+      offscreen.width  = imgW;
+      offscreen.height = imgH;
+      octx.fillStyle = '#000';
+      octx.fillRect(0, 0, imgW, imgH);
+      octx.drawImage(img, 0, 0, imgW, imgH);
+
+      const { data } = octx.getImageData(0, 0, imgW, imgH);
+      srcGray = new Float32Array(imgW * imgH);
+      for (let i = 0; i < imgW * imgH; i++) {
+        const b = i << 2;
+        srcGray[i] = 0.299 * data[b] + 0.587 * data[b+1] + 0.114 * data[b+2];
+      }
+
+      imgInfo.textContent = filename + '  ' + imgW + 'x' + imgH;
+      imgInfo.style.display = 'block';
+      controlsEl.style.display = 'block';
+
+      redither();
+    }
+
+    function loadFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => processImage(img, file.name);
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ── Placeholder ─────────────────────────────────────────────────────
+
+    function renderPlaceholder() {
+      // Draw "DROP IMAGE" onto a cols x rows canvas (1 pixel = 1 checkbox),
+      // dither it, and render directly to the grid.
+      const msg = 'DROP IMAGE';
+      const tmp = document.createElement('canvas');
+      tmp.width  = cols;
+      tmp.height = rows;
+      const tc = tmp.getContext('2d');
+
+      tc.fillStyle = '#000';
+      tc.fillRect(0, 0, cols, rows);
+
+      let fs = Math.floor(rows * 0.3);
+      tc.font = `bold ${fs}px monospace`;
+      let tw = tc.measureText(msg).width;
+      const maxW = cols * 0.85;
+      if (tw > maxW) {
+        fs = Math.floor(fs * maxW / tw);
+        tc.font = `bold ${fs}px monospace`;
+        tw = tc.measureText(msg).width;
+      }
+
+      const tx = Math.floor((cols - tw) / 2);
+      const ty = Math.floor(rows / 2 + fs * 0.35);
+
+      tc.fillStyle = '#fff';
+      tc.fillText(msg, tx, ty);
+
+      const { data } = tc.getImageData(0, 0, cols, rows);
+      const gray = new Float32Array(cols * rows);
+      for (let i = 0; i < cols * rows; i++) {
+        const b = i << 2;
+        gray[i] = 0.299 * data[b] + 0.587 * data[b+1] + 0.114 * data[b+2];
+      }
+
+      const dithered = floydSteinberg(gray, cols, rows, 128);
+      for (let i = 0; i < boxes.length; i++) {
+        boxes[i].checked = dithered[i] === 255;
+      }
+    }
+
+    // ── Events ───────────────────────────────────────────────────────────
+
+    loadBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', e => {
+      if (e.target.files[0]) loadFile(e.target.files[0]);
+    });
+
+    invertCb.addEventListener('change', redither);
+
+    threshSlider.addEventListener('input', () => {
+      threshVal.textContent = threshSlider.value;
+      redither();
+    });
+
+    document.addEventListener('dragover', e => {
+      e.preventDefault();
+      document.body.classList.add('drag-over');
+    });
+
+    document.addEventListener('dragleave', e => {
+      if (!e.relatedTarget) document.body.classList.remove('drag-over');
+    });
+
+    document.addEventListener('drop', e => {
+      e.preventDefault();
+      document.body.classList.remove('drag-over');
+      loadFile(e.dataTransfer.files[0]);
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        buildGrid();
+        if (srcImage) {
+          processImage(srcImage, srcFilename);
+        } else {
+          renderPlaceholder();
+        }
+      }, 150);
+    });
+
+    // ── Init ─────────────────────────────────────────────────────────────
+    buildGrid();
+    renderPlaceholder();
+  </script>
+</body>
+</html>
