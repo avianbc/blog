@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of Life</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #grid {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      cursor: pointer;
+      border: 1px solid #333;
+      background: #111;
+      transition: background 0.1s;
+    }
+
+    input[type="checkbox"]:checked {
+      background: #e8e8e8;
+      border-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    const CHECKBOX_SIZE = 16;
+    const SIM_INTERVAL  = 100; // ms between generations
+
+    let checkboxes = [];
+    let cols = 0;
+    let rows = 0;
+    let running = true;
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+      const total = cols * rows;
+      const frag  = document.createDocumentFragment();
+
+      for (let i = 0; i < total; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+
+      // Random seed — ~25% density
+      for (const cb of checkboxes) {
+        cb.checked = Math.random() < 0.25;
+      }
+    }
+
+    // Click and drag to paint/erase cells
+    let painting = false;
+    let paintValue = true;
+
+    const gridEl = document.getElementById('grid');
+
+    gridEl.addEventListener('mousedown', (e) => {
+      if (e.target.type === 'checkbox') {
+        e.preventDefault();
+        painting = true;
+        running = false;
+        paintValue = !e.target.checked;
+        e.target.checked = paintValue;
+      }
+    });
+
+    gridEl.addEventListener('mouseover', (e) => {
+      if (painting && e.target.type === 'checkbox') {
+        e.target.checked = paintValue;
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      painting = false;
+      running = true;
+    });
+
+    // Prevent default checkbox toggle so we control it manually
+    gridEl.addEventListener('click', (e) => {
+      if (e.target.type === 'checkbox') {
+        e.preventDefault();
+      }
+    });
+
+    function countNeighbors(index) {
+      const r = Math.floor(index / cols);
+      const c = index % cols;
+      let count = 0;
+
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          const nr = (r + dr + rows) % rows; // wrap edges
+          const nc = (c + dc + cols) % cols;
+          if (checkboxes[nr * cols + nc].checked) count++;
+        }
+      }
+      return count;
+    }
+
+    function step() {
+      const len = checkboxes.length;
+      const next = new Uint8Array(len);
+
+      for (let i = 0; i < len; i++) {
+        const alive = checkboxes[i].checked;
+        const n = countNeighbors(i);
+        // B3/S23: born with 3 neighbors, survive with 2 or 3
+        next[i] = alive ? (n === 2 || n === 3 ? 1 : 0) : (n === 3 ? 1 : 0);
+      }
+
+      for (let i = 0; i < len; i++) {
+        checkboxes[i].checked = next[i] === 1;
+      }
+    }
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
+    });
+
+    // Space to pause/resume, R to randomize
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        running = !running;
+      } else if (e.code === 'KeyR') {
+        for (const cb of checkboxes) {
+          cb.checked = Math.random() < 0.25;
+        }
+      }
+    });
+
+    function tick() {
+      if (running) step();
+      setTimeout(tick, SIM_INTERVAL);
+    }
+
+    tick();
+  </script>
+</body>
+</html>
