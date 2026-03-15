@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clock</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #111; }
+    #grid { display: grid; width: 100vw; height: 100vh; }
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      cursor: default;
+      transition: background 0.05s;
+    }
+    input[type="checkbox"]:checked {
+      background: #00e5ff;
+      border-color: #00e5ff;
+      box-shadow: 0 0 4px #00e5ff88;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    const CHECKBOX_SIZE = 16;
+    let checkboxes = [];
+    let cols = 0, rows = 0;
+
+    function build() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cols = Math.floor(window.innerWidth / CHECKBOX_SIZE);
+      rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+      grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < cols * rows; i++) {
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        frag.appendChild(cb);
+      }
+      grid.appendChild(frag);
+      checkboxes = Array.from(grid.querySelectorAll('input'));
+    }
+
+    build();
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { build(); renderTime(); }, 150);
+    });
+
+    // 5×7 pixel font, row-major (35 values per digit, 14 for colon)
+    const FONT = {
+      '0': [
+        0,1,1,1,0,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,0
+      ],
+      '1': [
+        0,0,1,0,0,
+        0,1,1,0,0,
+        0,0,1,0,0,
+        0,0,1,0,0,
+        0,0,1,0,0,
+        0,0,1,0,0,
+        0,1,1,1,0
+      ],
+      '2': [
+        0,1,1,1,0,
+        1,0,0,0,1,
+        0,0,0,0,1,
+        0,0,1,1,0,
+        0,1,0,0,0,
+        1,0,0,0,0,
+        1,1,1,1,1
+      ],
+      '3': [
+        0,1,1,1,0,
+        1,0,0,0,1,
+        0,0,0,0,1,
+        0,0,1,1,0,
+        0,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,0
+      ],
+      '4': [
+        0,0,0,1,0,
+        0,0,1,1,0,
+        0,1,0,1,0,
+        1,0,0,1,0,
+        1,1,1,1,1,
+        0,0,0,1,0,
+        0,0,0,1,0
+      ],
+      '5': [
+        1,1,1,1,1,
+        1,0,0,0,0,
+        1,1,1,1,0,
+        0,0,0,0,1,
+        0,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,0
+      ],
+      '6': [
+        0,1,1,1,0,
+        1,0,0,0,0,
+        1,1,1,1,0,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,0
+      ],
+      '7': [
+        1,1,1,1,1,
+        0,0,0,0,1,
+        0,0,0,1,0,
+        0,0,1,0,0,
+        0,1,0,0,0,
+        0,1,0,0,0,
+        0,1,0,0,0
+      ],
+      '8': [
+        0,1,1,1,0,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,0,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,0
+      ],
+      '9': [
+        0,1,1,1,0,
+        1,0,0,0,1,
+        1,0,0,0,1,
+        0,1,1,1,1,
+        0,0,0,0,1,
+        0,0,0,0,1,
+        0,1,1,1,0
+      ],
+      // 2 cols wide, 7 rows tall (14 values)
+      ':': [
+        0,1,
+        0,1,
+        0,0,
+        0,0,
+        0,1,
+        0,1,
+        0,0
+      ]
+    };
+
+    const FONT_W  = 5;
+    const FONT_H  = 7;
+    const COLON_W = 2;
+    const SCALE   = 2;
+    const GAP     = 1 * SCALE; // 1 font-pixel gap between chars, scaled
+
+    // "HH:MM:SS" = 6 digits + 2 colons + 7 gaps
+    // scaled: 6*10 + 2*4 + 7*2 = 82 cols wide, 14 rows tall
+    const TOTAL_WIDTH  = 6 * FONT_W * SCALE + 2 * COLON_W * SCALE + 7 * GAP;
+    const TOTAL_HEIGHT = FONT_H * SCALE;
+
+    function idx(c, r) { return r * cols + c; }
+    function setCell(c, r, val) {
+      if (c >= 0 && c < cols && r >= 0 && r < rows) checkboxes[idx(c, r)].checked = val;
+    }
+
+    function drawChar(ch, startCol, startRow) {
+      const bitmap = FONT[ch];
+      const charW  = ch === ':' ? COLON_W : FONT_W;
+      for (let fy = 0; fy < FONT_H; fy++) {
+        for (let fx = 0; fx < charW; fx++) {
+          const bit = bitmap[fy * charW + fx];
+          for (let sy = 0; sy < SCALE; sy++) {
+            for (let sx = 0; sx < SCALE; sx++) {
+              setCell(startCol + fx * SCALE + sx, startRow + fy * SCALE + sy, !!bit);
+            }
+          }
+        }
+      }
+    }
+
+    function renderTime() {
+      const len = checkboxes.length;
+      for (let i = 0; i < len; i++) checkboxes[i].checked = false;
+
+      const now = new Date();
+      const hh  = String(now.getHours()).padStart(2, '0');
+      const mm  = String(now.getMinutes()).padStart(2, '0');
+      const ss  = String(now.getSeconds()).padStart(2, '0');
+      const timeStr = hh + ':' + mm + ':' + ss;
+
+      const offX = Math.floor((cols - TOTAL_WIDTH)  / 2);
+      const offY = Math.floor((rows - TOTAL_HEIGHT) / 2);
+
+      let curX = offX;
+      for (const ch of timeStr) {
+        drawChar(ch, curX, offY);
+        curX += (ch === ':' ? COLON_W : FONT_W) * SCALE + GAP;
+      }
+    }
+
+    renderTime();
+    setInterval(renderTime, 1000);
+  </script>
+</body>
+</html>
