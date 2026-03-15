@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rain</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a12; }
+    #grid { display: grid; width: 100vw; height: 100vh; }
+    input[type=checkbox] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #1a1a2a;
+      background: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+    input[type=checkbox]:checked { background: #4af; border-color: #4af; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font: 13px/1.6 monospace;
+      padding: 8px 14px 10px;
+      border-radius: 4px;
+      user-select: none;
+      z-index: 10;
+    }
+    #hud h2 { font-size: 15px; letter-spacing: 3px; margin-bottom: 2px; color: #4af; }
+    #hud label { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    #intensity-range { width: 90px; accent-color: #4af; }
+  </style>
+</head>
+<body>
+<div id="grid"></div>
+<div id="hud">
+  <h2>RAIN</h2>
+  <div>Drops: <span id="drop-count">0</span></div>
+  <label>Intensity:
+    <input type="range" id="intensity-range" min="1" max="20" value="7">
+    <span id="intensity-val">7</span>
+  </label>
+</div>
+<script>
+  const CHECKBOX_SIZE = 16;
+
+  let cols, rows, checkboxes = [];
+  let drops = [];
+  let splashes = [];
+  let puddles = new Map();
+  let lastChecked = new Set();
+  let intensity = 7;
+
+  const intensityRange = document.getElementById('intensity-range');
+  const intensityVal   = document.getElementById('intensity-val');
+  intensityRange.addEventListener('input', () => {
+    intensity = +intensityRange.value;
+    intensityVal.textContent = intensity;
+  });
+
+  function build() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+
+    cols = Math.floor(window.innerWidth  / CHECKBOX_SIZE);
+    rows = Math.floor(window.innerHeight / CHECKBOX_SIZE);
+
+    grid.style.gridTemplateColumns = `repeat(${cols}, ${CHECKBOX_SIZE}px)`;
+    grid.style.gridTemplateRows    = `repeat(${rows}, ${CHECKBOX_SIZE}px)`;
+
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < cols * rows; i++) {
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      frag.appendChild(cb);
+    }
+    grid.appendChild(frag);
+    checkboxes = Array.from(grid.querySelectorAll('input'));
+
+    drops = [];
+    splashes = [];
+    puddles = new Map();
+    lastChecked = new Set();
+  }
+
+  function tick() {
+    const spawnCount = Math.max(1, Math.round(cols * intensity / 100));
+    for (let i = 0; i < spawnCount; i++) {
+      drops.push({
+        col: Math.floor(Math.random() * cols),
+        row: 0,
+        speed: 1 + Math.random() * 2
+      });
+    }
+
+    const alive = [];
+    for (const d of drops) {
+      d.row += d.speed;
+      if (d.row >= rows) {
+        const landRow = rows - 1;
+        const splashCells = [];
+        for (let dx = 1; dx <= 2; dx++) {
+          if (d.col - dx >= 0)   splashCells.push(landRow * cols + (d.col - dx));
+          if (d.col + dx < cols) splashCells.push(landRow * cols + (d.col + dx));
+        }
+        if (splashCells.length) splashes.push({ cells: splashCells, timer: 3 });
+        puddles.set(landRow * cols + d.col, 10);
+      } else {
+        alive.push(d);
+      }
+    }
+    drops = alive;
+
+    splashes = splashes.filter(s => --s.timer > 0);
+
+    for (const [idx, t] of puddles) {
+      if (t <= 1) puddles.delete(idx);
+      else puddles.set(idx, t - 1);
+    }
+
+    const toCheck = new Set();
+    for (const d of drops) {
+      const r = Math.floor(d.row);
+      if (r >= 0 && r < rows) toCheck.add(r * cols + d.col);
+    }
+    for (const s of splashes) {
+      for (const idx of s.cells) toCheck.add(idx);
+    }
+    for (const idx of puddles.keys()) toCheck.add(idx);
+
+    for (const idx of lastChecked) {
+      if (!toCheck.has(idx)) checkboxes[idx].checked = false;
+    }
+    for (const idx of toCheck) {
+      if (!lastChecked.has(idx)) checkboxes[idx].checked = true;
+    }
+    lastChecked = toCheck;
+
+    document.getElementById('drop-count').textContent = drops.length;
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(build, 150);
+  });
+
+  build();
+  setInterval(tick, 50);
+</script>
+</body>
+</html>
