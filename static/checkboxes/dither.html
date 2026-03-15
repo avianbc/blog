@@ -196,6 +196,13 @@
     const offscreen = document.createElement('canvas');
     const octx = offscreen.getContext('2d');
 
+    let animFrames = [];
+    let animIndex = 0;
+    let animTimer = null;
+    let isAnimated = false;
+    let srcArrayBuffer = null;
+    let srcMimeType = '';
+
     // ---- Dither ----
     //
     // Loads an image via drag-and-drop or file picker, converts it to
@@ -288,6 +295,89 @@
       renderDithered(floydSteinberg(srcGray, imgW, imgH, t), imgW, imgH, invertCb.checked);
     }
 
+    // ── Animation ───────────────────────────────────────────────────────
+
+    function stopAnimation() {
+      if (animTimer) { clearTimeout(animTimer); animTimer = null; }
+      animFrames = [];
+      animIndex = 0;
+    }
+
+    function playAnimation() {
+      if (!isAnimated || animFrames.length === 0) return;
+      const frame = animFrames[animIndex];
+      srcGray = frame.gray;
+      redither();
+      animIndex = (animIndex + 1) % animFrames.length;
+      animTimer = setTimeout(playAnimation, frame.delay);
+    }
+
+    async function processAnimatedBuffer(buffer, mimeType, filename) {
+      const decoder = new ImageDecoder({ data: buffer, type: mimeType });
+      await decoder.tracks.ready;
+      const frameCount = decoder.tracks.selectedTrack.frameCount;
+
+      if (frameCount <= 1) { decoder.close(); return false; }
+
+      await decoder.completed;
+      const frames = [];
+      let w, h;
+
+      for (let i = 0; i < frameCount; i++) {
+        const result = await decoder.decode({ frameIndex: i });
+        const vf = result.image;
+        const delay = Math.max(20, (vf.duration || 100000) / 1000);
+
+        if (i === 0) {
+          const scale = Math.min(cols / vf.displayWidth, rows / vf.displayHeight);
+          w = Math.max(1, Math.round(vf.displayWidth * scale));
+          h = Math.max(1, Math.round(vf.displayHeight * scale));
+          offscreen.width = w;
+          offscreen.height = h;
+        }
+
+        octx.fillStyle = '#000';
+        octx.fillRect(0, 0, w, h);
+        octx.drawImage(vf, 0, 0, w, h);
+        vf.close();
+
+        const { data } = octx.getImageData(0, 0, w, h);
+        const gray = new Float32Array(w * h);
+        for (let j = 0; j < w * h; j++) {
+          const b = j << 2;
+          gray[j] = 0.299 * data[b] + 0.587 * data[b+1] + 0.114 * data[b+2];
+        }
+
+        frames.push({ gray, delay });
+      }
+
+      decoder.close();
+
+      imgW = w;
+      imgH = h;
+      srcFilename = filename;
+      imgInfo.textContent = filename + '  ' + w + 'x' + h + '  ' + frameCount + ' frames';
+      imgInfo.style.display = 'block';
+      controlsEl.style.display = 'block';
+
+      animFrames = frames;
+      isAnimated = true;
+      animIndex = 0;
+      srcGray = frames[0].gray;
+
+      playAnimation();
+      return true;
+    }
+
+    async function reprocessAnimated() {
+      stopAnimation();
+      try {
+        await processAnimatedBuffer(srcArrayBuffer, srcMimeType, srcFilename);
+      } catch (e) {
+        console.warn('Failed to reprocess animated image', e);
+      }
+    }
+
     // ── Image loading ───────────────────────────────────────────────────
 
     function processImage(img, filename) {
@@ -318,8 +408,28 @@
       redither();
     }
 
-    function loadFile(file) {
+    async function loadFile(file) {
       if (!file || !file.type.startsWith('image/')) return;
+
+      stopAnimation();
+      isAnimated = false;
+      srcImage = null;
+      srcArrayBuffer = null;
+
+      if ('ImageDecoder' in window) {
+        try {
+          const buffer = await file.arrayBuffer();
+          srcArrayBuffer = buffer;
+          srcMimeType = file.type;
+          const handled = await processAnimatedBuffer(buffer, file.type, file.name);
+          if (handled) return;
+          srcArrayBuffer = null;
+        } catch (e) {
+          console.warn('ImageDecoder failed, falling back to static load', e);
+          srcArrayBuffer = null;
+        }
+      }
+
       const reader = new FileReader();
       reader.onload = e => {
         const img = new Image();
@@ -407,7 +517,9 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         buildGrid();
-        if (srcImage) {
+        if (isAnimated && srcArrayBuffer) {
+          reprocessAnimated();
+        } else if (srcImage) {
           processImage(srcImage, srcFilename);
         } else {
           renderPlaceholder();
@@ -419,7 +531,9 @@
       e.preventDefault();
       CHECKBOX_SIZE = Math.max(4, Math.min(64, CHECKBOX_SIZE + (e.deltaY < 0 ? 2 : -2)));
       buildGrid();
-      if (srcImage) { processImage(srcImage, srcFilename); } else { renderPlaceholder(); }
+      if (isAnimated && srcArrayBuffer) { reprocessAnimated(); }
+      else if (srcImage) { processImage(srcImage, srcFilename); }
+      else { renderPlaceholder(); }
     }, { passive: false });
 
     // ── Init ─────────────────────────────────────────────────────────────

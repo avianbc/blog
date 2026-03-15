@@ -104,7 +104,7 @@ The constraint is the whole point. You get one bit per "pixel": on or off. Every
 
 ### Actually Useful
 
-**[Dither](/checkboxes/dither.html)** *(interactive)*: Drag and drop any image. Converts to grayscale, runs [Floyd-Steinberg](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering) error diffusion, renders onto the grid. Checked = bright, unchecked = dark. The results are surprisingly good.
+**[Dither](/checkboxes/dither.html)** *(interactive)*: Drag and drop any image. Converts to grayscale, runs [Floyd-Steinberg](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering) error diffusion, renders onto the grid. Checked = bright, unchecked = dark. Animated GIFs, APNGs, and WebPs animate. The results are surprisingly good. Your image never leaves your browser. Nothing is uploaded. The paranoia is appreciated but unnecessary.
 
 **[Clock](/checkboxes/clock.html):** The current time in a 5x7 pixel font. You saw it at the top.
 
