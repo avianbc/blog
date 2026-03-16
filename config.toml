@@ -87,12 +87,8 @@ name = "Workouts"
 weight = 3
 url = "dashboard/"
 [[menu.main]]
-name = "Consulting"
-weight = 4
-url = "consulting/"
-[[menu.main]]
 name = "About"
-weight = 5
+weight = 4
 url = "about/"
 
 [markup]
