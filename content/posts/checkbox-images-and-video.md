@@ -1,5 +1,5 @@
 ---
-title: "Checkbox Canvas: Dither & Webcam"
+title: "Checkbox Canvas: Images & Video"
 date: 2026-03-17T10:15:00-05:00
 categories:
   - Programming

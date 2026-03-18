@@ -36,4 +36,4 @@ The grid wraps at all edges.
 
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Visual Effects](/posts/checkbox-visual-effects/), [Dither & Webcam](/posts/checkbox-dither/).*
+*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Visual Effects](/posts/checkbox-visual-effects/), [Images & Video](/posts/checkbox-images-and-video/).*

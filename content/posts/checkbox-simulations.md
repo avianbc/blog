@@ -86,8 +86,6 @@ Generates mazes in real time using iterative [depth-first search](https://en.wik
 
 Every generated maze is a perfect maze: one solution, no loops, no isolated regions. It restarts automatically. Good to leave running if you like watching things get solved that you didn't ask it to solve.
 
-![Maze generator mid-run in a checkbox grid](/checkboxes/maze.png)
-
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Visual Effects](/posts/checkbox-visual-effects/), [Games](/posts/checkbox-games/), [Dither & Webcam](/posts/checkbox-dither/).*
+*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Visual Effects](/posts/checkbox-visual-effects/), [Games](/posts/checkbox-games/), [Images & Video](/posts/checkbox-images-and-video/).*

@@ -1,5 +1,5 @@
 ---
-title: "Checkbox Canvas Experiments"
+title: "Checkbox Canvas"
 date: 2026-03-15T12:00:00-05:00
 categories:
   - Programming
@@ -10,6 +10,7 @@ tags:
 series:
   - Experiments
   - Checkbox Canvas
+canonicalUrl: /checkbox-canvas-experiments/
 ---
 
 <div id="cb-hero">
@@ -81,7 +82,7 @@ Twenty demos total, grouped by what they're actually doing:
 - **[Simulations](/posts/checkbox-simulations/)**: Slime Mold, Langton's Ant, Game of Life, Maze. Actual algorithms with state; the checkboxes just report what happened.
 - **[Visual Effects](/posts/checkbox-visual-effects/)**: Spirals, Wave Interference, Mandelbrot, Fireworks, The Matrix, Ripples, Raindrops, Wave, Random Noise, Marquee, DVD. Pure math per cell per frame, thresholded to on/off.
 - **[Games](/posts/checkbox-games/)**: Pong and Snake. Both fully playable.
-- **[Dither & Webcam](/posts/checkbox-dither/)**: Floyd-Steinberg error diffusion on images and live camera feed. The webcam one in particular is worth opening.
+- **[Images & Video](/posts/checkbox-images-and-video/)**: Floyd-Steinberg error diffusion on images and live camera feed. The webcam one in particular is worth opening.
 
 ## Performance
 

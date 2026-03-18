@@ -282,4 +282,4 @@ The bouncing DVD logo. It hits the corner eventually. You're welcome.
 
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Games](/posts/checkbox-games/), [Dither & Webcam](/posts/checkbox-dither/).*
+*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Games](/posts/checkbox-games/), [Images & Video](/posts/checkbox-images-and-video/).*
