@@ -21,7 +21,7 @@ dateformat = "Jan 2, 2006"
 customSCSS = ["custom.scss"]
 since = "2012"
 colorScheme = "auto"
-recentPostCount = "5"
+recentPostCount = "10"
 commit = "https://github.com/avianbc/blog/tree/"
 
 [params.giscus] # https://giscus.app
