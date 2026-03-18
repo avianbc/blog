@@ -13,23 +13,21 @@ series:
   - Checkbox Canvas
 ---
 
-The 1-bit constraint is most interesting when you stack it against a system with real state. These four demos are simulations — they evolve by rules, and the checkboxes just report what happened. The display isn't the computation; it's the readout.
+The 1-bit constraint is most interesting when you stack it against a system with real state. These four demos are simulations. They evolve by rules, and the checkboxes just report what happened. The display isn't the computation; it's the readout.
 
-## Slime Mold
-
-**[Slime Mold Simulation](/checkboxes/slime-mold-simulation.html)** *(interactive)*
+## **[Slime Mold Simulation](/checkboxes/slime-mold-simulation.html)** *(interactive)*
 
 [Physarum polycephalum](https://en.wikipedia.org/wiki/Physarum_polycephalum) is a slime mold that navigated mazes, solved the shortest path between oat flakes, and independently approximated the Tokyo subway network. It has no brain, no neurons, no central coordination. Researchers at Hokkaido University published [a paper about it in Science in 2010](https://doi.org/10.1126/science.1177894) and everyone was appropriately unsettled.
 
-The simulation approximates its foraging behavior with simple agents. Each agent has a position, a heading, and three sensors — forward-left, forward, forward-right. Every step, it samples the trail concentration at each sensor position, turns toward the highest reading, moves forward, and deposits a small amount of trail. The trail diffuses and decays each frame.
+The simulation approximates its foraging behavior with simple agents. Each agent has a position, a heading, and three sensors (forward-left, forward, forward-right). Every step, it samples the trail concentration at each sensor position, turns toward the highest reading, moves forward, and deposits a small amount of trail. The trail diffuses and decays each frame.
 
-That's the entire rule set. The branching networks, the pulsing veins, the convergence when you click and deposit a blob of trail — all of it comes from that local rule applied to a few thousand agents simultaneously. No global coordination exists anywhere in the code.
+That's the entire rule set. The branching networks, the pulsing veins, the convergence when you click and deposit a blob of trail: all of it comes from that local rule applied to a few thousand agents simultaneously. No global coordination exists anywhere in the code.
 
 At 1-bit resolution the patterns are rougher than they'd be on a canvas, but the structure is still clearly visible and arguably more legible. The discretization forces the networks into sharper shapes.
 
 Click or drag anywhere to deposit trail and watch the agents swarm toward it. The response is immediate and a little unsettling.
 
-## Langton's Ant
+## **[Langton's Ant](/checkboxes/langtons-ant.html)**
 
 <div style="margin:1.5rem 0">
 <div id="ant-grid" style="display:grid;width:fit-content;line-height:0"></div>
@@ -64,32 +62,26 @@ Click or drag anywhere to deposit trail and watch the agents swarm toward it. Th
 </script>
 </div>
 
-**[Langton's Ant](/checkboxes/langtons-ant.html)**
-
 [Two rules](https://en.wikipedia.org/wiki/Langton%27s_ant):
 
 1. On a lit cell: turn right, uncheck it, move forward.
 2. On a dark cell: turn left, check it, move forward.
 
-That's it. Run it for a few hundred steps and you get something that looks like noise. Run it for about 10,000 steps and it spontaneously starts building a diagonal highway that repeats forever. No one has a clean mathematical proof of why this happens — it's been observed, not derived.
+That's it. Run it for a few hundred steps and you get something that looks like noise. Run it for about 10,000 steps and it spontaneously starts building a diagonal highway that repeats forever. No one has a clean mathematical proof of why this happens. It's been observed, not derived.
 
 The ant above runs 8 steps per frame so you can watch the early chaos phase compact down into the highway. On the fullscreen page the grid wraps at the edges so it runs indefinitely. Wait for the highway.
 
-## Game of Life
-
-**[Game of Life](/checkboxes/game-of-life.html)** *(interactive)*
+## **[Game of Life](/checkboxes/game-of-life.html)** *(interactive)*
 
 [Conway's rules](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life): a live cell with 2 or 3 neighbors survives. A dead cell with exactly 3 neighbors becomes live. Everything else dies or stays dead. The grid wraps at edges.
 
 Click or drag to paint cells. Gliders work. Common oscillators work. They just look blockier than usual. The wrapping means gliders that exit one side re-enter on the other, which can cause collisions that wouldn't happen on an infinite grid.
 
-## Maze
-
-**[Maze](/checkboxes/maze.html)**
+## **[Maze Generator](/checkboxes/maze.html)**
 
 Generates mazes in real time using iterative [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) (recursive backtracker). The algorithm maintains a stack, randomly picks an unvisited neighbor, carves a passage, and pushes. When stuck, it pops and backtracks. You can watch the stack unwind.
 
-Every generated maze is a perfect maze — one solution, no loops, no isolated regions. It restarts automatically. Good to leave running if you like watching things get solved that you didn't ask it to solve.
+Every generated maze is a perfect maze: one solution, no loops, no isolated regions. It restarts automatically. Good to leave running if you like watching things get solved that you didn't ask it to solve.
 
 ---
 

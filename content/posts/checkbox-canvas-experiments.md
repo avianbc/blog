@@ -78,10 +78,10 @@ The constraint is the whole point. You get one bit per "pixel": on or off. Every
 
 Twenty demos total, grouped by what they're actually doing:
 
-- **[Simulations](/posts/checkbox-simulations/)** — Slime Mold, Langton's Ant, Game of Life, Maze. Actual algorithms with state; the checkboxes just report what happened.
-- **[Visual Effects](/posts/checkbox-visual-effects/)** — Spirals, Wave Interference, Mandelbrot, Fireworks, The Matrix, Rain, Raindrops, Wave, Random Noise, Marquee, DVD. Pure math per cell per frame, thresholded to on/off.
-- **[Games](/posts/checkbox-games/)** — Pong and Snake. Both fully playable.
-- **[Dither & Webcam](/posts/checkbox-dither/)** — Floyd-Steinberg error diffusion on images and live camera feed. The webcam one in particular is worth opening.
+- **[Simulations](/posts/checkbox-simulations/)**: Slime Mold, Langton's Ant, Game of Life, Maze. Actual algorithms with state; the checkboxes just report what happened.
+- **[Visual Effects](/posts/checkbox-visual-effects/)**: Spirals, Wave Interference, Mandelbrot, Fireworks, The Matrix, Ripples, Raindrops, Wave, Random Noise, Marquee, DVD. Pure math per cell per frame, thresholded to on/off.
+- **[Games](/posts/checkbox-games/)**: Pong and Snake. Both fully playable.
+- **[Dither & Webcam](/posts/checkbox-dither/)**: Floyd-Steinberg error diffusion on images and live camera feed. The webcam one in particular is worth opening.
 
 ## Performance
 
