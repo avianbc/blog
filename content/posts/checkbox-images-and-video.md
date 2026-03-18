@@ -32,8 +32,6 @@ Animated GIFs, APNGs, and animated WebPs work. The browser decodes each frame to
 
 The results are better than they should be. Portrait photos with good contrast come out recognizable. Logos with hard edges come out almost clean. You can tell what things are. Everything runs locally in your browser. Your image is never uploaded anywhere — if you want proof, [the source is on GitHub](https://github.com/avianbc/blog/blob/master/static/checkboxes/dither.html).
 
-![Floyd-Steinberg dithered image rendered in a checkbox grid](/checkboxes/dither.png)
-
 ## **[Webcam (Dither Cam)](/checkboxes/webcam.html)** *(interactive)*
 
 Requires a webcam. The same Floyd-Steinberg pipeline, but the image source is your camera instead of a file. Each animation frame, the live video feed is drawn to an offscreen canvas, pixel data is read, error diffusion runs, and the result goes to the grid. At default checkbox size (6px) you get around 30fps on a modern laptop.
@@ -66,4 +64,4 @@ It was described by Robert Floyd and Louis Steinberg in 1976. It still works bet
 
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Visual Effects](/posts/checkbox-visual-effects/), [Games](/posts/checkbox-games/).*
+*Part of the [Checkbox Canvas](/posts/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Visual Effects](/posts/checkbox-visual-effects/), [Games](/posts/checkbox-games/).*

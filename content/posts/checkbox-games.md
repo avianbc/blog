@@ -22,7 +22,9 @@ Both of these work. Unironically.
 
 Two players. Left paddle: W and S. Right paddle: up and down arrow keys.
 
-The ball is a single checkbox. The paddles are vertical strips a few cells tall. Collision detection uses floating-point bounding-box checks against the paddle positions, not checkbox state. The ball speeds up with each rally. It scores.
+The ball is a single checkbox. The paddles are vertical strips a few cells tall. Collision detection uses floating-point bounding-box checks against the paddle positions, not checkbox state. Using checkbox state would mean rounding the ball's true position to a cell boundary before testing contact, which introduces a full cell of fuzziness. At this grid resolution that's enough to let the ball ghost through the edge of a paddle. Keep the physics separate from the display.
+
+The ball speeds up with each rally. It scores.
 
 Each frame clears the entire grid and redraws everything. At this resolution that's fast enough to not matter.
 
@@ -30,10 +32,10 @@ Each frame clears the entire grid and redraws everything. At this resolution tha
 
 Arrow keys or WASD. Classic Snake rules: eat the food, grow the tail, don't hit yourself or the walls.
 
-The tail is represented as a queue of occupied cells. Each frame, a new head cell is checked and, if the snake didn't eat, the oldest tail cell is unchecked. The food spawns at a random unchecked cell. Self-collision is a linear scan of the tail array.
+The tail is represented as a queue of occupied cells. Each frame, a new head cell is checked and, if the snake didn't eat, the oldest tail cell is unchecked. O(1) for both operations. The food spawns at a random unchecked cell. Self-collision is a linear scan of the tail array, which is O(n) in tail length but the grid is small enough that it doesn't register.
 
 The grid wraps at all edges.
 
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Visual Effects](/posts/checkbox-visual-effects/), [Images & Video](/posts/checkbox-images-and-video/).*
+*Part of the [Checkbox Canvas](/posts/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Visual Effects](/posts/checkbox-visual-effects/), [Images & Video](/posts/checkbox-images-and-video/).*

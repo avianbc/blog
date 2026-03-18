@@ -10,7 +10,7 @@ tags:
 series:
   - Experiments
   - Checkbox Canvas
-canonicalUrl: /checkbox-canvas-experiments/
+featuredImage: /checkboxes/spirals.png
 ---
 
 <div id="cb-hero">
@@ -55,6 +55,8 @@ Turns out, not that bad. Checked = lit, unchecked = dark. A grid of `<input type
 
 ## How It Works
 
+The underlying model is the same across all twenty demos: maintain an array of checkbox elements, run a function each frame that maps each position to on or off, write `checked` directly. Here it is rendering a clock in a 5×7 bitmap font:
+
 <div id="cb-clock" style="margin:1.5rem 0;overflow-x:auto">
 <div id="cb-clock-grid" style="display:grid;width:fit-content"></div>
 <script>
@@ -90,4 +92,4 @@ Holds up fine at typical viewport sizes. Each checkbox is a real DOM element, so
 
 If a demo is lagging, scroll up to zoom in. Bigger checkboxes means fewer elements, which means better performance. Scroll down to zoom out if you want it to look cooler and don't mind the slowdown. Basically the entire resolution dial is just the scroll wheel.
 
-The dither demo uses an offscreen canvas to sample pixel data from the image. That's the one place something canvas-shaped sneaks in, but the output still goes to checkboxes.
+The dither and webcam demos use an offscreen canvas to sample pixel data from their source. That's the one place something canvas-shaped sneaks in, but the output still goes to checkboxes.

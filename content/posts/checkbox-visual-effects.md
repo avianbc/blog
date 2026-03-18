@@ -12,6 +12,7 @@ series:
   - Checkbox Canvas
 ---
 
+Every effect here is the same underlying structure: for each checkbox, compute a number, threshold it to on/off. The interesting part is what function you use to compute the number. Pure math, no textures, no precomputed lookup tables, just trig per cell per frame.
 
 <div style="margin:1.5rem 0">
 <div id="spiral-grid" style="display:grid;width:fit-content;line-height:0"></div>
@@ -48,8 +49,6 @@ series:
 </script>
 </div>
 
-Every effect here is the same underlying structure: for each checkbox, compute a number, threshold it to on/off. The interesting part is what function you use to compute the number. Pure math, no textures, no precomputed lookup tables, just trig per cell per frame.
-
 ## **[Spirals](/checkboxes/spirals.html)**
 
 Four modes that cycle automatically:
@@ -71,7 +70,7 @@ Because the sources follow incommensurate frequencies, the pattern never exactly
 
 ![Wave interference pattern in a checkbox grid](/checkboxes/wave-interference.png)
 
-## **[Mandelbrot](/checkboxes/mandelbrot.html)**
+## **[Mandelbrot](/checkboxes/mandelbrot.html)** *(interactive)*
 
 <div style="margin:1.5rem 0">
 <div id="mbrot-grid" style="display:grid;width:fit-content;line-height:0"></div>
@@ -282,4 +281,4 @@ The bouncing DVD logo. It hits the corner eventually. You're welcome.
 
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Games](/posts/checkbox-games/), [Images & Video](/posts/checkbox-images-and-video/).*
+*Part of the [Checkbox Canvas](/posts/checkbox-canvas/) series. See also: [Simulations](/posts/checkbox-simulations/), [Games](/posts/checkbox-games/), [Images & Video](/posts/checkbox-images-and-video/).*

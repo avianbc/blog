@@ -88,4 +88,4 @@ Every generated maze is a perfect maze: one solution, no loops, no isolated regi
 
 ---
 
-*Part of the [Checkbox Canvas](/series/checkbox-canvas/) series. See also: [Visual Effects](/posts/checkbox-visual-effects/), [Games](/posts/checkbox-games/), [Images & Video](/posts/checkbox-images-and-video/).*
+*Part of the [Checkbox Canvas](/posts/checkbox-canvas/) series. See also: [Visual Effects](/posts/checkbox-visual-effects/), [Games](/posts/checkbox-games/), [Images & Video](/posts/checkbox-images-and-video/).*
