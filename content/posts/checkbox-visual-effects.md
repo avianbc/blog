@@ -61,11 +61,15 @@ Four modes that cycle automatically:
 
 The logarithmic spiral mode is the one worth watching in particular. Let it run for a few cycles.
 
+![Spirals demo rendered in a checkbox grid](/checkboxes/spirals.png)
+
 ## **[Wave Interference](/checkboxes/wave-interference.html)**
 
 You saw a two-source version of this at the top of the page. The full demo runs four wave sources drifting independently on [Lissajous](https://en.wikipedia.org/wiki/Lissajous_curve) paths. Their combined [interference pattern](https://en.wikipedia.org/wiki/Wave_interference) is thresholded to 1-bit. Each source contributes a `sin(distance - time * speed)` term; sum them and check the sign.
 
 Because the sources follow incommensurate frequencies, the pattern never exactly repeats. The moiré-like structures constantly shift and reorganize. It looks more complicated than it is, which is the most reliable way to make something look impressive.
+
+![Wave interference pattern in a checkbox grid](/checkboxes/wave-interference.png)
 
 ## **[Mandelbrot](/checkboxes/mandelbrot.html)**
 
@@ -172,6 +176,8 @@ Surprisingly satisfying. Something about the coarse pixel size makes the arcs re
 Falling columns of checked checkboxes. Each column runs an independent drop with a bright head and a trail of 12 to 31 cells behind it. The trail fades via a CSS keyframe animation with a duration calculated from the trail length and drop speed. When the tail clears the bottom, the column resets from the top.
 
 Less "bullet time," more "budget cosplay." Still looks like what it's supposed to look like, which continues to be a minor miracle.
+
+![The Matrix falling columns demo in a checkbox grid](/checkboxes/the-matrix.png)
 
 ## **[Ripples](/checkboxes/ripples.html)**
 

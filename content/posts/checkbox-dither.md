@@ -46,6 +46,8 @@ Animated GIFs, APNGs, and animated WebPs work. The browser decodes each frame to
 
 The results are better than they should be. Portrait photos with good contrast come out recognizable. Logos with hard edges come out almost clean. You can tell what things are. Your image never leaves your browser. Nothing is uploaded anywhere. The paranoia is unnecessary but understandable.
 
+![Floyd-Steinberg dithered image rendered in a checkbox grid](/checkboxes/dither.png)
+
 ## **[Webcam (Dither Cam)](/checkboxes/webcam.html)** *(interactive)*
 
 The same Floyd-Steinberg pipeline, but the image source is your camera instead of a file. Each animation frame, the live video feed is drawn to an offscreen canvas, pixel data is read, error diffusion runs, and the result goes to the grid. At default checkbox size (6px) you get around 30fps on a modern laptop.

@@ -27,6 +27,8 @@ At 1-bit resolution the patterns are rougher than they'd be on a canvas, but the
 
 Click or drag anywhere to deposit trail and watch the agents swarm toward it. The response is immediate and a little unsettling.
 
+![Slime mold simulation running in a checkbox grid](/checkboxes/slime-mold-simulation.png)
+
 ## **[Langton's Ant](/checkboxes/langtons-ant.html)**
 
 <div style="margin:1.5rem 0">
@@ -82,6 +84,8 @@ Click or drag to paint cells. Gliders work. Common oscillators work. They just l
 Generates mazes in real time using iterative [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) (recursive backtracker). The algorithm maintains a stack, randomly picks an unvisited neighbor, carves a passage, and pushes. When stuck, it pops and backtracks. You can watch the stack unwind.
 
 Every generated maze is a perfect maze: one solution, no loops, no isolated regions. It restarts automatically. Good to leave running if you like watching things get solved that you didn't ask it to solve.
+
+![Maze generator mid-run in a checkbox grid](/checkboxes/maze.png)
 
 ---
 

@@ -25,6 +25,8 @@ The ball is a single checkbox. The paddles are vertical strips a few cells tall.
 
 Each frame clears the entire grid and redraws everything. At this resolution that's fast enough to not matter.
 
+![Pong running in a checkbox grid](/checkboxes/pong.png)
+
 ## **[Snake](/checkboxes/snake.html)** *(interactive)*
 
 Arrow keys or WASD. Classic Snake rules: eat the food, grow the tail, don't hit yourself or the walls.
