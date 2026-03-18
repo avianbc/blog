@@ -1,10 +1,16 @@
-+++
-date = 2026-03-15T12:00:00-05:00
-title = "Checkbox Canvas Experiments"
-categories = ['Programming']
-tags = ['JavaScript', 'HTML', 'Checkboxes']
-series = ['Experiments']
-+++
+---
+title: "Checkbox Canvas Experiments"
+date: 2026-03-15T12:00:00-05:00
+categories:
+  - Programming
+tags:
+  - JavaScript
+  - HTML
+  - Checkboxes
+series:
+  - Experiments
+  - Checkbox Canvas
+---
 
 <div id="cb-hero">
 <style>
@@ -70,43 +76,12 @@ The constraint is the whole point. You get one bit per "pixel": on or off. Every
 
 ## The Demos
 
-### Simulations
+Twenty demos total, grouped by what they're actually doing:
 
-**[Slime Mold Simulation](/checkboxes/slime-mold-simulation.html)** *(interactive)*: [Physarum](https://en.wikipedia.org/wiki/Physarum_polycephalum)-style agent simulation. Agents deposit trail, sense neighbors, steer toward concentration. Click or drag to deposit trail and watch them swarm toward it. The patterns look organic in a way that feels like it shouldn't work at this resolution.
-
-**[Langton's Ant](/checkboxes/langtons-ant.html):** A single ant follows [two simple rules](https://en.wikipedia.org/wiki/Langton%27s_ant): turn right on a lit cell, turn left on a dark one, then flip it. Chaos for a while, then it spontaneously builds a repeating diagonal highway. Watched it longer than I'd like to admit.
-
-**[Game of Life](/checkboxes/game-of-life.html)** *(interactive)*: [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). Click or drag to paint cells. The grid wraps at the edges.
-
-**[Maze](/checkboxes/maze.html):** Generates mazes in real time using iterative [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search). You can watch the walls get carved out as it runs, then it restarts.
-
-### Visual Effects
-
-**[Spirals](/checkboxes/spirals.html):** Four modes: rotating logarithmic spiral, inward-zooming tunnel, moiré rings, counter-rotating radial fans. Each one is pure trig per cell per frame, no sprites, no precomputed data. The logarithmic spiral mode alone is worth a few minutes. Let it cycle through.
-
-**[Wave Interference](/checkboxes/wave-interference.html):** Four wave sources drift independently on [Lissajous](https://en.wikipedia.org/wiki/Lissajous_curve) paths. Their [interference pattern](https://en.wikipedia.org/wiki/Wave_interference) is thresholded to 1-bit. The result is endlessly shifting [moiré](https://en.wikipedia.org/wiki/Moir%C3%A9_pattern)-like patterns that never exactly repeat.
-
-**[Mandelbrot](/checkboxes/mandelbrot.html)** *(interactive)*: The [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set). Click to zoom in, right-click to zoom out, R to reset. At low resolution it looks like outsider art. At high zoom it still looks like outsider art but that's kind of the point.
-
-**[Fireworks](/checkboxes/fireworks.html):** Surprisingly satisfying. Particle bursts with realistic arc and fade.
-
-**[The Matrix](/checkboxes/the-matrix.html):** Falling columns of checked checkboxes with a fade tail. Less "bullet time," more "budget cosplay."
-
-**[Rain](/checkboxes/rain.html)**, **[Wave](/checkboxes/wave.html)**, **[Random Noise](/checkboxes/)**, **[Marquee](/checkboxes/marquee.html):** Exactly what they sound like.
-
-**[DVD](/checkboxes/dvd.html):** The bouncing DVD logo. It hits the corner eventually. You're welcome.
-
-### Games
-
-**[Pong](/checkboxes/pong.html)** *(interactive)*: Fully playable, two players. Left paddle: W/S. Right paddle: arrow keys. It scores. The ball speeds up.
-
-**[Snake](/checkboxes/snake.html)** *(interactive)*: Arrow keys or WASD. Also fully playable.
-
-### Actually Useful
-
-**[Dither](/checkboxes/dither.html)** *(interactive)*: Drag and drop any image. Converts to grayscale, runs [Floyd-Steinberg](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering) error diffusion, renders onto the grid. Checked = bright, unchecked = dark. Animated GIFs, APNGs, and WebPs animate. The results are surprisingly good. Your image never leaves your browser. Nothing is uploaded. The paranoia is appreciated but unnecessary.
-
-**[Clock](/checkboxes/clock.html):** The current time in a 5x7 pixel font. You saw it at the top.
+- **[Simulations](/posts/checkbox-simulations/)** — Slime Mold, Langton's Ant, Game of Life, Maze. Actual algorithms with state; the checkboxes just report what happened.
+- **[Visual Effects](/posts/checkbox-visual-effects/)** — Spirals, Wave Interference, Mandelbrot, Fireworks, The Matrix, Rain, Raindrops, Wave, Random Noise, Marquee, DVD. Pure math per cell per frame, thresholded to on/off.
+- **[Games](/posts/checkbox-games/)** — Pong and Snake. Both fully playable.
+- **[Dither & Webcam](/posts/checkbox-dither/)** — Floyd-Steinberg error diffusion on images and live camera feed. The webcam one in particular is worth opening.
 
 ## Performance
 

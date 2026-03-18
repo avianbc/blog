@@ -113,6 +113,8 @@ Code examples should be complete and working, not fragments. Include tests when 
 
 **Never:** em dashes, hyphens as punctuation, emojis, "In this post we will...", "Let's dive in!", "Thanks for reading!", hashtags, corporate buzzwords ("leverage", "synergy"), excessive hedging ("perhaps", "arguably"), artificial enthusiasm, SEO filler.
 
+CRITICAL: Stop using em dashes! How many times do I have to tell you?
+
 ## Example Openings
 
 > *"After searching through Google and StackOverflow and finding nothing, I decided to write my own..."*
