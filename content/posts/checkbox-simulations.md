@@ -11,6 +11,7 @@ tags:
 series:
   - Experiments
   - Checkbox Canvas
+featuredImage: /checkboxes/maze.png
 ---
 
 The 1-bit constraint is most interesting when you stack it against a system with real state. These four demos are simulations. They evolve by rules, and the checkboxes just report what happened. The display isn't the computation; it's the readout.

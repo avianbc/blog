@@ -11,6 +11,7 @@ tags:
 series:
   - Experiments
   - Checkbox Canvas
+featuredImage: /checkboxes/pong.png
 ---
 
 Games are an interesting stress test for the 1-bit constraint. A simulation can skip frames and still look fine. A game can't. Input latency matters, collision detection matters, and the player is paying close attention in a way that they aren't when watching a visual effect. If the game loop is wrong, you notice immediately.
@@ -24,8 +25,6 @@ Two players. Left paddle: W and S. Right paddle: up and down arrow keys.
 The ball is a single checkbox. The paddles are vertical strips a few cells tall. Collision detection uses floating-point bounding-box checks against the paddle positions, not checkbox state. The ball speeds up with each rally. It scores.
 
 Each frame clears the entire grid and redraws everything. At this resolution that's fast enough to not matter.
-
-![Pong running in a checkbox grid](/checkboxes/pong.png)
 
 ## **[Snake](/checkboxes/snake.html)** *(interactive)*
 
