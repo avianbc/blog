@@ -1,6 +1,80 @@
-# Writing Style — Brad Carey
+# Blog Agent Guide — Brad Carey
 
 Write like a developer explaining something at a coworker's desk: competent, concise, occasionally funny, respectful of their time. Posts exist because I hit a problem, solved it, and figured someone else would hit the same wall.
+
+## Creating a New Post
+
+### File
+
+Place new posts in `content/posts/`. Use a short, descriptive kebab-case filename with no date prefix: `my-post-title.md`.
+
+### Front Matter
+
+Use YAML front matter delimited by `---`. `title` and `date` are required. Use ISO 8601 for dates.
+
+```yaml
+---
+title: "Your Post Title"
+date: 2026-03-17T12:00:00-05:00
+categories:
+  - Programming
+tags:
+  - SomeTag
+---
+```
+
+**Available fields (all optional except `title` and `date`):**
+
+| Field             | Type   | Description                                                 |
+| ----------------- | ------ | ----------------------------------------------------------- |
+| `title`           | string | Post title.                                                 |
+| `date`            | string | Publication date (ISO 8601).                                |
+| `categories`      | list   | Top-level groupings (e.g. `Programming`, `Fitness`).        |
+| `tags`            | list   | Specific topic tags.                                        |
+| `series`          | list   | Groups related posts (e.g. `Experiments`).                  |
+| `author`          | list   | Author name(s). Omit unless overriding site default.        |
+| `featuredImage`   | string | Path or URL to an image displayed below post metadata.      |
+| `math`            | bool   | Enable MathJax for this post. Default `false`.              |
+| `katex`           | bool   | Enable KaTeX for this post. Default `false`.                |
+| `disableComments` | bool   | Disable comments on this post. Default `false`.             |
+| `externalLink`    | string | Redirects post link to an external URL instead of the body. |
+| `canonicalUrl`    | string | Override `<link rel="canonical">` in `<head>`.              |
+
+### Content
+
+Write the body in Markdown. Use `{{< highlight lang >}}...{{< /highlight >}}` shortcodes for fenced code blocks — do not use triple-backtick fences. Follow the voice and structure guidelines below.
+
+### Images
+
+Store images in `static/images/YYYY/filename.ext`. Reference them as `/images/YYYY/filename.ext` in Markdown or in `featuredImage`.
+
+### Hugo CLI
+
+Scaffold a new post (auto-populates date, sets `draft: true`):
+
+```sh
+hugo new posts/my-post-title.md
+```
+
+Preview locally (omits drafts):
+
+```sh
+hugo serve
+```
+
+Preview including drafts:
+
+```sh
+hugo serve -D
+```
+
+**Important:** Posts created via `hugo new` have `draft: true` set by the archetype. Remove that line (or delete it entirely) before publishing — drafts are excluded from the production build.
+
+### Format Note
+
+Use YAML front matter (`---` delimiters). Older posts in the repo use TOML (`+++`) — ignore that pattern, YAML is preferred going forward.
+
+---
 
 ## Voice
 
