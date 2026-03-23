@@ -23,9 +23,63 @@ $dark-border: #424242;
     flex: 0.5;
 }
 
+/* ── Tables ─────────────────────────────────────────────── */
+body[class^="colorscheme-"] table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5rem 0;
+    font-size: 0.95em;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
 body[class^="colorscheme-"] table th,
 body[class^="colorscheme-"] table td {
-    padding: 0.3rem 1.6rem;
+    padding: 0.65rem 1.2rem;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid $light-border;
+}
+
+body[class^="colorscheme-"] table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Header row */
+body[class^="colorscheme-"] table thead tr {
+    border-bottom: 2px solid $light-border;
+}
+
+body[class^="colorscheme-"] table th {
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: 0.82em;
+}
+
+/* Zebra striping — light mode */
+.colorscheme-light table tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+.colorscheme-light table thead {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: $light-foreground;
+}
+
+/* Zebra striping — dark mode */
+.colorscheme-dark table td,
+.colorscheme-dark table th {
+    border-bottom-color: $dark-border;
+}
+.colorscheme-dark table thead tr {
+    border-bottom-color: $dark-border;
+}
+.colorscheme-dark table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.07);
+}
+.colorscheme-dark table thead {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: $dark-foreground;
 }
 
 .about .avatar img {
