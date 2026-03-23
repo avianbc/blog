@@ -6,6 +6,7 @@ categories:
 tags:
   - Strength Training
   - Bench Press
+featuredImage: "/images/2026/benchpressprogress.png"
 ---
 
 The projected max got there before the actual lift did. I hit 275 for 5 reps on December 9, 2022, which projects to a 320 lb estimated one-rep max via the [Epley formula](https://en.wikipedia.org/wiki/One-repetition_maximum). I did load 320 on the bar shortly after just to say I'd actually touched it. But the data already called it. That took almost four years of training, two years of spinning my wheels, and one program that finally made the difference.
