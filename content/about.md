@@ -80,18 +80,4 @@ The site is built with [Hugo](https://gohugo.io/) static site generator. Old blo
 
 Check out the [Github repository](https://github.com/avianbc/blog) for this site.
 
-## Contact
-
-<form name="contact" method="POST" netlify netlify-honeypot="bot-field">
-  <p hidden><input name="bot-field" /></p>
-  <p>
-    <label>Name<br><input type="text" name="name" required style="width:100%;max-width:400px;" /></label>
-  </p>
-  <p>
-    <label>Email<br><input type="email" name="email" required style="width:100%;max-width:400px;" /></label>
-  </p>
-  <p>
-    <label>Message<br><textarea name="message" required rows="6" style="width:100%;max-width:400px;"></textarea></label>
-  </p>
-  <p><button type="submit">Send</button></p>
-</form>
+Want to get in touch? Head over to the [contact page](/contact/).

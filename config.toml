@@ -90,6 +90,10 @@ url = "dashboard/"
 name = "About"
 weight = 4
 url = "about/"
+[[menu.main]]
+name = "Contact"
+weight = 5
+url = "contact/"
 
 [markup]
 [markup.highlight]
